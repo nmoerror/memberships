@@ -2,9 +2,11 @@
   "expo": {
     "name": "memberships",
     "slug": "memberships",
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "scheme": "myapp",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -13,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
