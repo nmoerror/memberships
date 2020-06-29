@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, Text, View } from 'react-native';
 import styled from 'styled-components';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -7,7 +7,23 @@ import { Ionicons } from '@expo/vector-icons';
 import TypeModal from './Pickers/TypeModal';
 import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
 
-const AddModal = ({ navigation }) => {
+// Async Storage
+import {
+  getItemAsync,
+  setItemAsync,
+  deleteItemAsync,
+} from '../utils/secureStorage';
+
+const AddModal = ({ route, navigation }) => {
+  const { memberships } = route.params;
+  // Current memberships
+  const [currentMemberships, setCurrentMemberships] = useState(memberships);
+  useEffect(() => {
+    // Current memberships
+    setCurrentMemberships(memberships);
+    console.log(currentMemberships);
+  }, [navigation]);
+
   // Form values
   const [name, setName] = useState('');
   const [type, setType] = useState('Membership');
@@ -16,9 +32,40 @@ const AddModal = ({ navigation }) => {
   const [day, setDay] = useState('');
   const [paymentInterval, setPaymentInterval] = useState('Weekly');
   const [amount, setAmount] = useState('');
+  const [formObject, setFormObject] = useState();
 
   // Picker Modal
   const [modal, setModal] = useState('');
+
+  const validate = () => {
+    if (!name || !day || !amount) {
+      alert(`Name, Payment Day and amount are required !`);
+      return;
+    }
+
+    let data = {
+      name: name,
+      type: type,
+      startDate: startDate,
+      endDate: endDate,
+      day: day,
+      paymentInterval: paymentInterval,
+      amount: amount,
+    };
+
+    console.log(data);
+
+    let a = currentMemberships.length ? [...currentMemberships, data] : [data];
+    console.log('a =');
+    console.log(a);
+    pushNewMembership(a);
+  };
+
+  const pushNewMembership = (a) => {
+    console.log('from push');
+    console.log(a);
+    setItemAsync('memberships', JSON.stringify(a));
+  };
 
   const SelectModal = () => {
     switch (modal) {
@@ -43,7 +90,7 @@ const AddModal = ({ navigation }) => {
           <Ionicons name='ios-close' size={40} />
         </CancelItem>
         <Title>New Membership</Title>
-        <AddItem onPress={() => alert('saved')}>
+        <AddItem onPress={() => validate()}>
           <Ionicons name='ios-add' size={40} />
         </AddItem>
       </Bar>

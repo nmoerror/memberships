@@ -1,63 +1,72 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, RefreshControl } from 'react-native';
 import styled from 'styled-components';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 
-function wait(timeout) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeout);
-  });
-}
+// Async Storage
+import {
+  getItemAsync,
+  setItemAsync,
+  deleteItemAsync,
+} from '../utils/secureStorage';
 
 const HomeScreen = ({ navigation }) => {
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [memberships, setMemberships] = useState([]);
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+  useEffect(() => {
+    const lala = async () => {
+      try {
+        let val = await getItemAsync('memberships');
+        if (val) {
+          setMemberships(JSON.parse(val));
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-    wait(2000).then(() => setRefreshing(false));
-  }, [refreshing]);
+    lala();
+  });
 
   return (
     <Section>
       <Bar>
         <Title>Memberships</Title>
-        <AddItem onPress={() => navigation.push('Add')}>
+        <AddItem
+          onPress={() =>
+            navigation.push('Add', {
+              memberships,
+            })
+          }
+        >
           <Ionicons name='ios-add' size={40} />
         </AddItem>
       </Bar>
-      <ScrollView
-        style={{ height: '100%' }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <Items>
-          {arr.map((item) => {
-            return (
-              <Fragment key={item.id}>
-                <Division />
-                <Item
-                  onPress={() =>
-                    navigation.push('Edit', {
-                      item,
-                    })
-                  }
-                >
-                  <ItemName>{item.name}</ItemName>
-                  <More>
-                    <Ionicons
-                      name='ios-more'
-                      size={25}
-                      color='rgba(0,0,0,0.8)'
-                    />
-                  </More>
-                </Item>
-              </Fragment>
-            );
-          })}
-        </Items>
+      <ScrollView style={{ height: '100%' }}>
+        {memberships.length ? (
+          <Items>
+            {memberships.map((item) => {
+              return (
+                <Fragment key={item.id}>
+                  <Division />
+                  <Item onPress={() => deleteItemAsync('memberships')}>
+                    <ItemName>{item.name}</ItemName>
+                    <More>
+                      <Ionicons
+                        name='ios-more'
+                        size={25}
+                        color='rgba(0,0,0,0.8)'
+                      />
+                    </More>
+                  </Item>
+                </Fragment>
+              );
+            })}
+          </Items>
+        ) : (
+          <Text>Add a membership to get started!</Text>
+        )}
       </ScrollView>
     </Section>
   );
@@ -85,6 +94,11 @@ let arr = [
     link: '329893421u',
   },
 ];
+
+/*   onPress={() =>
+                      navigation.push('Edit', {
+                        item,
+                      })*/
 
 const Section = styled.SafeAreaView``;
 
