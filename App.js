@@ -6,6 +6,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import BottomTabNavigator from './navigation/BottomTabNavigation';
 import useLinking from './navigation/Linking';
+import AddModal from './logic/modals/AddModal';
+import EditModal from './logic/modals/EditModal';
 
 const App = ({ skipLoadingScreen }) => {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -36,6 +38,35 @@ const App = ({ skipLoadingScreen }) => {
   }
 
   const MainStack = createStackNavigator();
+  const ModalStack = createStackNavigator();
+
+  const ModalStacks = () => {
+    return (
+      <ModalStack.Navigator mode='modal'>
+        <MainStack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name='Root'
+          component={BottomTabNavigator}
+        />
+        <ModalStack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name='Add'
+          component={AddModal}
+        />
+        <ModalStack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name='Edit'
+          component={EditModal}
+        />
+      </ModalStack.Navigator>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -43,15 +74,7 @@ const App = ({ skipLoadingScreen }) => {
         ref={containerRef}
         initialState={initialNavigationState}
       >
-        <MainStack.Navigator>
-          <MainStack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name='Root'
-            component={BottomTabNavigator}
-          />
-        </MainStack.Navigator>
+        <ModalStacks />
       </NavigationContainer>
     </View>
   );

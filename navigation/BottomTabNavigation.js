@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import TabBarIcon from '../logic/components/TabBarIcon';
 import * as React from 'react';
 
 import HomeScreen from '../logic/screens/HomeScreen';
@@ -11,22 +12,25 @@ export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator
-      initialRouteName={INITIAL_ROUTE_NAME}
-      tabBarOptions={{ style: { height: 80 } }}
-    >
+    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
         name='Home'
         component={HomeScreen}
         options={{
-          title: ' ',
+          title: 'Memberships',
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name='md-list' />
+          ),
         }}
       />
       <BottomTab.Screen
         name='Statistics'
         component={StatisticsScreen}
         options={{
-          title: ' ',
+          title: 'Totals',
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name='ios-stats' />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -39,8 +43,8 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return ' ';
+      return 'Memberships';
     case 'Statistics':
-      return ' ';
+      return 'Totals';
   }
 }
