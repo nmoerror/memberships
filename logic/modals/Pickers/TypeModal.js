@@ -1,5 +1,6 @@
 import React from 'react';
 import { PickerIOS } from '@react-native-community/picker';
+import Colors from '../../constants/Colors';
 
 const TypeModal = ({ type, setType }) => (
   <PickerIOS
@@ -10,13 +11,26 @@ const TypeModal = ({ type, setType }) => (
       backgroundColor: 'white',
       position: 'absolute',
       bottom: 50,
+      borderTopRightRadius: 40,
+      borderTopLeftRadius: 40,
+    }}
+    itemStyle={{
+      fontWeight: 'bold',
     }}
     onValueChange={(e) => setType(e)}
   >
-    <PickerIOS.Item label='Membership' value='Membership' />
-    <PickerIOS.Item label='Subscription' value='Subscription' />
-    <PickerIOS.Item label='Credit' value='Credit' />
-    <PickerIOS.Item label='Bill' value='Bill' />
+    <PickerIOS.Item
+      color={Colors.icons}
+      label='Membership'
+      value='Membership'
+    />
+    <PickerIOS.Item
+      color={Colors.icons}
+      label='Subscription'
+      value='Subscription'
+    />
+    <PickerIOS.Item color={Colors.icons} label='Credit' value='Credit' />
+    <PickerIOS.Item color={Colors.icons} label='Bill' value='Bill' />
   </PickerIOS>
 );
 

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "memberships",
-    "slug": "memberships",
+    "name": "Memberships",
+    "slug": "Memberships",
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,7 +17,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.nmoerror.Memberships"
     },
     "web": {
       "favicon": "./assets/favicon.png"

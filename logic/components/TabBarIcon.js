@@ -8,5 +8,3 @@ export default function TabBarIcon({ name, focused, secondary }) {
 
   return <Ionicons name={name} size={35} color={color} />;
 }
-
-const Wrap = styled.View``;

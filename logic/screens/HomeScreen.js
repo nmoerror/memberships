@@ -3,6 +3,8 @@ import { View, Text, SafeAreaView, RefreshControl } from 'react-native';
 import styled from 'styled-components';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
+import Colors from '../constants/Colors';
 
 // Async Storage
 import {
@@ -11,28 +13,24 @@ import {
   deleteItemAsync,
 } from '../utils/secureStorage';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ route, navigation }) => {
   const [memberships, setMemberships] = useState([]);
 
-  useEffect(() => {
-    const lala = async () => {
-      try {
-        let val = await getItemAsync('memberships');
-        if (val) {
-          setMemberships(JSON.parse(val));
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    lala();
-  });
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        try {
+          let val = await getItemAsync('memberships');
+          setMemberships(val ? JSON.parse(val) : []);
+        } catch (err) {}
+      })();
+    }, [route])
+  );
 
   return (
     <Section>
       <Bar>
-        <Title>Memberships</Title>
+        <Title style={{ color: Colors.title }}>My Memberships</Title>
         <AddItem
           onPress={() =>
             navigation.push('Add', {
@@ -40,24 +38,39 @@ const HomeScreen = ({ navigation }) => {
             })
           }
         >
-          <Ionicons name='ios-add' size={40} />
+          <Ionicons name='ios-add' size={40} color={Colors.icons} />
         </AddItem>
       </Bar>
-      <ScrollView style={{ height: '100%' }}>
+      <ScrollView style={{ height: '100%', paddingRight: 10, paddingLeft: 10 }}>
         {memberships.length ? (
           <Items>
             {memberships.map((item) => {
               return (
                 <Fragment key={item.id}>
                   <Division />
-                  <Item onPress={() => deleteItemAsync('memberships')}>
-                    <ItemName>{item.name}</ItemName>
+                  <Item
+                    onPress={() =>
+                      navigation.push('Edit', { item, memberships })
+                    }
+                  >
+                    <View>
+                      <ItemName>{item.name}</ItemName>
+                      <ItemType>{item.type}</ItemType>
+                    </View>
                     <More>
-                      <Ionicons
-                        name='ios-more'
-                        size={25}
-                        color='rgba(0,0,0,0.8)'
-                      />
+                      <Text
+                        style={{ marginRight: 2, marginTop: 1, fontSize: 16 }}
+                      >
+                        $
+                      </Text>
+                      <AmountText>
+                        {parseFloat(item.amount)
+                          .toFixed(2)
+                          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+                      </AmountText>
+                      <SecondaryText>
+                        /{item.paymentInterval.charAt(0).toLowerCase()}
+                      </SecondaryText>
                     </More>
                   </Item>
                 </Fragment>
@@ -65,45 +78,23 @@ const HomeScreen = ({ navigation }) => {
             })}
           </Items>
         ) : (
-          <Text>Add a membership to get started!</Text>
+          <EmptyView>
+            <AddText>Add a membership to get started!</AddText>
+            <SecondaryAddText>
+              I am your new best expense tracker ! :)
+            </SecondaryAddText>
+          </EmptyView>
         )}
       </ScrollView>
     </Section>
   );
 };
 
-let arr = [
-  {
-    id: '1234543',
-    name: 'Youtubre',
-    link: '329893421u',
-  },
-  {
-    id: '1212334543',
-    name: 'Spority',
-    link: '329893421u',
-  },
-  {
-    id: '123454dsad3',
-    name: 'AnytieFitness',
-    link: '329893421u',
-  },
-  {
-    id: '123qee4543',
-    name: 'Soccer Premium',
-    link: '329893421u',
-  },
-];
-
-/*   onPress={() =>
-                      navigation.push('Edit', {
-                        item,
-                      })*/
-
 const Section = styled.SafeAreaView``;
 
 const Bar = styled.View`
   height: 50px;
+  margin-bottom: 8px;
 `;
 
 const Title = styled.Text`
@@ -113,31 +104,69 @@ const Title = styled.Text`
 
 const AddItem = styled.TouchableOpacity`
   position: absolute;
-  right: 18px;
+  right: 8px;
   top: 5px;
+  width: 40px;
+  align-items: center;
 `;
 
 const Items = styled.View``;
 
 const Item = styled.TouchableOpacity`
-  height: 50px;
+  height: 60px;
   padding: 10px 20px;
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
 `;
 
-const ItemName = styled.Text``;
+const ItemName = styled.Text`
+  font-size: 16px;
+  font-weight: 500;
+`;
+
+const ItemType = styled.Text`
+  color: ${Colors.titleFaded};
+  font-size: 12px;
+  margin-top: 2px;
+`;
 
 const Division = styled.View`
   height: 1px;
   width: 100%;
-  background: #ccc;
+  background: rgba(40, 40, 40, 0.18);
 `;
 
 const More = styled.View`
-  transform: rotate(90deg);
   margin-right: 0px;
+  flex-direction: row;
+`;
+
+const AmountText = styled.Text`
+  font-weight: 700;
+  font-size: 16px;
+`;
+
+const SecondaryText = styled.Text`
+  color: ${Colors.titleFaded};
+  margin-left: 2px;
+  margin-top: 2px;
+  font-size: 16px;
+`;
+
+const EmptyView = styled.View`
+  align-items: center;
+  margin: 50% auto;
+`;
+
+const AddText = styled.Text`
+  font-size: 18px;
+`;
+
+const SecondaryAddText = styled.Text`
+  color: ${Colors.titleFaded};
+  margin-top: 20px;
+  font-size: 18px;
 `;
 
 export default HomeScreen;
