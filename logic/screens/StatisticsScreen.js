@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react';
+import React, { Fragment, useEffect, useState, useRef, createRef } from 'react';
 import styled from 'styled-components';
 import { ScrollView } from 'react-native-gesture-handler';
 import { View, Text, Animated } from 'react-native';
@@ -19,18 +19,31 @@ const ww = Dimensions.get('window').width;
 
 const StatisticsScreen = ({ route, navigation }) => {
   const [memberships, setMemberships] = useState([]);
+  let weeklyItems = [];
+  let monthlyItems = [];
+  let yearlyItems = [];
+  const scrollAnim = createRef();
 
   const weeklyTotal = () => {
     let total = 0;
-    memberships.forEach((item) => {
+    memberships.forEach(({ ...item }) => {
       if (item.paymentInterval === 'Weekly') {
-        total += parseFloat(item.amount);
+        let week = parseFloat(item.amount);
+        total += week;
+        item.amount = week.toFixed(2);
+        weeklyItems.push(item);
       } else if (item.paymentInterval === 'Fortnightly') {
         total += parseFloat(item.amount / 2);
       } else if (item.paymentInterval === 'Monthly') {
-        total += parseFloat(item.amount / 4.3);
+        let month = parseFloat(item.amount / 4.3);
+        total += month;
+        item.amount = month.toFixed(2);
+        weeklyItems.push(item);
       } else if (item.paymentInterval === 'Yearly') {
-        total += parseFloat(item.amount / 52.1);
+        let year = parseFloat(item.amount / 52.1);
+        total += year;
+        item.amount = year.toFixed(2);
+        weeklyItems.push(item);
       }
     });
 
@@ -39,15 +52,24 @@ const StatisticsScreen = ({ route, navigation }) => {
 
   const monthlyTotal = () => {
     let total = 0;
-    memberships.forEach((item) => {
+    memberships.forEach(({ ...item }) => {
       if (item.paymentInterval === 'Weekly') {
-        total += parseFloat(item.amount * 4.3);
+        let week = parseFloat(item.amount * 4.3);
+        total += week;
+        item.amount = week.toFixed(2);
+        monthlyItems.push(item);
       } else if (item.paymentInterval === 'Fortnightly') {
         total += parseFloat(item.amount * 2.2);
       } else if (item.paymentInterval === 'Monthly') {
-        total += parseFloat(item.amount);
+        let month = parseFloat(item.amount);
+        total += month;
+        item.amount = month.toFixed(2);
+        monthlyItems.push(item);
       } else if (item.paymentInterval === 'Yearly') {
-        total += parseFloat(item.amount / 12);
+        let year = parseFloat(item.amount / 12);
+        total += year;
+        item.amount = year.toFixed(2);
+        monthlyItems.push(item);
       }
     });
 
@@ -56,15 +78,24 @@ const StatisticsScreen = ({ route, navigation }) => {
 
   const yearlyTotal = () => {
     let total = 0;
-    memberships.forEach((item) => {
+    memberships.forEach(({ ...item }) => {
       if (item.paymentInterval === 'Weekly') {
-        total += parseFloat(item.amount * 52.1);
+        let week = parseFloat(item.amount * 52.1);
+        total += week;
+        item.amount = week.toFixed(2);
+        yearlyItems.push(item);
       } else if (item.paymentInterval === 'Fortnightly') {
         total += parseFloat(item.amount * 26.0714);
       } else if (item.paymentInterval === 'Monthly') {
-        total += parseFloat(item.amount * 12);
+        let month = parseFloat(item.amount * 12);
+        total += month;
+        item.amount = month.toFixed(2);
+        yearlyItems.push(item);
       } else if (item.paymentInterval === 'Yearly') {
-        total += parseFloat(item.amount);
+        let year = parseFloat(item.amount);
+        total += year;
+        item.amount = year.toFixed(2);
+        yearlyItems.push(item);
       }
     });
 
@@ -86,55 +117,72 @@ const StatisticsScreen = ({ route, navigation }) => {
     <Section>
       <Bar>
         <Title style={{ color: Colors.title }}>Total Expenses</Title>
-        <SettingsButton
-          onPress={() =>
-            navigation.push('Add', {
-              memberships,
-            })
-          }
-        >
-          <Ionicons name='ios-settings' size={32} color={Colors.icons} />
-        </SettingsButton>
+        {scrollAnim.current > 0 && (
+          <SettingsButton onPress={() => navigation.push('Settings')}>
+            <Ionicons name='ios-arrow' size={32} color={Colors.icons} />
+          </SettingsButton>
+        )}
       </Bar>
       <ScrollView
         horizontal={true}
         pagingEnabled={true}
         style={{ minHeight: '100%' }}
+        ref={scrollAnim}
       >
-        <ScrollView style={{ flex: 1 }}>
-          <TotalView>
-            <SectionTitle>Summary</SectionTitle>
-            <TotalItem>
-              <Bubble>
-                <IntervalText>Weekly</IntervalText>
-              </Bubble>
-              <Total>$ {weeklyTotal()}</Total>
-            </TotalItem>
-            <TotalItem>
-              <Bubble>
-                <IntervalText>Monthly</IntervalText>
-              </Bubble>
-              <Total>$ {monthlyTotal()}</Total>
-            </TotalItem>
-            <TotalItem>
-              <Bubble>
-                <IntervalText>Yearly</IntervalText>
-              </Bubble>
-              <Total>$ {yearlyTotal()}</Total>
-            </TotalItem>
-          </TotalView>
-        </ScrollView>
+        <TotalView style={{ flex: 1 }}>
+          <SectionTitle>Summary</SectionTitle>
+          <TotalItem
+            onPress={() => {
+              scrollAnim.current.scrollTo({ x: ww, animated: true });
+            }}
+          >
+            <Bubble>
+              <IntervalText>Weekly</IntervalText>
+            </Bubble>
+            <Total>$ {weeklyTotal()}</Total>
+          </TotalItem>
+          <TotalItem
+            onPress={() =>
+              scrollAnim.current.scrollTo({ x: ww * 2, animated: true })
+            }
+          >
+            <Bubble>
+              <IntervalText>Monthly</IntervalText>
+            </Bubble>
+            <Total>$ {monthlyTotal()}</Total>
+          </TotalItem>
+          <TotalItem
+            onPress={() => scrollAnim.current.scrollToEnd({ animated: true })}
+          >
+            <Bubble>
+              <IntervalText>Yearly</IntervalText>
+            </Bubble>
+            <Total>$ {yearlyTotal()}</Total>
+          </TotalItem>
+        </TotalView>
         <TotalView>
           <SectionTitle>Weekly</SectionTitle>
-          <Statistics />
+          <Statistics
+            memberships={weeklyItems}
+            route={route}
+            interval='Weekly'
+          />
         </TotalView>
         <TotalView>
           <SectionTitle>Monthly</SectionTitle>
-          <Statistics />
+          <Statistics
+            memberships={monthlyItems}
+            route={route}
+            interval='Monthly'
+          />
         </TotalView>
         <TotalView>
           <SectionTitle>Yearly</SectionTitle>
-          <Statistics />
+          <Statistics
+            memberships={yearlyItems}
+            route={route}
+            interval='Yearly'
+          />
         </TotalView>
       </ScrollView>
     </Section>
@@ -174,9 +222,8 @@ const SectionTitle = styled.Text`
   color: ${Colors.sectionTitle};
 `;
 
-const TotalItem = styled.View`
+const TotalItem = styled.TouchableOpacity`
   position: relative;
-  flex: 1;
   width: 100%;
   height: 100px;
   padding-right: 20px;

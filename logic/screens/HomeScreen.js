@@ -1,5 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  RefreshControl,
+  Dimensions,
+} from 'react-native';
 import styled from 'styled-components';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,6 +18,8 @@ import {
   setItemAsync,
   deleteItemAsync,
 } from '../utils/secureStorage';
+
+const wh = Dimensions.get('window').height;
 
 const HomeScreen = ({ route, navigation }) => {
   const [memberships, setMemberships] = useState([]);
@@ -41,7 +49,13 @@ const HomeScreen = ({ route, navigation }) => {
           <Ionicons name='ios-add' size={40} color={Colors.icons} />
         </AddItem>
       </Bar>
-      <ScrollView style={{ height: '100%', paddingRight: 10, paddingLeft: 10 }}>
+      <ScrollView
+        style={{
+          height: wh - 200,
+          paddingRight: 10,
+          paddingLeft: 10,
+        }}
+      >
         {memberships.length ? (
           <Items>
             {memberships.map((item) => {
@@ -65,11 +79,12 @@ const HomeScreen = ({ route, navigation }) => {
                       </Text>
                       <AmountText>
                         {parseFloat(item.amount)
-                          .toFixed(2)
-                          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+                          .toFixed()
+                          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.'}
                       </AmountText>
                       <SecondaryText>
-                        /{item.paymentInterval.charAt(0).toLowerCase()}
+                        {parseFloat(item.amount).toFixed(2).split('.')[1]} /
+                        {item.paymentInterval.charAt(0).toLowerCase()}
                       </SecondaryText>
                     </More>
                   </Item>
@@ -113,7 +128,7 @@ const AddItem = styled.TouchableOpacity`
 const Items = styled.View``;
 
 const Item = styled.TouchableOpacity`
-  height: 60px;
+  height: 62px;
   padding: 10px 20px;
   justify-content: space-between;
   flex-direction: row;
@@ -134,7 +149,7 @@ const ItemType = styled.Text`
 const Division = styled.View`
   height: 1px;
   width: 100%;
-  background: rgba(40, 40, 40, 0.18);
+  background: rgba(40, 40, 40, 0.15);
 `;
 
 const More = styled.View`
@@ -143,15 +158,14 @@ const More = styled.View`
 `;
 
 const AmountText = styled.Text`
-  font-weight: 700;
+  font-weight: 600;
   font-size: 16px;
 `;
 
 const SecondaryText = styled.Text`
   color: ${Colors.titleFaded};
-  margin-left: 2px;
-  margin-top: 2px;
-  font-size: 16px;
+  margin: auto auto 2px 0px;
+  font-size: 13px;
 `;
 
 const EmptyView = styled.View`
