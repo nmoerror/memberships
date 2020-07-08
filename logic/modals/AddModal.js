@@ -115,11 +115,7 @@ const AddModal = ({ route, navigation }) => {
       <KeyboardAvoidingView>
         <Bar>
           <CancelItem onPress={() => navigation.goBack()}>
-            <Ionicons
-              name='ios-arrow-round-back'
-              size={40}
-              color={Colors.icons}
-            />
+            <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
           </CancelItem>
           <Title style={{ color: Colors.title }}>New Membership</Title>
           <AddItem onPress={() => validate()}>
@@ -220,7 +216,7 @@ const AddItem = styled.TouchableOpacity`
 const CancelItem = styled.TouchableOpacity`
   position: absolute;
   left: 8px;
-  top: 5px;
+  top: 12px;
   width: 40px;
   align-items: center;
 `;

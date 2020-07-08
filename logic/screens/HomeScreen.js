@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   RefreshControl,
   Dimensions,
+  useColorScheme,
 } from 'react-native';
 import styled from 'styled-components';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -23,6 +24,7 @@ const wh = Dimensions.get('window').height;
 
 const HomeScreen = ({ route, navigation }) => {
   const [memberships, setMemberships] = useState([]);
+  const colorScheme = useColorScheme();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -72,20 +74,22 @@ const HomeScreen = ({ route, navigation }) => {
                       <ItemType>{item.type}</ItemType>
                     </View>
                     <More>
-                      <Text
-                        style={{ marginRight: 2, marginTop: 1, fontSize: 16 }}
-                      >
-                        $
-                      </Text>
-                      <AmountText>
-                        {parseFloat(item.amount)
-                          .toFixed()
-                          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.'}
-                      </AmountText>
-                      <SecondaryText>
-                        {parseFloat(item.amount).toFixed(2).split('.')[1]} /
-                        {item.paymentInterval.charAt(0).toLowerCase()}
-                      </SecondaryText>
+                      <Row>
+                        <Text
+                          style={{ marginRight: 2, marginTop: 1, fontSize: 16 }}
+                        >
+                          $
+                        </Text>
+                        <AmountText>
+                          {parseFloat(item.amount)
+                            .toFixed()
+                            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.'}
+                        </AmountText>
+                        <SecondaryText>
+                          {parseFloat(item.amount).toFixed(2).split('.')[1]}
+                        </SecondaryText>
+                      </Row>
+                      <ItemInterval>{item.paymentInterval}</ItemInterval>
                     </More>
                   </Item>
                 </Fragment>
@@ -146,6 +150,12 @@ const ItemType = styled.Text`
   margin-top: 2px;
 `;
 
+const ItemInterval = styled.Text`
+  color: ${Colors.titleFaded};
+  font-size: 12px;
+  margin: 2px 0 auto auto;
+`;
+
 const Division = styled.View`
   height: 1px;
   width: 100%;
@@ -153,7 +163,11 @@ const Division = styled.View`
 `;
 
 const More = styled.View`
-  margin-right: 0px;
+  color: ${Colors.titleFaded};
+  font-size: 18px;
+`;
+
+const Row = styled.View`
   flex-direction: row;
 `;
 

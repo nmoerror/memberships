@@ -1,11 +1,9 @@
 import React, { Fragment, useEffect, useState, useRef, createRef } from 'react';
 import styled from 'styled-components';
 import { ScrollView } from 'react-native-gesture-handler';
-import { View, Text, Animated } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
-import { Dimensions, TouchableOpacity } from 'react-native';
+import { Dimensions } from 'react-native';
 import Statistics from '../components/Statistics';
 
 // Async Storage
@@ -117,11 +115,6 @@ const StatisticsScreen = ({ route, navigation }) => {
     <Section>
       <Bar>
         <Title style={{ color: Colors.title }}>Total Expenses</Title>
-        {scrollAnim.current > 0 && (
-          <SettingsButton onPress={() => navigation.push('Settings')}>
-            <Ionicons name='ios-arrow' size={32} color={Colors.icons} />
-          </SettingsButton>
-        )}
       </Bar>
       <ScrollView
         horizontal={true}
@@ -193,6 +186,7 @@ const Section = styled.SafeAreaView``;
 
 const Bar = styled.View`
   height: 50px;
+  color: white;
 `;
 
 const SettingsButton = styled.TouchableOpacity`
@@ -208,7 +202,7 @@ const Title = styled.Text`
   font-size: 20px;
 `;
 
-const TotalView = styled.View`
+const TotalView = styled.ScrollView`
   width: ${ww}px;
   padding: 20px;
   background: white;
@@ -226,11 +220,11 @@ const TotalItem = styled.TouchableOpacity`
   position: relative;
   width: 100%;
   height: 100px;
-  padding-right: 20px;
+  padding-right: 10px;
   border-radius: 20px;
   background: white;
   margin: 20px auto;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
 `;
 
 const IntervalText = styled.Text`

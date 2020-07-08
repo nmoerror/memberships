@@ -8,7 +8,10 @@ import BottomTabNavigator from './navigation/BottomTabNavigation';
 import useLinking from './navigation/Linking';
 import AddModal from './logic/modals/AddModal';
 import EditModal from './logic/modals/EditModal';
-import SettingsModal from './logic/modals/SettingsModal';
+import AboutStack from './logic/screens/Stacks/AboutStack';
+import MeStack from './logic/screens/Stacks/MeStack';
+import PreferencesStack from './logic/screens/Stacks/PreferencesStack';
+import SettingsStack from './logic/screens/Stacks/SettingsStack';
 
 const App = ({ skipLoadingScreen }) => {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -39,19 +42,58 @@ const App = ({ skipLoadingScreen }) => {
   if (!isLoadingComplete && !skipLoadingScreen) {
     return null;
   }
-
   const MainStack = createStackNavigator();
   const ModalStack = createStackNavigator();
 
-  const ModalStacks = () => {
+  const MainStackScreen = () => {
     return (
-      <ModalStack.Navigator mode='modal'>
+      <MainStack.Navigator>
         <MainStack.Screen
           options={{
             headerShown: false,
           }}
           name='Root'
           component={BottomTabNavigator}
+        />
+        <MainStack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name='About'
+          component={AboutStack}
+        />
+        <MainStack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name='Me'
+          component={MeStack}
+        />
+        <MainStack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name='Preferences'
+          component={PreferencesStack}
+        />
+        <MainStack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name='Settings'
+          component={SettingsStack}
+        />
+      </MainStack.Navigator>
+    );
+  };
+
+  const ModalStacks = () => {
+    return (
+      <ModalStack.Navigator mode='modal'>
+        <ModalStack.Screen
+          name='Main'
+          component={MainStackScreen}
+          options={{ headerShown: false }}
         />
         <ModalStack.Screen
           options={{
@@ -66,13 +108,6 @@ const App = ({ skipLoadingScreen }) => {
           }}
           name='Edit'
           component={EditModal}
-        />
-        <ModalStack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name='Settings'
-          component={SettingsModal}
         />
       </ModalStack.Navigator>
     );

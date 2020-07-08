@@ -4,9 +4,10 @@ import * as React from 'react';
 
 import HomeScreen from '../logic/screens/HomeScreen';
 import StatisticsScreen from '../logic/screens/StatisticsScreen';
+import MenuScreen from '../logic/screens/MenuScreen';
 
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
+const INITIAL_ROUTE_NAME = 'Statistics';
 
 export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
@@ -30,6 +31,16 @@ export default function BottomTabNavigator({ navigation, route }) {
           title: 'Totals',
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name='ios-stats' />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name='Menu'
+        component={MenuScreen}
+        options={{
+          title: 'Menu',
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name='md-menu' />
           ),
         }}
       />
