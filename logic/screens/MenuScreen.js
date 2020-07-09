@@ -11,6 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
+import i18n from 'i18n-js';
 
 // Async Storage
 import {
@@ -22,26 +23,17 @@ import {
 const wh = Dimensions.get('window').height;
 
 const MenuScreen = ({ route, navigation }) => {
-  useFocusEffect(
-    React.useCallback(() => {
-      (async () => {
-        try {
-        } catch (err) {}
-      })();
-    }, [route])
-  );
-
   return (
     <Section>
       <Bar>
-        <Title style={{ color: Colors.title }}>Menu</Title>
+        <Title style={{ color: Colors.title }}>{i18n.t('Menu')}</Title>
       </Bar>
       <Main>
         <MenuItem onPress={() => navigation.push('Me')}>
           <Icon>
             <Ionicons name='ios-contact' size={30} color={Colors.icons} />
           </Icon>
-          <ItemName>Me</ItemName>
+          <ItemName>{i18n.t('Me')}</ItemName>
           <Go>
             <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
           </Go>
@@ -50,7 +42,7 @@ const MenuScreen = ({ route, navigation }) => {
           <Icon>
             <Ionicons name='ios-options' size={30} color={Colors.icons} />
           </Icon>
-          <ItemName>Preferences</ItemName>
+          <ItemName>{i18n.t('Preferences')}</ItemName>
           <Go>
             <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
           </Go>
@@ -59,7 +51,7 @@ const MenuScreen = ({ route, navigation }) => {
           <Icon style={{ marginLeft: 0.5 }}>
             <Ionicons name='ios-settings' size={30} color={Colors.icons} />
           </Icon>
-          <ItemName>Settings</ItemName>
+          <ItemName>{i18n.t('Settings')}</ItemName>
           <Go>
             <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
           </Go>
@@ -72,14 +64,16 @@ const MenuScreen = ({ route, navigation }) => {
               color={Colors.icons}
             />
           </Icon>
-          <ItemName>About</ItemName>
+          <ItemName>{i18n.t('About')}</ItemName>
           <Go>
             <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
           </Go>
         </MenuItem>
       </Main>
       <Signature>
-        <Text style={{ color: Colors.titleFaded, letterSpacing: 2 }}>from</Text>
+        <Text style={{ color: Colors.titleFaded, letterSpacing: 2 }}>
+          {i18n.t('from')}
+        </Text>
         <Brand>Nmoerror</Brand>
       </Signature>
     </Section>

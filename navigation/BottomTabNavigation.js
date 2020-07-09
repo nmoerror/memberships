@@ -5,7 +5,7 @@ import * as React from 'react';
 import HomeScreen from '../logic/screens/HomeScreen';
 import StatisticsScreen from '../logic/screens/StatisticsScreen';
 import MenuScreen from '../logic/screens/MenuScreen';
-
+import i18n from 'i18n-js';
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Statistics';
 
@@ -18,7 +18,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         name='Home'
         component={HomeScreen}
         options={{
-          title: 'Memberships',
+          title: i18n.t('Memberships'),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name='md-list' />
           ),
@@ -28,7 +28,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         name='Statistics'
         component={StatisticsScreen}
         options={{
-          title: 'Totals',
+          title: i18n.t('Totals'),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name='ios-stats' />
           ),
@@ -38,7 +38,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         name='Menu'
         component={MenuScreen}
         options={{
-          title: 'Menu',
+          title: i18n.t('Menu'),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name='md-menu' />
           ),

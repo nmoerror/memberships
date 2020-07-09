@@ -3,7 +3,7 @@ import { PickerIOS } from '@react-native-community/picker';
 import Colors from '../../constants/Colors';
 import { Animated } from 'react-native';
 import styled from 'styled-components';
-import { useFocusEffect } from '@react-navigation/native';
+import i18n from 'i18n-js';
 
 const PaymentInterval = ({ route, paymentInterval, setPaymentInterval }) => {
   return (
@@ -23,14 +23,26 @@ const PaymentInterval = ({ route, paymentInterval, setPaymentInterval }) => {
       }}
       onValueChange={(e) => setPaymentInterval(e)}
     >
-      <PickerIOS.Item color={Colors.icons} label='Weekly' value='Weekly' />
       <PickerIOS.Item
         color={Colors.icons}
-        label='Fortnightly'
+        label={i18n.t('Weekly')}
+        value='Weekly'
+      />
+      <PickerIOS.Item
+        color={Colors.icons}
+        label={i18n.t('Fortnightly')}
         value='Fortnightly'
       />
-      <PickerIOS.Item color={Colors.icons} label='Monthly' value='Monthly' />
-      <PickerIOS.Item color={Colors.icons} label='Yearly' value='Yearly' />
+      <PickerIOS.Item
+        color={Colors.icons}
+        label={i18n.t('Monthly')}
+        value='Monthly'
+      />
+      <PickerIOS.Item
+        color={Colors.icons}
+        label={i18n.t('Yearly')}
+        value='Yearly'
+      />
     </A>
   );
 };

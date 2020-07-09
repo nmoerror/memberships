@@ -3,7 +3,7 @@ import { View, Text, Animated } from 'react-native';
 import styled from 'styled-components';
 import { useFocusEffect } from '@react-navigation/native';
 
-const Statistics = ({ route, memberships, interval }) => {
+const Statistics = ({ route, memberships, curr }) => {
   const [stats, setStats] = useState([]);
 
   useFocusEffect(
@@ -20,7 +20,9 @@ const Statistics = ({ route, memberships, interval }) => {
           <Text>{membership.name}</Text>
           <Text>{membership.type}</Text>
           <Text>{membership.paymentInterval}</Text>
-          <Text>{membership.amount}</Text>
+          <Text>
+            {curr} {membership.amount}
+          </Text>
         </Item>
       ))}
     </Section>

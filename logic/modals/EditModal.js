@@ -14,6 +14,7 @@ import TypeModal from './Pickers/TypeModal';
 import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
+import i18n from 'i18n-js';
 
 import {
   getItemAsync,
@@ -133,7 +134,9 @@ const EditModal = ({ route, navigation }) => {
           <CancelItem onPress={() => navigation.goBack()}>
             <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
           </CancelItem>
-          <Title style={{ color: Colors.title }}>Edit {name}</Title>
+          <Title style={{ color: Colors.title }}>
+            {i18n.t('Edit')} {name}
+          </Title>
           <AddItem onPress={() => validate()}>
             <Ionicons name='ios-checkmark' size={40} color={Colors.icons} />
           </AddItem>
@@ -141,7 +144,7 @@ const EditModal = ({ route, navigation }) => {
         <ScrollView style={{ height: '100%' }}>
           <Form>
             <InputField err={errName}>
-              <InputText>Name:</InputText>
+              <InputText>{i18n.t('Name')}:</InputText>
               <Input
                 name='name'
                 value={name}
@@ -161,13 +164,13 @@ const EditModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>Type:</InputText>
-                <Placeholder>{type}</Placeholder>
+                <InputText>{i18n.t('Type')}:</InputText>
+                <Placeholder>{i18n.t(type)}</Placeholder>
               </InputField>
             </TouchableOpacity>
           </Form>
           <Form>
-            <FormTitle>Payments</FormTitle>
+            <FormTitle>{i18n.t('Payments')}</FormTitle>
             <TouchableOpacity
               onPress={() => {
                 setModal('payment-interval');
@@ -175,12 +178,12 @@ const EditModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>Interval:</InputText>
-                <Placeholder>{paymentInterval}</Placeholder>
+                <InputText>{i18n.t('Interval')}:</InputText>
+                <Placeholder>{i18n.t(`${paymentInterval}`)}</Placeholder>
               </InputField>
             </TouchableOpacity>
             <InputField err={errAmount}>
-              <InputText>Amount:</InputText>
+              <InputText>{i18n.t('Amount')}:</InputText>
               <Input
                 name='amount'
                 value={amount}
@@ -203,15 +206,15 @@ const EditModal = ({ route, navigation }) => {
           bot={modal ? 280 : 100}
           onPress={() => {
             Alert.alert(
-              'Delete Membership',
-              'Permanently delete this record?',
+              i18n.t('Delete Membership'),
+              i18n.t('Permanently delete this record?'),
               [
                 {
-                  text: 'Cancel',
+                  text: i18n.t('Cancel'),
                   onPress: () => {},
                 },
                 {
-                  text: 'Delete',
+                  text: i18n.t('Delete'),
                   onPress: async () => {
                     try {
                       let memberships = await getItemAsync('memberships');
@@ -233,7 +236,7 @@ const EditModal = ({ route, navigation }) => {
             );
           }}
         >
-          <DelText>Delete</DelText>
+          <DelText>{i18n.t('Delete')}</DelText>
         </Delete>
         <AnimatedSlide style={{ transform: [{ translateY: slideAnim }] }}>
           <SelectModal />
@@ -266,7 +269,7 @@ const AddItem = styled.TouchableOpacity`
 const CancelItem = styled.TouchableOpacity`
   position: absolute;
   left: 8px;
-  top: 12px;
+  top: 10px;
   width: 40px;
   align-items: center;
 `;

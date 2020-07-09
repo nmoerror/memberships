@@ -6,12 +6,15 @@ import {
   RefreshControl,
   Dimensions,
   useColorScheme,
+  Settings,
 } from 'react-native';
 import styled from 'styled-components';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
+import { Currency } from '../constants/Options';
+import i18n from 'i18n-js';
 
 // Async Storage
 import {
@@ -24,6 +27,7 @@ const wh = Dimensions.get('window').height;
 
 const HomeScreen = ({ route, navigation }) => {
   const [memberships, setMemberships] = useState([]);
+  const [me, setMe] = useState(Settings.get('name'));
   const colorScheme = useColorScheme();
 
   useFocusEffect(
@@ -32,6 +36,7 @@ const HomeScreen = ({ route, navigation }) => {
         try {
           let val = await getItemAsync('memberships');
           setMemberships(val ? JSON.parse(val) : []);
+          setMe(Settings.get('name'));
         } catch (err) {}
       })();
     }, [route])
@@ -40,7 +45,15 @@ const HomeScreen = ({ route, navigation }) => {
   return (
     <Section>
       <Bar>
-        <Title style={{ color: Colors.title }}>My Memberships</Title>
+        <Title
+          style={{ color: Colors.title }}
+          margin={me ? 'auto auto auto 20px' : 'auto'}
+        >
+          {me ? `${i18n.t('Good Morning')}${me}` : i18n.t('Memberships')}
+        </Title>
+        {memberships.length && me ? (
+          <SubIntro>{i18n.t('statistics for you')}</SubIntro>
+        ) : null}
         <AddItem
           onPress={() =>
             navigation.push('Add', {
@@ -65,20 +78,21 @@ const HomeScreen = ({ route, navigation }) => {
                 <Fragment key={item.id}>
                   <Division />
                   <Item
+                    onLongPress={() => alert('long')}
                     onPress={() =>
                       navigation.push('Edit', { item, memberships })
                     }
                   >
                     <View>
                       <ItemName>{item.name}</ItemName>
-                      <ItemType>{item.type}</ItemType>
+                      <ItemType>{i18n.t(`${item.type}`)}</ItemType>
                     </View>
                     <More>
                       <Row>
                         <Text
                           style={{ marginRight: 2, marginTop: 1, fontSize: 16 }}
                         >
-                          $
+                          <Currency />
                         </Text>
                         <AmountText>
                           {parseFloat(item.amount)
@@ -89,7 +103,9 @@ const HomeScreen = ({ route, navigation }) => {
                           {parseFloat(item.amount).toFixed(2).split('.')[1]}
                         </SecondaryText>
                       </Row>
-                      <ItemInterval>{item.paymentInterval}</ItemInterval>
+                      <ItemInterval>
+                        {i18n.t(`${item.paymentInterval}`)}
+                      </ItemInterval>
                     </More>
                   </Item>
                 </Fragment>
@@ -98,9 +114,9 @@ const HomeScreen = ({ route, navigation }) => {
           </Items>
         ) : (
           <EmptyView>
-            <AddText>Add a membership to get started!</AddText>
+            <AddText>{i18n.t('add a membership to get started!')}</AddText>
             <SecondaryAddText>
-              I am your new best expense tracker ! :)
+              {i18n.t('I am your new best expense tracker !')}
             </SecondaryAddText>
           </EmptyView>
         )}
@@ -113,12 +129,21 @@ const Section = styled.SafeAreaView``;
 
 const Bar = styled.View`
   height: 50px;
-  margin-bottom: 8px;
+  margin-bottom: 18px;
 `;
 
 const Title = styled.Text`
-  margin: auto;
+  margin: ${(props) => props.margin}
   font-size: 20px;
+  font-weight: 500;
+`;
+
+const SubIntro = styled.Text`
+  position: absolute;
+  bottom: -1px;
+  left: 22px;
+  color: ${Colors.titleFaded};
+  font-size: 16px;
 `;
 
 const AddItem = styled.TouchableOpacity`

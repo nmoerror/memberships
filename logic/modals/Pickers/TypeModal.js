@@ -1,6 +1,7 @@
 import React from 'react';
 import { PickerIOS } from '@react-native-community/picker';
 import Colors from '../../constants/Colors';
+import i18n from 'i18n-js';
 
 const TypeModal = ({ type, setType }) => (
   <PickerIOS
@@ -21,16 +22,20 @@ const TypeModal = ({ type, setType }) => (
   >
     <PickerIOS.Item
       color={Colors.icons}
-      label='Membership'
+      label={i18n.t('Membership')}
       value='Membership'
     />
     <PickerIOS.Item
       color={Colors.icons}
-      label='Subscription'
+      label={i18n.t('Subscription')}
       value='Subscription'
     />
-    <PickerIOS.Item color={Colors.icons} label='Credit' value='Credit' />
-    <PickerIOS.Item color={Colors.icons} label='Bill' value='Bill' />
+    <PickerIOS.Item
+      color={Colors.icons}
+      label={i18n.t('Credit')}
+      value='Credit'
+    />
+    <PickerIOS.Item color={Colors.icons} label={i18n.t('Bill')} value='Bill' />
   </PickerIOS>
 );
 

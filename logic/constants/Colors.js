@@ -6,8 +6,8 @@ export default {
   statsTotal: 'rgba(20,20,30,0.85)',
   mainColorFaded: 'rgba(127,51,229,0.8)',
   mainColorShadow: 'rgba(127,51,229,0.07)',
-  tabIconSelected: 'rgba(127,51,229,0.8)',
-  tabIconSelectedFaded: 'rgba(127,51,229,0.75)',
+  tabIconSelected: 'rgba(127,51,229,1)',
+  tabIconSelectedFaded: 'rgba(127,51,229,0.8)',
   tabIconDefault: 'rgba(40,40,40,0.25)',
   sectionTitle: 'rgba(20,20,30,0.7)',
 };

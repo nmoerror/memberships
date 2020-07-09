@@ -13,6 +13,7 @@ import Colors from '../constants/Colors';
 import { useFocusEffect } from '@react-navigation/native';
 import TypeModal from './Pickers/TypeModal';
 import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
+import i18n from 'i18n-js';
 
 // Async Storage
 import {
@@ -117,7 +118,7 @@ const AddModal = ({ route, navigation }) => {
           <CancelItem onPress={() => navigation.goBack()}>
             <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
           </CancelItem>
-          <Title style={{ color: Colors.title }}>New Membership</Title>
+          <Title style={{ color: Colors.title }}>{i18n.t('New Expense')}</Title>
           <AddItem onPress={() => validate()}>
             <Ionicons name='ios-checkmark' size={40} color={Colors.icons} />
           </AddItem>
@@ -125,9 +126,9 @@ const AddModal = ({ route, navigation }) => {
         <ScrollView style={{ height: '100%' }}>
           <Form>
             <InputField err={errName}>
-              <InputText>Name:</InputText>
+              <InputText>{i18n.t('Name')}:</InputText>
               <Input
-                placeholder='Youtube Premium'
+                placeholder={i18n.t('Youtube Premium')}
                 name='name'
                 value={name}
                 onChangeText={(e) => {
@@ -146,13 +147,13 @@ const AddModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>Type:</InputText>
-                <Placeholder>{type}</Placeholder>
+                <InputText>{i18n.t('Type')}:</InputText>
+                <Placeholder>{i18n.t(type)}</Placeholder>
               </InputField>
             </TouchableOpacity>
           </Form>
           <Form>
-            <FormTitle>Payments</FormTitle>
+            <FormTitle>{i18n.t('Payments')}</FormTitle>
             <TouchableOpacity
               onPress={() => {
                 setModal('payment-interval');
@@ -160,12 +161,12 @@ const AddModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>Interval:</InputText>
-                <Placeholder>{paymentInterval}</Placeholder>
+                <InputText>{i18n.t('Interval')}:</InputText>
+                <Placeholder>{i18n.t(paymentInterval)}</Placeholder>
               </InputField>
             </TouchableOpacity>
             <InputField err={errAmount}>
-              <InputText>Amount:</InputText>
+              <InputText>{i18n.t('Amount')}:</InputText>
               <Input
                 name='amount'
                 value={amount}
@@ -216,7 +217,7 @@ const AddItem = styled.TouchableOpacity`
 const CancelItem = styled.TouchableOpacity`
   position: absolute;
   left: 8px;
-  top: 12px;
+  top: 10px;
   width: 40px;
   align-items: center;
 `;

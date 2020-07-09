@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Dimensions,
+  Settings,
 } from 'react-native';
 import styled from 'styled-components';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -14,15 +15,21 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
 import CurrencyModal from '../../modals/Pickers/CurrencyModal';
-import LanguageModal from '../../modals/Pickers/LanguageModal';
+import i18n from 'i18n-js';
 
 const wh = Dimensions.get('window').height;
 
 const PreferencesStack = ({ route, navigation }) => {
   const [modal, setModal] = useState('');
   const slideAnim = useRef(new Animated.Value(200)).current;
-  const [currency, setCurrency] = useState('Dollar');
-  const [language, setLanguage] = useState('English');
+  const [currency, setCurrency] = useState(
+    Settings.get('currency') || 'Dollar'
+  );
+
+  const save = () => {
+    Settings.set({ currency });
+    navigation.goBack();
+  };
 
   const SelectModal = () => {
     switch (modal) {
@@ -36,18 +43,6 @@ const PreferencesStack = ({ route, navigation }) => {
           <CurrencyModal
             currency={currency}
             setCurrency={(e) => setCurrency(e)}
-          />
-        );
-      case 'language':
-        Animated.timing(slideAnim, {
-          toValue: 0 - 100,
-          duration: 200,
-          useNativeDriver: true,
-        }).start();
-        return (
-          <LanguageModal
-            language={language}
-            setLanguage={(e) => setLanguage(e)}
           />
         );
       default:
@@ -71,7 +66,10 @@ const PreferencesStack = ({ route, navigation }) => {
           <CancelItem onPress={() => navigation.goBack()}>
             <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
           </CancelItem>
-          <Title style={{ color: Colors.title }}>Preferences</Title>
+          <Title style={{ color: Colors.title }}>{i18n.t('Preferences')}</Title>
+          <SaveItem onPress={() => save()}>
+            <Ionicons name='ios-checkmark' size={45} color={Colors.icons} />
+          </SaveItem>
         </Bar>
 
         <Main>
@@ -83,19 +81,8 @@ const PreferencesStack = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>Currency:</InputText>
-                <Placeholder>{currency}</Placeholder>
-              </InputField>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setModal('language');
-                SelectModal();
-              }}
-            >
-              <InputField>
-                <InputText>Language:</InputText>
-                <Placeholder>{language}</Placeholder>
+                <InputText>{i18n.t('Currency')}:</InputText>
+                <Placeholder>{i18n.t(`${currency}`)}</Placeholder>
               </InputField>
             </TouchableOpacity>
           </Form>
@@ -126,7 +113,15 @@ const Bar = styled.View`
 const CancelItem = styled.TouchableOpacity`
   position: absolute;
   left: 8px;
-  top: 12px;
+  top: 10px;
+  width: 40px;
+  align-items: center;
+`;
+
+const SaveItem = styled.TouchableOpacity`
+  position: absolute;
+  right: 8px;
+  top: 1px;
   width: 40px;
   align-items: center;
 `;

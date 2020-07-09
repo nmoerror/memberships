@@ -1,22 +1,28 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  RefreshControl,
+  Settings,
+} from 'react-native';
 import styled from 'styled-components';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
-
-import {
-  getItemAsync,
-  setItemAsync,
-  deleteItemAsync,
-} from '../../utils/secureStorage';
+import i18n from 'i18n-js';
 
 const MeStack = ({ route, navigation }) => {
-  const [name, setName] = useState('');
+  const [name, setName] = useState(Settings.get('name') || '');
+  const [email, setEmail] = useState(Settings.get('email') || '');
   const [errName, setErrName] = useState();
-  const [title, setTitle] = useState('');
-  const [email, setEmail] = useState('');
+
+  const saveMe = () => {
+    Settings.set({ name: name });
+    Settings.set({ email: email });
+    navigation.goBack();
+  };
 
   return (
     <Section>
@@ -24,12 +30,15 @@ const MeStack = ({ route, navigation }) => {
         <CancelItem onPress={() => navigation.goBack()}>
           <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
         </CancelItem>
-        <Title style={{ color: Colors.title }}>Me</Title>
+        <Title style={{ color: Colors.title }}>{i18n.t('Me')}</Title>
+        <SaveItem onPress={() => saveMe()}>
+          <Ionicons name='ios-checkmark' size={45} color={Colors.icons} />
+        </SaveItem>
       </Bar>
       <Main>
         <Form>
           <InputField err={errName}>
-            <InputText>Name:</InputText>
+            <InputText>{i18n.t('Name')}:</InputText>
             <Input
               name='name'
               value={name}
@@ -39,17 +48,7 @@ const MeStack = ({ route, navigation }) => {
             />
           </InputField>
           <InputField>
-            <InputText>Title:</InputText>
-            <Input
-              title='title'
-              value={title}
-              onChangeText={(e) => {
-                setTitle(e);
-              }}
-            />
-          </InputField>
-          <InputField>
-            <InputText>Email:</InputText>
+            <InputText>{i18n.t('Email')}:</InputText>
             <Input
               email='email'
               value={email}
@@ -75,7 +74,15 @@ const Bar = styled.View`
 const CancelItem = styled.TouchableOpacity`
   position: absolute;
   left: 8px;
-  top: 12px;
+  top: 10px;
+  width: 40px;
+  align-items: center;
+`;
+
+const SaveItem = styled.TouchableOpacity`
+  position: absolute;
+  right: 8px;
+  top: 1px;
   width: 40px;
   align-items: center;
 `;

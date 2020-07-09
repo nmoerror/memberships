@@ -5,6 +5,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import { Dimensions } from 'react-native';
 import Statistics from '../components/Statistics';
+import { Currency } from '../constants/Options';
+import i18n from 'i18n-js';
 
 // Async Storage
 import {
@@ -14,9 +16,11 @@ import {
 } from '../utils/secureStorage';
 
 const ww = Dimensions.get('window').width;
+const wh = Dimensions.get('window').height;
 
 const StatisticsScreen = ({ route, navigation }) => {
   const [memberships, setMemberships] = useState([]);
+  const [curr, setCurr] = useState(Currency);
   let weeklyItems = [];
   let monthlyItems = [];
   let yearlyItems = [];
@@ -31,7 +35,10 @@ const StatisticsScreen = ({ route, navigation }) => {
         item.amount = week.toFixed(2);
         weeklyItems.push(item);
       } else if (item.paymentInterval === 'Fortnightly') {
-        total += parseFloat(item.amount / 2);
+        let fort = parseFloat(item.amount / 2);
+        total += fort;
+        item.amount = fort.toFixed(2);
+        weeklyItems.push(item);
       } else if (item.paymentInterval === 'Monthly') {
         let month = parseFloat(item.amount / 4.3);
         total += month;
@@ -57,7 +64,10 @@ const StatisticsScreen = ({ route, navigation }) => {
         item.amount = week.toFixed(2);
         monthlyItems.push(item);
       } else if (item.paymentInterval === 'Fortnightly') {
-        total += parseFloat(item.amount * 2.2);
+        let fort = parseFloat(item.amount * 2.2);
+        total += fort;
+        item.amount = fort.toFixed(2);
+        monthlyItems.push(item);
       } else if (item.paymentInterval === 'Monthly') {
         let month = parseFloat(item.amount);
         total += month;
@@ -83,7 +93,10 @@ const StatisticsScreen = ({ route, navigation }) => {
         item.amount = week.toFixed(2);
         yearlyItems.push(item);
       } else if (item.paymentInterval === 'Fortnightly') {
-        total += parseFloat(item.amount * 26.0714);
+        let fort = parseFloat(item.amount * 26.0714);
+        total += fort;
+        item.amount = fort.toFixed(2);
+        yearlyItems.push(item);
       } else if (item.paymentInterval === 'Monthly') {
         let month = parseFloat(item.amount * 12);
         total += month;
@@ -103,6 +116,7 @@ const StatisticsScreen = ({ route, navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
+        setCurr(Currency);
         try {
           let val = await getItemAsync('memberships');
           setMemberships(val ? JSON.parse(val) : []);
@@ -114,25 +128,29 @@ const StatisticsScreen = ({ route, navigation }) => {
   return (
     <Section>
       <Bar>
-        <Title style={{ color: Colors.title }}>Total Expenses</Title>
+        <Title style={{ color: Colors.title }}>
+          {i18n.t('Total Expenses')}
+        </Title>
       </Bar>
       <ScrollView
         horizontal={true}
         pagingEnabled={true}
-        style={{ minHeight: '100%' }}
+        style={{ height: wh - 180 }}
         ref={scrollAnim}
       >
         <TotalView style={{ flex: 1 }}>
-          <SectionTitle>Summary</SectionTitle>
+          <SectionTitle>{i18n.t('Summary')}</SectionTitle>
           <TotalItem
             onPress={() => {
               scrollAnim.current.scrollTo({ x: ww, animated: true });
             }}
           >
             <Bubble>
-              <IntervalText>Weekly</IntervalText>
+              <IntervalText>{i18n.t('Weekly')}</IntervalText>
             </Bubble>
-            <Total>$ {weeklyTotal()}</Total>
+            <Total>
+              {curr} {weeklyTotal()}
+            </Total>
           </TotalItem>
           <TotalItem
             onPress={() =>
@@ -140,38 +158,45 @@ const StatisticsScreen = ({ route, navigation }) => {
             }
           >
             <Bubble>
-              <IntervalText>Monthly</IntervalText>
+              <IntervalText>{i18n.t('Monthly')}</IntervalText>
             </Bubble>
-            <Total>$ {monthlyTotal()}</Total>
+            <Total>
+              {curr} {monthlyTotal()}
+            </Total>
           </TotalItem>
           <TotalItem
             onPress={() => scrollAnim.current.scrollToEnd({ animated: true })}
           >
             <Bubble>
-              <IntervalText>Yearly</IntervalText>
+              <IntervalText>{i18n.t('Yearly')}</IntervalText>
             </Bubble>
-            <Total>$ {yearlyTotal()}</Total>
+            <Total>
+              {curr} {yearlyTotal()}
+            </Total>
           </TotalItem>
         </TotalView>
         <TotalView>
-          <SectionTitle>Weekly</SectionTitle>
+          <SectionTitle>{i18n.t('Weekly')}</SectionTitle>
           <Statistics
+            curr={curr}
             memberships={weeklyItems}
             route={route}
             interval='Weekly'
           />
         </TotalView>
         <TotalView>
-          <SectionTitle>Monthly</SectionTitle>
+          <SectionTitle>{i18n.t('Monthly')}</SectionTitle>
           <Statistics
+            curr={curr}
             memberships={monthlyItems}
             route={route}
             interval='Monthly'
           />
         </TotalView>
         <TotalView>
-          <SectionTitle>Yearly</SectionTitle>
+          <SectionTitle>{i18n.t('Yearly')}</SectionTitle>
           <Statistics
+            curr={curr}
             memberships={yearlyItems}
             route={route}
             interval='Yearly'
