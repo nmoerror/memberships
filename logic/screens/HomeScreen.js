@@ -7,6 +7,8 @@ import {
   Dimensions,
   useColorScheme,
   Settings,
+  ActionSheetIOS,
+  Platform,
 } from 'react-native';
 import styled from 'styled-components';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -27,16 +29,38 @@ const wh = Dimensions.get('window').height;
 
 const HomeScreen = ({ route, navigation }) => {
   const [memberships, setMemberships] = useState([]);
+  const [clusters, setClusters] = useState([]);
   const [me, setMe] = useState(Settings.get('name'));
   const colorScheme = useColorScheme();
 
+  const createClusters = (parsedMembers) => {
+    let clus = [];
+    parsedMembers.forEach((element) => {
+      clus.push(element.type);
+    });
+    setClusters([...new Set(clus)].sort());
+  };
+  const reset = async () => {
+    try {
+      let val = await getItemAsync('memberships');
+      if (val) {
+        let parsedMembers = JSON.parse(val);
+        setMemberships(parsedMembers);
+        createClusters(parsedMembers);
+      }
+    } catch (err) {}
+  };
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
         try {
-          let val = await getItemAsync('memberships');
-          setMemberships(val ? JSON.parse(val) : []);
           setMe(Settings.get('name'));
+          let val = await getItemAsync('memberships');
+          if (val) {
+            let parsedMembers = JSON.parse(val);
+            setMemberships(parsedMembers);
+            createClusters(parsedMembers);
+          }
         } catch (err) {}
       })();
     }, [route])
@@ -67,57 +91,112 @@ const HomeScreen = ({ route, navigation }) => {
       <ScrollView
         style={{
           height: wh - 200,
-          paddingRight: 10,
-          paddingLeft: 10,
+          paddingRight: 20,
+          paddingLeft: 20,
+          marginTop: -5,
         }}
       >
         {memberships.length ? (
           <Items>
-            {memberships.map((item) => {
-              return (
-                <Fragment key={item.id}>
-                  <Division />
-                  <Item
-                    onLongPress={() => alert('long')}
-                    onPress={() =>
-                      navigation.push('Edit', { item, memberships })
-                    }
-                  >
-                    <View>
-                      <ItemName>{item.name}</ItemName>
-                      <ItemType>{i18n.t(`${item.type}`)}</ItemType>
-                    </View>
-                    <More>
-                      <Row>
-                        <Text
-                          style={{ marginRight: 2, marginTop: 1, fontSize: 16 }}
+            {clusters.map((cluster) => (
+              <Cluster key={cluster}>
+                <ClusterTitle>{cluster}</ClusterTitle>
+                <Division />
+                {memberships.map((item) => {
+                  if (item.type === cluster) {
+                    return (
+                      <Fragment key={item.id}>
+                        <Item
+                          onLongPress={() =>
+                            Platform.OS === 'ios' &&
+                            ActionSheetIOS.showActionSheetWithOptions(
+                              {
+                                options: ['Cancel', 'Edit', 'Remove'],
+                                destructiveButtonIndex: 2,
+                                cancelButtonIndex: 0,
+                              },
+                              (buttonIndex) => {
+                                if (buttonIndex === 0) {
+                                  // cancel action
+                                } else if (buttonIndex === 1) {
+                                  navigation.push('Edit', {
+                                    item,
+                                    memberships,
+                                  });
+                                } else if (buttonIndex === 2) {
+                                  (async () => {
+                                    try {
+                                      let newMemberships = memberships.filter(
+                                        (element) => element.id !== item.id
+                                      );
+                                      await setItemAsync(
+                                        'memberships',
+                                        JSON.stringify(newMemberships)
+                                      );
+                                      reset();
+                                    } catch (err) {}
+                                  })();
+                                }
+                              }
+                            )
+                          }
+                          onPress={() =>
+                            navigation.push('Edit', { item, memberships })
+                          }
                         >
-                          <Currency />
-                        </Text>
-                        <AmountText>
-                          {parseFloat(item.amount)
-                            .toFixed()
-                            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + '.'}
-                        </AmountText>
-                        <SecondaryText>
-                          {parseFloat(item.amount).toFixed(2).split('.')[1]}
-                        </SecondaryText>
-                      </Row>
-                      <ItemInterval>
-                        {i18n.t(`${item.paymentInterval}`)}
-                      </ItemInterval>
-                    </More>
-                  </Item>
-                </Fragment>
-              );
-            })}
+                          <View>
+                            <ItemName>{item.name}</ItemName>
+                            <ItemType>{i18n.t(`${item.type}`)}</ItemType>
+                          </View>
+                          <More>
+                            <Row>
+                              <Text
+                                style={{
+                                  marginRight: 2,
+                                  marginTop: 1,
+                                  fontSize: 16,
+                                }}
+                              >
+                                <Currency />
+                              </Text>
+                              <AmountText>
+                                {parseFloat(item.amount)
+                                  .toFixed(2)
+                                  .slice(
+                                    0,
+                                    parseFloat(item.amount)
+                                      .toFixed(2)
+                                      .indexOf('.')
+                                  )
+                                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +
+                                  '.'}
+                              </AmountText>
+                              <SecondaryText>
+                                {
+                                  parseFloat(item.amount)
+                                    .toFixed(2)
+                                    .split('.')[1]
+                                }
+                              </SecondaryText>
+                            </Row>
+                            <ItemInterval>
+                              {i18n.t(`${item.paymentInterval}`)}
+                            </ItemInterval>
+                          </More>
+                        </Item>
+                      </Fragment>
+                    );
+                  }
+                })}
+              </Cluster>
+            ))}
           </Items>
         ) : (
           <EmptyView>
-            <AddText>{i18n.t('add a membership to get started!')}</AddText>
             <SecondaryAddText>
               {i18n.t('I am your new best expense tracker !')}
             </SecondaryAddText>
+            <AddText>{i18n.t('Click the icon to start tracking')}</AddText>
           </EmptyView>
         )}
       </ScrollView>
@@ -156,9 +235,18 @@ const AddItem = styled.TouchableOpacity`
 
 const Items = styled.View``;
 
+const Cluster = styled.View``;
+
+const ClusterTitle = styled.Text`
+  font-size: 18px;
+  margin-top: 10px;
+  font-weight: 600;
+  color: ${Colors.sectionTitle};
+`;
+
 const Item = styled.TouchableOpacity`
   height: 62px;
-  padding: 10px 20px;
+  padding: 10px 5px;
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
@@ -184,7 +272,8 @@ const ItemInterval = styled.Text`
 const Division = styled.View`
   height: 1px;
   width: 100%;
-  background: rgba(40, 40, 40, 0.15);
+  background: ${Colors.tabIconSelectedFaded}
+  margin-bottom: 5px;
 `;
 
 const More = styled.View`
@@ -214,11 +303,11 @@ const EmptyView = styled.View`
 
 const AddText = styled.Text`
   font-size: 18px;
+  margin-top: 20px;
 `;
 
 const SecondaryAddText = styled.Text`
   color: ${Colors.titleFaded};
-  margin-top: 20px;
   font-size: 18px;
 `;
 

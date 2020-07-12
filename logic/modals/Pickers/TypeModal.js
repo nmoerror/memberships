@@ -22,20 +22,41 @@ const TypeModal = ({ type, setType }) => (
   >
     <PickerIOS.Item
       color={Colors.icons}
-      label={i18n.t('Membership')}
-      value='Membership'
+      label={i18n.t('Company')}
+      value='Company'
+    />
+    <PickerIOS.Item color={Colors.icons} label={i18n.t('Debt')} value='Debt' />
+    <PickerIOS.Item
+      color={Colors.icons}
+      label={i18n.t('Family')}
+      value='Family'
+    />
+    <PickerIOS.Item color={Colors.icons} label={i18n.t('Home')} value='Home' />
+    <PickerIOS.Item
+      color={Colors.icons}
+      label={i18n.t('Investments')}
+      value='Investments'
     />
     <PickerIOS.Item
       color={Colors.icons}
-      label={i18n.t('Subscription')}
-      value='Subscription'
+      label={i18n.t('Leisure')}
+      value='Leisure'
     />
     <PickerIOS.Item
       color={Colors.icons}
-      label={i18n.t('Credit')}
-      value='Credit'
+      label={i18n.t('Memberships')}
+      value='Memberships'
     />
-    <PickerIOS.Item color={Colors.icons} label={i18n.t('Bill')} value='Bill' />
+    <PickerIOS.Item
+      color={Colors.icons}
+      label={i18n.t('Services')}
+      value='Services'
+    />
+    <PickerIOS.Item
+      color={Colors.icons}
+      label={i18n.t('Subscriptions')}
+      value='Subscriptions'
+    />
   </PickerIOS>
 );
 

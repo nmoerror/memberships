@@ -1,8 +1,8 @@
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export function getItemAsync(item) {
   try {
-    return SecureStore.getItemAsync(item).then((response) => {
+    return AsyncStorage.getItem(item).then((response) => {
       return response;
     });
   } catch (err) {
@@ -14,7 +14,7 @@ export function getItemAsync(item) {
 
 export function setItemAsync(item, value) {
   try {
-    SecureStore.setItemAsync(item, value)
+    AsyncStorage.setItem(item, value)
       .then((response) => {
         return true;
       })
@@ -27,7 +27,7 @@ export function setItemAsync(item, value) {
 
 export function deleteItemAsync(item) {
   try {
-    SecureStore.deleteItemAsync(item).then((response) => {
+    AsyncStorage.deleteItem(item).then((response) => {
       return true;
     });
   } catch (err) {

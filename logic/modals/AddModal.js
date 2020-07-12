@@ -7,12 +7,17 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import styled from 'styled-components';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  ScrollView,
+  TouchableOpacity,
+  TouchableHighlight,
+} from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import { useFocusEffect } from '@react-navigation/native';
 import TypeModal from './Pickers/TypeModal';
 import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
+import ClusterModal from './Pickers/ClusterModal';
 import i18n from 'i18n-js';
 
 // Async Storage
@@ -32,7 +37,7 @@ const AddModal = ({ route, navigation }) => {
 
   // Form values
   const [name, setName] = useState('');
-  const [type, setType] = useState('Membership');
+  const [type, setType] = useState('Services');
   //const [startDate, setStartDate] = useState('');
   //const [endDate, setEndDate] = useState('');
   //const [day, setDay] = useState('');
@@ -147,7 +152,7 @@ const AddModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Type')}:</InputText>
+                <InputText>{i18n.t('Group')}:</InputText>
                 <Placeholder>{i18n.t(type)}</Placeholder>
               </InputField>
             </TouchableOpacity>

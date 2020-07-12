@@ -9,5 +9,17 @@ export default {
   tabIconSelected: 'rgba(127,51,229,1)',
   tabIconSelectedFaded: 'rgba(127,51,229,0.8)',
   tabIconDefault: 'rgba(40,40,40,0.25)',
-  sectionTitle: 'rgba(20,20,30,0.7)',
+  sectionTitle: 'rgba(20,20,30,0.85)',
+  sectionTitleTotal: 'rgba(20,20,30,0.85)',
+  pieColors: [
+    'rgba(127,51,229,1)',
+    'rgba(127,51,229,0.8)',
+    'rgba(127,51,229,0.7)',
+    'rgba(127,51,229,0.6)',
+    'rgba(127,51,229,0.5)',
+    'rgba(127,51,229,0.4)',
+    'rgba(127,51,229,0.3)',
+    'rgba(127,51,229,0.2)',
+    'rgba(127,51,229,0.1)',
+  ],
 };

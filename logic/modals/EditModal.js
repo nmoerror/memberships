@@ -33,7 +33,7 @@ const EditModal = ({ route, navigation }) => {
   // Form values
   const [itemID, setItemID] = useState('');
   const [name, setName] = useState('');
-  const [type, setType] = useState('Membership');
+  const [type, setType] = useState('Memberships');
   //const [startDate, setStartDate] = useState('');
   //const [endDate, setEndDate] = useState('');
   //const [day, setDay] = useState('');
@@ -164,7 +164,7 @@ const EditModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Type')}:</InputText>
+                <InputText>{i18n.t('Group')}:</InputText>
                 <Placeholder>{i18n.t(type)}</Placeholder>
               </InputField>
             </TouchableOpacity>

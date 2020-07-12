@@ -40,6 +40,11 @@ const PaymentInterval = ({ route, paymentInterval, setPaymentInterval }) => {
       />
       <PickerIOS.Item
         color={Colors.icons}
+        label={i18n.t('Quarterly')}
+        value='Quarterly'
+      />
+      <PickerIOS.Item
+        color={Colors.icons}
         label={i18n.t('Yearly')}
         value='Yearly'
       />

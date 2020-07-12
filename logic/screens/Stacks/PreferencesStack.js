@@ -1,33 +1,60 @@
 import React, { Fragment, useEffect, useState, useRef } from 'react';
 import {
-  View,
   Text,
-  Alert,
   Animated,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Dimensions,
   Settings,
+  Switch,
 } from 'react-native';
 import styled from 'styled-components';
-import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
 import CurrencyModal from '../../modals/Pickers/CurrencyModal';
 import i18n from 'i18n-js';
 
-const wh = Dimensions.get('window').height;
-
 const PreferencesStack = ({ route, navigation }) => {
   const [modal, setModal] = useState('');
   const slideAnim = useRef(new Animated.Value(200)).current;
+
   const [currency, setCurrency] = useState(
     Settings.get('currency') || 'Dollar'
+  );
+  const [showWeekly, setShowWeekly] = useState(
+    Settings.get('showWeekly') || true
+  );
+  const [showFortnightly, setShowFortnightly] = useState(
+    Settings.get('showFortnightly') || true
+  );
+  const [showMonthly, setShowMonthly] = useState(
+    Settings.get('showMonthly') || true
+  );
+  const [showQuarterly, setShowQuarterly] = useState(
+    Settings.get('showQuarterly') || true
+  );
+  const [showYearly, setShowYearly] = useState(
+    Settings.get('showYearly') || true
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setCurrency(Settings.get('currency'));
+      setShowWeekly(Settings.get('showWeekly'));
+      setShowFortnightly(Settings.get('showFortnightly'));
+      setShowMonthly(Settings.get('showMonthly'));
+      setShowQuarterly(Settings.get('showQuarterly'));
+      setShowYearly(Settings.get('showYearly'));
+    }, [route])
   );
 
   const save = () => {
     Settings.set({ currency });
+    Settings.set({ showWeekly });
+    Settings.set({ showFortnightly });
+    Settings.set({ showMonthly });
+    Settings.set({ showQuarterly });
+    Settings.set({ showYearly });
     navigation.goBack();
   };
 
@@ -35,7 +62,7 @@ const PreferencesStack = ({ route, navigation }) => {
     switch (modal) {
       case 'currency':
         Animated.timing(slideAnim, {
-          toValue: 0 - 100,
+          toValue: 0,
           duration: 200,
           useNativeDriver: true,
         }).start();
@@ -85,11 +112,79 @@ const PreferencesStack = ({ route, navigation }) => {
                 <Placeholder>{i18n.t(`${currency}`)}</Placeholder>
               </InputField>
             </TouchableOpacity>
+            <SectionTitle>{i18n.t('Display')}</SectionTitle>
+            <MenuItem>
+              <ItemName>{i18n.t('Weekly Statistics')}</ItemName>
+              <Go>
+                <Switch
+                  trackColor={showWeekly ? 'white' : '#f4f3f4'}
+                  thumbColor={'white'}
+                  ios_backgroundColor='white'
+                  onValueChange={() =>
+                    setShowWeekly((previousState) => !previousState)
+                  }
+                  value={showWeekly}
+                />
+              </Go>
+            </MenuItem>
+            <MenuItem>
+              <ItemName>{i18n.t('Fortnightly Statistics')}</ItemName>
+              <Go>
+                <Switch
+                  trackColor={showFortnightly ? 'white' : '#f4f3f4'}
+                  thumbColor={'white'}
+                  ios_backgroundColor='white'
+                  onValueChange={() =>
+                    setShowFortnightly((previousState) => !previousState)
+                  }
+                  value={showFortnightly}
+                />
+              </Go>
+            </MenuItem>
+            <MenuItem>
+              <ItemName>{i18n.t('Monthly Statistics')}</ItemName>
+              <Go>
+                <Switch
+                  trackColor={showMonthly ? 'white' : '#f4f3f4'}
+                  thumbColor={'white'}
+                  ios_backgroundColor='white'
+                  onValueChange={() =>
+                    setShowMonthly((previousState) => !previousState)
+                  }
+                  value={showMonthly}
+                />
+              </Go>
+            </MenuItem>
+            <MenuItem>
+              <ItemName>{i18n.t('Quarterly Statistics')}</ItemName>
+              <Go>
+                <Switch
+                  trackColor={showQuarterly ? 'white' : '#f4f3f4'}
+                  thumbColor={'white'}
+                  ios_backgroundColor='white'
+                  onValueChange={() =>
+                    setShowQuarterly((previousState) => !previousState)
+                  }
+                  value={showQuarterly}
+                />
+              </Go>
+            </MenuItem>
+            <MenuItem>
+              <ItemName>{i18n.t('Yearly Statistics')}</ItemName>
+              <Go>
+                <Switch
+                  trackColor={showYearly ? 'white' : '#f4f3f4'}
+                  thumbColor={'white'}
+                  ios_backgroundColor='white'
+                  onValueChange={() =>
+                    setShowYearly((previousState) => !previousState)
+                  }
+                  value={showYearly}
+                />
+              </Go>
+            </MenuItem>
           </Form>
         </Main>
-        <Text>DarkMode</Text>
-        <Text>My Expenses Groups</Text>
-        <Text>My Expenses Types</Text>
         <AnimatedSlide style={{ transform: [{ translateY: slideAnim }] }}>
           <SelectModal />
         </AnimatedSlide>
@@ -140,6 +235,15 @@ const Form = styled.View`
   margin-bottom: 20px;
 `;
 
+const SectionTitle = styled.Text`
+  font-size: 18px;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: ${Colors.sectionTitle};
+`;
+
 const InputField = styled.View`
   padding: 5px 20px
   flex-direction: row;
@@ -164,6 +268,21 @@ const Placeholder = styled.Text`
   opacity: 0.9;
   color: ${Colors.icons};
   font-size: 16px;
+`;
+
+const MenuItem = styled.View`
+  padding: 10px 20px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const ItemName = styled.Text`
+  margin-left: 5px;
+`;
+
+const Go = styled.View`
+  margin: auto 0 auto auto;
+  opacity: 0.7;
 `;
 
 export default PreferencesStack;
