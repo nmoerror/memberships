@@ -38,7 +38,6 @@ const AddModal = ({ route, navigation }) => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || paymentDate;
     setPaymentDate(currentDate);
-    console.log(paymentDate);
   };
 
   // Form values

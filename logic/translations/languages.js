@@ -175,7 +175,7 @@ export default i18n.translations = {
     Speech4:
       '우리는 당신이 사용하고 있는 유료 서비스와 멤버십을 추적하는데 필요한 기능들을 전달할 수 있기를 바라며, 그를 통해 이 앱을 즐길수 있기를 바랍니다.',
   },
-  spa: {
+  es: {
     'Good Morning': 'Buenos dias, ',
     'Good Afternoon': 'Buenas tardes, ',
     'Good Evening': 'Buenas Noches, ',
@@ -377,7 +377,14 @@ export default i18n.translations = {
     'Click the icon to start tracking': '点击+图标开始跟踪',
     'I am your new best expense tracker !': '我是你新的最佳支出追踪者!',
     Expense: '费用',
+    Expenses: '花费',
+    Education: '教育',
+    Work: '工作',
+    Select: '选择',
+    'Payment Date': '支付日期',
+    'Add payment due date': '付款截止日期',
     Company: '公司',
+    Fortnightly: '半月刊',
     Home: '家用支出',
     Investments: '投资',
     Leisure: '休闲',

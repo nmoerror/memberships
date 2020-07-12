@@ -3,7 +3,6 @@ import { SplashScreen } from 'expo';
 import { StyleSheet, Text, View, StatusBar, I18nManager } from 'react-native';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
-import translate from './logic/translations/languages';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import BottomTabNavigator from './navigation/BottomTabNavigation';
