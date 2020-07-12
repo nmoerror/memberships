@@ -15,6 +15,8 @@ import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import i18n from 'i18n-js';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
 import {
   getItemAsync,
@@ -29,6 +31,13 @@ const EditModal = ({ route, navigation }) => {
   const slideAnim = useRef(new Animated.Value(200)).current;
   const [errName, setErrName] = useState(null);
   const [errAmount, setErrAmount] = useState(null);
+  const [addPaymentDay, setAddPaymentDay] = useState(false);
+  const [paymentDate, setPaymentDate] = useState(new Date());
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || paymentDate;
+    setPaymentDate(currentDate);
+  };
 
   // Form values
   const [itemID, setItemID] = useState('');
@@ -47,7 +56,11 @@ const EditModal = ({ route, navigation }) => {
       setType(item.type);
       //setStartDate(item.startDate);
       //setEndDate(item.startDate);
-      //setDay(item.day);
+      if (item.paymentDate) {
+        setPaymentDate(item.paymentDate);
+        setAddPaymentDay(true);
+      }
+
       setPaymentInterval(item.paymentInterval);
       setAmount(item.amount);
     }, [route])
@@ -68,10 +81,13 @@ const EditModal = ({ route, navigation }) => {
       type: type,
       // startDate: startDate,
       //endDate: endDate,
-      // day: day,
       paymentInterval: paymentInterval,
       amount: amount,
     };
+
+    if (addPaymentDay) {
+      data.paymentDate = paymentDate;
+    }
 
     if (currentMemberships.length) {
       let indx = currentMemberships.findIndex((e) => e.id === itemID);
@@ -80,6 +96,9 @@ const EditModal = ({ route, navigation }) => {
         ...ghostMemberships[indx],
         ...data,
       };
+      if (!addPaymentDay) {
+        delete ghostMemberships[indx].paymentDate;
+      }
       pushNewMembership(ghostMemberships);
       return;
     }
@@ -107,11 +126,57 @@ const EditModal = ({ route, navigation }) => {
           duration: 200,
           useNativeDriver: true,
         }).start();
+
         return (
           <PaymentIntervalModal
             paymentInterval={paymentInterval}
             setPaymentInterval={(e) => setPaymentInterval(e)}
           />
+        );
+      case 'Date':
+        Animated.timing(slideAnim, {
+          toValue: -40,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
+        return (
+          <View
+            style={{
+              height: 230,
+              width: '100%',
+              backgroundColor: 'white',
+              position: 'absolute',
+              bottom: 50,
+              borderTopRightRadius: 40,
+              borderTopLeftRadius: 40,
+            }}
+          >
+            <ModalButtons>
+              <CancelModal
+                onPress={() => {
+                  setAddPaymentDay(false);
+                  resetModal('');
+                }}
+              >
+                <CancelModalText>Cancel</CancelModalText>
+              </CancelModal>
+              <AcceptModal
+                onPress={() => {
+                  resetModal('');
+                }}
+              >
+                <SelectModalText>Select</SelectModalText>
+              </AcceptModal>
+            </ModalButtons>
+            <DateTimePicker
+              testID='dateTimePicker'
+              value={paymentDate}
+              mode={'date'}
+              is24Hour={true}
+              display='default'
+              onChange={onChange}
+            />
+          </View>
         );
       default:
         return <></>;
@@ -201,9 +266,38 @@ const EditModal = ({ route, navigation }) => {
               />
             </InputField>
           </Form>
+          {addPaymentDay ? (
+            <Form>
+              <TouchableOpacity
+                onPress={() => {
+                  if (!moment(paymentDate).isValid()) {
+                    setPaymentDate(new Date());
+                  }
+                  setModal('Date');
+                  SelectModal();
+                }}
+              >
+                <InputField>
+                  <InputText>{i18n.t('Payment Date')}:</InputText>
+                  <Placeholder>{moment(paymentDate).format('LL')}</Placeholder>
+                </InputField>
+              </TouchableOpacity>
+            </Form>
+          ) : (
+            <PaymentDayViewOption
+              onPress={() => {
+                setAddPaymentDay(true);
+              }}
+            >
+              <SetPaymentDayOptionTitle>
+                Add payment due date
+              </SetPaymentDayOptionTitle>
+              <AddText>+</AddText>
+            </PaymentDayViewOption>
+          )}
         </ScrollView>
         <Delete
-          bot={modal ? 280 : 100}
+          bot={modal ? (modal === 'Date' ? 100 : 280) : 100}
           onPress={() => {
             Alert.alert(
               i18n.t('Delete Membership'),
@@ -337,6 +431,58 @@ const DelText = styled.Text`
   color: rgba(225, 30, 30, 0.9);
   font-weight: 700;
   margin: auto;
+  font-size: 16px;
+`;
+
+const ModalButtons = styled.View`
+  flex-direction: row;
+  justify-content: space-evenly;
+`;
+
+const AcceptModal = styled.TouchableOpacity`
+  padding: 8px 40px;
+  background: rgba(0, 255, 0, 0.1);
+  border: 1px solid rgba(0, 255, 0, 0.2);
+  border-radius: 5px;
+`;
+
+const CancelModal = styled.TouchableOpacity`
+  padding: 8px 40px;
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  background: rgba(255, 0, 0, 0.1);
+  border-radius: 5px;
+`;
+
+const PaymentDayViewOption = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const SetPaymentDayOptionTitle = styled.Text`
+  font-size: 15px;
+  font-weight: 600;
+  color: ${Colors.icons};
+  font-size: 16px;
+  margin-left: 20px;
+`;
+
+const AddText = styled.Text`
+  font-weight: 300;
+  font-size: 30px;
+  margin-top: -5px;
+  margin-left: 10px;
+  color: ${Colors.icons};
+`;
+
+const CancelModalText = styled.Text`
+  color: rgba(200, 30, 30, 0.9);
+  font-weight: 700;
+  font-size: 16px;
+`;
+
+const SelectModalText = styled.Text`
+  color: rgba(30, 150, 30, 0.9);
+  font-weight: 700;
   font-size: 16px;
 `;
 

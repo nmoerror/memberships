@@ -6,20 +6,10 @@ import i18n from 'i18n-js';
 
 const Statistics = ({ route, memberships, curr }) => {
   const [total, setTotal] = useState(0);
-  const [clusters, setClusters] = useState([]);
-
-  const createClusters = (parsedMembers) => {
-    let clus = [];
-    parsedMembers.forEach((element) => {
-      clus.push(element.type);
-    });
-    setClusters([...new Set(clus)].sort());
-  };
 
   useFocusEffect(() => {
     let total = 0;
     memberships.forEach((item) => (total += parseFloat(item.amount)));
-    createClusters(memberships);
     setTotal(total);
   });
 
@@ -29,41 +19,37 @@ const Statistics = ({ route, memberships, curr }) => {
 
   return (
     <Section>
-      {clusters.map((cluster) => (
-        <Cluster key={cluster}>
-          {memberships.map((membership) => {
-            if (membership.type === cluster) {
-              return (
-                <Item key={membership.id}>
-                  <RowView>
-                    <Name>{membership.name}</Name>
-                    <Type>{i18n.t(membership.type)}</Type>
-                  </RowView>
-                  <Division />
-                  <RowAmount>
-                    <Amount>
-                      {curr} {membership.amount}
-                    </Amount>
-                    <FadedBrackets>
-                      (
-                      <PercentageOfTotal
-                        color={
-                          calculatePercentage(membership.amount) <= 49
-                            ? 'green'
-                            : 'red'
-                        }
-                      >
-                        {calculatePercentage(membership.amount)}%
-                      </PercentageOfTotal>
-                      )
-                    </FadedBrackets>
-                  </RowAmount>
-                </Item>
-              );
-            }
-          })}
-        </Cluster>
-      ))}
+      {memberships
+        .sort((a, b) => b.amount - a.amount)
+        .map((membership) => {
+          return (
+            <Item key={membership.id}>
+              <RowView>
+                <Name>{membership.name}</Name>
+                <Type>{i18n.t(membership.type)}</Type>
+              </RowView>
+              <Division />
+              <RowAmount>
+                <Amount>
+                  {curr} {membership.amount}
+                </Amount>
+                <FadedBrackets>
+                  (
+                  <PercentageOfTotal
+                    color={
+                      calculatePercentage(membership.amount) <= 49
+                        ? 'green'
+                        : 'red'
+                    }
+                  >
+                    {calculatePercentage(membership.amount)}%
+                  </PercentageOfTotal>
+                  )
+                </FadedBrackets>
+              </RowAmount>
+            </Item>
+          );
+        })}
     </Section>
   );
 };
@@ -72,17 +58,6 @@ const Section = styled.View`
   margin-top: 10px;
   margin-bottom: 40px;
 `;
-
-const Cluster = styled.View``;
-
-const MainStats = styled.View`
-  background: white;
-  height: 300px;
-  border-radius: 10px;
-  padding: 10px 4px;
-  margin: 5px 0 10px 0;
-`;
-
 const Item = styled.View`
   background: white;
   min-height: 120px;
@@ -121,6 +96,7 @@ const Amount = styled.Text`
 const RowAmount = styled.View`
   flex-direction: row;
   align-items: center;
+  margin-top: 5px;
 `;
 
 const FadedBrackets = styled.Text`

@@ -351,7 +351,7 @@ const StatisticsScreen = ({ route, navigation }) => {
             >
               <VictoryPie
                 colorScale={Colors.pieColors}
-                innerRadius={60}
+                innerRadius={55}
                 padAngle={2}
                 height={Dimensions.get('window').width - 150}
                 width={Dimensions.get('window').width}

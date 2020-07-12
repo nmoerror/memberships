@@ -17,6 +17,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import { Currency } from '../constants/Options';
 import i18n from 'i18n-js';
+import moment from 'moment';
 
 // Async Storage
 import {
@@ -233,7 +234,7 @@ const Title = styled.Text`
 
 const SubIntro = styled.Text`
   position: absolute;
-  bottom: -1px;
+  bottom: -2px;
   left: 20px;
   color: ${Colors.titleFaded};
   font-size: 16px;
