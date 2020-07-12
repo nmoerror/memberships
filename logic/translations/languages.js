@@ -2,6 +2,7 @@ import i18n from 'i18n-js';
 // Set the key-value pairs for the different languages you want to support.
 export default i18n.translations = {
   en: {
+    undefined: '',
     'Good Morning': 'Good Morning, ',
     'Good Afternoon': 'Good Afternoon, ',
     'Good Evening': 'Good Evening, ',
@@ -79,6 +80,8 @@ export default i18n.translations = {
     'Quarterly Statistics': 'Quarterly Statistics',
     'Yearly Statistics': 'Yearly Statistics',
     Overview: 'Overview',
+    'Click me to set Basic preferences. (You can change these later in Preferences)':
+      'Click me to set Basic preferences. (You can change these later in Preferences)',
     Speech1:
       'Overview is all about you. Our aim is to deliver your needs at a miniscule one time price.',
     Speech2:
@@ -89,6 +92,7 @@ export default i18n.translations = {
       'We wish for us to deliver the tools that you may need to keep track of your paid services and wish for you to enjoy this app.',
   },
   ko: {
+    undefined: '',
     'Good Morning': '안녕 좋은 아침이에요, ',
     'Good Afternoon': '안녕, ',
     'Good Evening': '안녕, ',
@@ -165,6 +169,8 @@ export default i18n.translations = {
     'Quarterly Statistics': '분기별 통계',
     'Yearly Statistics': '연간 통계',
     Overview: 'Overview',
+    'Click me to set Basic preferences. (You can change these later in Preferences)':
+      'Click me to set Basic preferences. (You can change these later in Preferences)',
     Display: 'Display',
     Speech1:
       '이 overview는 당신에 대한 모든 것 입니다. 이 앱의 목표는 당신이 필요로 하는 모든 것을 전달하는 것입니다.',
@@ -176,6 +182,7 @@ export default i18n.translations = {
       '우리는 당신이 사용하고 있는 유료 서비스와 멤버십을 추적하는데 필요한 기능들을 전달할 수 있기를 바라며, 그를 통해 이 앱을 즐길수 있기를 바랍니다.',
   },
   es: {
+    undefined: '',
     'Good Morning': 'Buenos dias, ',
     'Good Afternoon': 'Buenas tardes, ',
     'Good Evening': 'Buenas Noches, ',
@@ -251,6 +258,8 @@ export default i18n.translations = {
     'Quarterly Statistics': 'Statisticas Trimestrales',
     'Yearly Statistics': 'Estadisticas Anuales',
     Display: 'Ver estadisticas de',
+    'Click me to set Basic preferences. (You can change these later in Preferences)':
+      'Click me to set Basic preferences. (You can change these later in Preferences)',
     Overview: 'Overview',
     Speech1:
       'Overview se enfoca en ti. Nuestro objetivo es satisfacer sus necesidades a un único y módico precio.',
@@ -262,6 +271,7 @@ export default i18n.translations = {
       'Nuestro deseo es poder entregar las herramientas necesarias para que pueda realizar un seguimiento de sus servicios de pago. Esperamos sinceramente que le sea de utilidad y disfrute de Overview.',
   },
   jp: {
+    undefined: '',
     'Good Morning': 'おはようございます, ',
     'Good Afternoon': 'こんにちは, ',
     'Good Evening': 'こんばんは, ',
@@ -328,6 +338,8 @@ export default i18n.translations = {
     'Yearly Statistics': '年次統計',
     Overview: 'Overview',
     Display: 'Display',
+    'Click me to set Basic preferences. (You can change these later in Preferences)':
+      'Click me to set Basic preferences. (You can change these later in Preferences)',
     Speech1:
       '**会员制**是致力于服务您的. 我们的目标是以极低的一次性价格满足您的需求.',
     Speech2:
@@ -338,6 +350,7 @@ export default i18n.translations = {
       '我们希望我们能为您提供您可能需要的工具来跟踪您的付费服务，希望您能喜欢这个应用程序.',
   },
   zh: {
+    undefined: '',
     'Good Morning': '早上好',
     'Good Afternoon': '下午好',
     'Good Evening': '晚上好',
@@ -410,6 +423,8 @@ export default i18n.translations = {
     'Yearly Statistics': '年度统计',
     Display: 'Display',
     Overview: 'Overview',
+    'Click me to set Basic preferences. (You can change these later in Preferences)':
+      'Click me to set Basic preferences. (You can change these later in Preferences)',
     Speech1:
       'Overview 是致力于服务您的. 我们的目标是以极低的一次性价格满足您的需求.',
     Speech2:

@@ -1,8 +1,8 @@
-import React, { Fragment, useEffect, useState, useRef, createRef } from 'react';
+import React, { useState, createRef } from 'react';
 import styled from 'styled-components';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
-import { Dimensions, Settings, ScrollView, View, Text } from 'react-native';
+import { Dimensions, Settings, ScrollView, View } from 'react-native';
 import Statistics from '../components/Statistics';
 import { Currency } from '../constants/Options';
 import i18n from 'i18n-js';
@@ -22,21 +22,16 @@ const wh = Dimensions.get('window').height;
 const StatisticsScreen = ({ route, navigation }) => {
   const [memberships, setMemberships] = useState([]);
   const [curr, setCurr] = useState(Currency);
-  const [showWeekly, setShowWeekly] = useState(
-    Settings.get('showWeekly') || true
-  );
+
+  const [showWeekly, setShowWeekly] = useState(Settings.get('showWeekly'));
   const [showFortnightly, setShowFortnightly] = useState(
-    Settings.get('showFortnightly') || true
+    Settings.get('showFortnightly')
   );
-  const [showMonthly, setShowMonthly] = useState(
-    Settings.get('showMonthly') || true
-  );
+  const [showMonthly, setShowMonthly] = useState(Settings.get('showMonthly'));
   const [showQuarterly, setShowQuarterly] = useState(
-    Settings.get('showQuarterly') || true
+    Settings.get('showQuarterly')
   );
-  const [showYearly, setShowYearly] = useState(
-    Settings.get('showYearly') || true
-  );
+  const [showYearly, setShowYearly] = useState(Settings.get('showYearly'));
 
   let weeklyItems = [];
   let monthlyItems = [];
@@ -232,6 +227,17 @@ const StatisticsScreen = ({ route, navigation }) => {
           let val = await getItemAsync('memberships');
           setMemberships(val ? JSON.parse(val) : []);
         } catch (err) {}
+        if (
+          showWeekly === undefined &&
+          showFortnightly === undefined &&
+          showMonthly === undefined &&
+          showQuarterly === undefined &&
+          showYearly === undefined
+        ) {
+          Settings.set({ showWeekly: true });
+          Settings.set({ showMonthly: true });
+          Settings.set({ showYearly: true });
+        }
       })();
     }, [route])
   );

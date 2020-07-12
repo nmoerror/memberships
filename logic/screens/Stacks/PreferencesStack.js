@@ -1,6 +1,5 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
-  Text,
   Animated,
   KeyboardAvoidingView,
   TouchableOpacity,
@@ -19,33 +18,34 @@ const PreferencesStack = ({ route, navigation }) => {
   const slideAnim = useRef(new Animated.Value(200)).current;
 
   const [currency, setCurrency] = useState(
-    Settings.get('currency') || 'Dollar'
+    Settings.get('currency') == undefined ? 'Dollar' : Settings.get('currency')
   );
+
   const [showWeekly, setShowWeekly] = useState(
-    Settings.get('showWeekly') || true
+    Settings.get('showWeekly') === 1 ? true : false
   );
   const [showFortnightly, setShowFortnightly] = useState(
-    Settings.get('showFortnightly') || true
+    Settings.get('showFortnightly') === 1 ? true : false
   );
   const [showMonthly, setShowMonthly] = useState(
-    Settings.get('showMonthly') || true
+    Settings.get('showMonthly') === 1 ? true : false
   );
   const [showQuarterly, setShowQuarterly] = useState(
-    Settings.get('showQuarterly') || true
+    Settings.get('showQuarterly') === 1 ? true : false
   );
   const [showYearly, setShowYearly] = useState(
-    Settings.get('showYearly') || true
+    Settings.get('showYearly') === 1 ? true : false
   );
 
   useFocusEffect(
     React.useCallback(() => {
-      setCurrency(Settings.get('currency'));
-      setShowWeekly(Settings.get('showWeekly'));
-      setShowFortnightly(Settings.get('showFortnightly'));
-      setShowMonthly(Settings.get('showMonthly'));
-      setShowQuarterly(Settings.get('showQuarterly'));
-      setShowYearly(Settings.get('showYearly'));
-    }, [route])
+      setCurrency(Settings.get('currency') || 'Dollar');
+      setShowWeekly(Settings.get('showWeekly') == 1 ? true : false);
+      setShowFortnightly(Settings.get('showFortnightly') == 1 ? true : false);
+      setShowMonthly(Settings.get('showMonthly') == 1 ? true : false);
+      setShowQuarterly(Settings.get('showQuarterly') == 1 ? true : false);
+      setShowYearly(Settings.get('showYearly') == 1 ? true : false);
+    }, [])
   );
 
   const save = () => {
@@ -78,12 +78,12 @@ const PreferencesStack = ({ route, navigation }) => {
   };
 
   const resetModal = () => {
-    setModal('');
     Animated.timing(slideAnim, {
       toValue: 200,
       duration: 200,
       useNativeDriver: true,
     }).start();
+    setModal('');
   };
 
   return (
@@ -98,7 +98,6 @@ const PreferencesStack = ({ route, navigation }) => {
             <Ionicons name='ios-checkmark' size={45} color={Colors.icons} />
           </SaveItem>
         </Bar>
-
         <Main>
           <Form>
             <TouchableOpacity
@@ -120,9 +119,10 @@ const PreferencesStack = ({ route, navigation }) => {
                   trackColor={showWeekly ? 'white' : '#f4f3f4'}
                   thumbColor={'white'}
                   ios_backgroundColor='white'
-                  onValueChange={() =>
-                    setShowWeekly((previousState) => !previousState)
-                  }
+                  onChange={() => {
+                    resetModal();
+                    setShowWeekly((previousState) => !previousState);
+                  }}
                   value={showWeekly}
                 />
               </Go>
@@ -134,9 +134,10 @@ const PreferencesStack = ({ route, navigation }) => {
                   trackColor={showFortnightly ? 'white' : '#f4f3f4'}
                   thumbColor={'white'}
                   ios_backgroundColor='white'
-                  onValueChange={() =>
-                    setShowFortnightly((previousState) => !previousState)
-                  }
+                  onValueChange={() => {
+                    resetModal();
+                    setShowFortnightly((previousState) => !previousState);
+                  }}
                   value={showFortnightly}
                 />
               </Go>
@@ -148,9 +149,10 @@ const PreferencesStack = ({ route, navigation }) => {
                   trackColor={showMonthly ? 'white' : '#f4f3f4'}
                   thumbColor={'white'}
                   ios_backgroundColor='white'
-                  onValueChange={() =>
-                    setShowMonthly((previousState) => !previousState)
-                  }
+                  onValueChange={() => {
+                    resetModal();
+                    setShowMonthly((previousState) => !previousState);
+                  }}
                   value={showMonthly}
                 />
               </Go>
@@ -162,9 +164,10 @@ const PreferencesStack = ({ route, navigation }) => {
                   trackColor={showQuarterly ? 'white' : '#f4f3f4'}
                   thumbColor={'white'}
                   ios_backgroundColor='white'
-                  onValueChange={() =>
-                    setShowQuarterly((previousState) => !previousState)
-                  }
+                  onValueChange={() => {
+                    resetModal();
+                    setShowQuarterly((previousState) => !previousState);
+                  }}
                   value={showQuarterly}
                 />
               </Go>
@@ -176,9 +179,10 @@ const PreferencesStack = ({ route, navigation }) => {
                   trackColor={showYearly ? 'white' : '#f4f3f4'}
                   thumbColor={'white'}
                   ios_backgroundColor='white'
-                  onValueChange={() =>
-                    setShowYearly((previousState) => !previousState)
-                  }
+                  onValueChange={() => {
+                    resetModal();
+                    setShowYearly((previousState) => !previousState);
+                  }}
                   value={showYearly}
                 />
               </Go>

@@ -184,12 +184,12 @@ const EditModal = ({ route, navigation }) => {
   };
 
   const resetModal = () => {
-    setModal('');
     Animated.timing(slideAnim, {
       toValue: 200,
       duration: 200,
       useNativeDriver: true,
     }).start();
+    setModal('');
   };
 
   return (

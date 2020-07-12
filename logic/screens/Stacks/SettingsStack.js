@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';

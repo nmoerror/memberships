@@ -1,26 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  RefreshControl,
-  Dimensions,
-} from 'react-native';
+import React from 'react';
+import { Text } from 'react-native';
 import styled from 'styled-components';
-import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import i18n from 'i18n-js';
-
-// Async Storage
-import {
-  getItemAsync,
-  setItemAsync,
-  deleteItemAsync,
-} from '../utils/secureStorage';
-
-const wh = Dimensions.get('window').height;
 
 const MenuScreen = ({ route, navigation }) => {
   return (
