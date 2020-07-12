@@ -341,31 +341,33 @@ const StatisticsScreen = ({ route, navigation }) => {
         ref={scrollAnim}
       >
         <TotalView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <VictoryPie
-              colorScale={Colors.pieColors}
-              innerRadius={60}
-              padAngle={2}
-              height={Dimensions.get('window').width - 150}
-              width={Dimensions.get('window').width}
-              data={universalPercentage()}
-              x='name'
-              y='amount'
-              labels={({ datum }) =>
-                `${i18n.t(datum.xName)}\n ${curr}${parseInt(datum.amount)
-                  .toFixed(0)
-                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}/y (${parseInt(
-                  (datum.amount / datum.total) * 100
-                )}%)`
-              }
-            />
-          </View>
+          {memberships.length ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <VictoryPie
+                colorScale={Colors.pieColors}
+                innerRadius={60}
+                padAngle={2}
+                height={Dimensions.get('window').width - 150}
+                width={Dimensions.get('window').width}
+                data={universalPercentage()}
+                x='name'
+                y='amount'
+                labels={({ datum }) =>
+                  `${i18n.t(datum.xName)}\n ${curr}${parseInt(datum.amount)
+                    .toFixed(0)
+                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}/y (${Math.round(
+                    parseFloat(datum.amount / datum.total) * 100
+                  )}%)`
+                }
+              />
+            </View>
+          ) : null}
           <SummaryTitle>{i18n.t('Summary')}</SummaryTitle>
           {showWeekly ? (
             <TotalItem
@@ -455,59 +457,63 @@ const StatisticsScreen = ({ route, navigation }) => {
             </TotalItem>
           ) : null}
         </TotalView>
-        {showWeekly ? (
-          <View style={{ flexDirection: 'column' }}>
-            <EntireSectionTitleRow>
-              <SectionTitle>{i18n.t('Weekly')}</SectionTitle>
-              <SectionTotal>
-                {curr} {wT}
-              </SectionTotal>
-            </EntireSectionTitleRow>
-            <TotalView showsVerticalScrollIndicator={false}>
-              <Statistics
-                curr={curr}
-                memberships={weeklyItems}
-                route={route}
-                interval='Weekly'
-              />
-            </TotalView>
-          </View>
-        ) : null}
-        {showMonthly ? (
-          <View style={{ flexDirection: 'column' }}>
-            <EntireSectionTitleRow>
-              <SectionTitle>{i18n.t('Monthly')}</SectionTitle>
-              <SectionTotal>
-                {curr} {mT}
-              </SectionTotal>
-            </EntireSectionTitleRow>
-            <TotalView showsVerticalScrollIndicator={false}>
-              <Statistics
-                curr={curr}
-                memberships={monthlyItems}
-                route={route}
-                interval='Monthly'
-              />
-            </TotalView>
-          </View>
-        ) : null}
-        {showYearly ? (
-          <View style={{ flexDirection: 'column' }}>
-            <EntireSectionTitleRow>
-              <SectionTitle>{i18n.t('Yearly')}</SectionTitle>
-              <SectionTotal>
-                {curr} {yT}
-              </SectionTotal>
-            </EntireSectionTitleRow>
-            <TotalView showsVerticalScrollIndicator={false}>
-              <Statistics
-                curr={curr}
-                memberships={yearlyItems}
-                route={route}
-                interval='Yearly'
-              />
-            </TotalView>
-          </View>
+        {memberships.length ? (
+          <>
+            {showWeekly ? (
+              <View style={{ flexDirection: 'column' }}>
+                <EntireSectionTitleRow>
+                  <SectionTitle>{i18n.t('Weekly')}</SectionTitle>
+                  <SectionTotal>
+                    {curr} {wT}
+                  </SectionTotal>
+                </EntireSectionTitleRow>
+                <TotalView showsVerticalScrollIndicator={false}>
+                  <Statistics
+                    curr={curr}
+                    memberships={weeklyItems}
+                    route={route}
+                    interval='Weekly'
+                  />
+                </TotalView>
+              </View>
+            ) : null}
+            {showMonthly ? (
+              <View style={{ flexDirection: 'column' }}>
+                <EntireSectionTitleRow>
+                  <SectionTitle>{i18n.t('Monthly')}</SectionTitle>
+                  <SectionTotal>
+                    {curr} {mT}
+                  </SectionTotal>
+                </EntireSectionTitleRow>
+                <TotalView showsVerticalScrollIndicator={false}>
+                  <Statistics
+                    curr={curr}
+                    memberships={monthlyItems}
+                    route={route}
+                    interval='Monthly'
+                  />
+                </TotalView>
+              </View>
+            ) : null}
+            {showYearly ? (
+              <View style={{ flexDirection: 'column' }}>
+                <EntireSectionTitleRow>
+                  <SectionTitle>{i18n.t('Yearly')}</SectionTitle>
+                  <SectionTotal>
+                    {curr} {yT}
+                  </SectionTotal>
+                </EntireSectionTitleRow>
+                <TotalView showsVerticalScrollIndicator={false}>
+                  <Statistics
+                    curr={curr}
+                    memberships={yearlyItems}
+                    route={route}
+                    interval='Yearly'
+                  />
+                </TotalView>
+              </View>
+            ) : null}
+          </>
         ) : null}
       </ScrollView>
     </Section>

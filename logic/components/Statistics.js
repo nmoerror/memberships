@@ -11,11 +11,10 @@ const Statistics = ({ route, memberships, curr }) => {
     let total = 0;
     memberships.forEach((item) => (total += parseFloat(item.amount)));
     setTotal(total);
-    console.log(memberships);
   });
 
   const calculatePercentage = (amount) => {
-    return Math.floor((parseFloat(amount) / total) * 100);
+    return Math.round((parseFloat(amount) / total) * 100);
   };
 
   return (
