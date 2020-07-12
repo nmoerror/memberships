@@ -1,11 +1,8 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import {
   View,
   Text,
-  SafeAreaView,
-  RefreshControl,
   Dimensions,
-  useColorScheme,
   Settings,
   ActionSheetIOS,
   Platform,
@@ -17,7 +14,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import { Currency } from '../constants/Options';
 import i18n from 'i18n-js';
-import moment from 'moment';
 
 // Async Storage
 import {

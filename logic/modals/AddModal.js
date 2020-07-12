@@ -1,18 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   SafeAreaView,
-  Text,
   View,
   Animated,
   KeyboardAvoidingView,
-  Button,
 } from 'react-native';
 import styled from 'styled-components';
-import {
-  ScrollView,
-  TouchableOpacity,
-  TouchableHighlight,
-} from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import { useFocusEffect } from '@react-navigation/native';
@@ -139,14 +133,14 @@ const AddModal = ({ route, navigation }) => {
                   setAddPaymentDay(false);
                 }}
               >
-                <CancelModalText>Cancel</CancelModalText>
+                <CancelModalText>{i18n.t('Cancel')}</CancelModalText>
               </CancelModal>
               <AcceptModal
                 onPress={() => {
                   resetModal('');
                 }}
               >
-                <SelectModalText>Select</SelectModalText>
+                <SelectModalText>{i18n.t('Select')}</SelectModalText>
               </AcceptModal>
             </ModalButtons>
             <DateTimePicker

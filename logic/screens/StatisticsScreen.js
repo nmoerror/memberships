@@ -283,6 +283,10 @@ const StatisticsScreen = ({ route, navigation }) => {
         name: 'Subscriptions',
         amount: 0,
       },
+      {
+        name: 'Work',
+        amount: 0,
+      },
     ];
 
     memberships.forEach(({ ...item }) => {

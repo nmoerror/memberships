@@ -158,14 +158,14 @@ const EditModal = ({ route, navigation }) => {
                   resetModal('');
                 }}
               >
-                <CancelModalText>Cancel</CancelModalText>
+                <CancelModalText>{i18n.t('Cancel')}</CancelModalText>
               </CancelModal>
               <AcceptModal
                 onPress={() => {
                   resetModal('');
                 }}
               >
-                <SelectModalText>Select</SelectModalText>
+                <SelectModalText>{i18n.t('Select')}</SelectModalText>
               </AcceptModal>
             </ModalButtons>
             <DateTimePicker
@@ -290,7 +290,7 @@ const EditModal = ({ route, navigation }) => {
               }}
             >
               <SetPaymentDayOptionTitle>
-                Add payment due date
+                {i18n.t('Add payment due date')}
               </SetPaymentDayOptionTitle>
               <AddText>+</AddText>
             </PaymentDayViewOption>

@@ -18,7 +18,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         name='Home'
         component={HomeScreen}
         options={{
-          title: i18n.t('Memberships'),
+          title: i18n.t('Expenses'),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name='md-list' />
           ),
@@ -54,7 +54,7 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'Memberships';
+      return 'My List';
     case 'Statistics':
       return 'Totals';
   }

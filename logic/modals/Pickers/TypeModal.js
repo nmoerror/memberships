@@ -49,6 +49,11 @@ const TypeModal = ({ type, setType }) => (
     />
     <PickerIOS.Item
       color={Colors.icons}
+      label={i18n.t('Education')}
+      value='Education'
+    />
+    <PickerIOS.Item
+      color={Colors.icons}
       label={i18n.t('Services')}
       value='Services'
     />
@@ -57,6 +62,7 @@ const TypeModal = ({ type, setType }) => (
       label={i18n.t('Subscriptions')}
       value='Subscriptions'
     />
+    <PickerIOS.Item color={Colors.icons} label={i18n.t('Work')} value='Work' />
   </PickerIOS>
 );
 
