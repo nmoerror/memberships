@@ -31,7 +31,6 @@ const HomeScreen = ({ route, navigation }) => {
   const [memberships, setMemberships] = useState([]);
   const [clusters, setClusters] = useState([]);
   const [me, setMe] = useState(Settings.get('name'));
-  const colorScheme = useColorScheme();
 
   const createClusters = (parsedMembers) => {
     let clus = [];
@@ -66,14 +65,25 @@ const HomeScreen = ({ route, navigation }) => {
     }, [route])
   );
 
+  const Greet = () => {
+    let time = new Date().getHours();
+    if (time < 12) {
+      return me ? `${i18n.t('Good Morning')}${me}` : i18n.t('Overview');
+    } else if (time < 18) {
+      return me ? `${i18n.t('Good Afternoon')}${me}` : i18n.t('Overview');
+    } else {
+      return me ? `${i18n.t('good evening')}${me}` : i18n.t('Overview');
+    }
+  };
+
   return (
     <Section>
-      <Bar>
+      <Bar mar={me ? 18 : 5}>
         <Title
           style={{ color: Colors.title }}
-          margin={me ? 'auto auto auto 20px' : 'auto'}
+          mar={me ? 'auto auto auto 20px' : 'auto'}
         >
-          {me ? `${i18n.t('Good Morning')}${me}` : i18n.t('Memberships')}
+          <Greet />
         </Title>
         {memberships.length && me ? (
           <SubIntro>{i18n.t('statistics for you')}</SubIntro>
@@ -100,7 +110,7 @@ const HomeScreen = ({ route, navigation }) => {
           <Items>
             {clusters.map((cluster) => (
               <Cluster key={cluster}>
-                <ClusterTitle>{cluster}</ClusterTitle>
+                <ClusterTitle>{i18n.t(cluster)}</ClusterTitle>
                 <Division />
                 {memberships.map((item) => {
                   if (item.type === cluster) {
@@ -111,7 +121,11 @@ const HomeScreen = ({ route, navigation }) => {
                             Platform.OS === 'ios' &&
                             ActionSheetIOS.showActionSheetWithOptions(
                               {
-                                options: ['Cancel', 'Edit', 'Remove'],
+                                options: [
+                                  i18n.t('Cancel'),
+                                  i18n.t('Edit'),
+                                  i18n.t('Delete'),
+                                ],
                                 destructiveButtonIndex: 2,
                                 cancelButtonIndex: 0,
                               },
@@ -208,11 +222,11 @@ const Section = styled.SafeAreaView``;
 
 const Bar = styled.View`
   height: 50px;
-  margin-bottom: 18px;
+  margin-bottom: ${(props) => props.mar}px;
 `;
 
 const Title = styled.Text`
-  margin: ${(props) => props.margin}
+  margin: ${(props) => props.mar};
   font-size: 20px;
   font-weight: 500;
 `;
@@ -220,7 +234,7 @@ const Title = styled.Text`
 const SubIntro = styled.Text`
   position: absolute;
   bottom: -1px;
-  left: 22px;
+  left: 20px;
   color: ${Colors.titleFaded};
   font-size: 16px;
 `;

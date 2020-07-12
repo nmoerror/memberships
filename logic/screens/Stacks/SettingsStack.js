@@ -1,9 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, RefreshControl } from 'react-native';
 import styled from 'styled-components';
-import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
 import i18n from 'i18n-js';
 
@@ -94,6 +91,7 @@ const Title = styled.Text`
 
 const Main = styled.View`
   padding: 10px 20px;
+  height: 80%;
 `;
 
 const SectionTitle = styled.Text`

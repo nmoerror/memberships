@@ -358,7 +358,7 @@ const StatisticsScreen = ({ route, navigation }) => {
               x='name'
               y='amount'
               labels={({ datum }) =>
-                `${datum.xName}\n ${curr}${parseInt(datum.amount)
+                `${i18n.t(datum.xName)}\n ${curr}${parseInt(datum.amount)
                   .toFixed(0)
                   .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}/y (${parseInt(
                   (datum.amount / datum.total) * 100
@@ -519,6 +519,7 @@ const Section = styled.SafeAreaView``;
 const Bar = styled.View`
   height: 50px;
   color: white;
+  background: white;
 `;
 
 const SettingsButton = styled.TouchableOpacity`

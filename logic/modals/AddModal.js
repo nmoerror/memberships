@@ -17,8 +17,8 @@ import Colors from '../constants/Colors';
 import { useFocusEffect } from '@react-navigation/native';
 import TypeModal from './Pickers/TypeModal';
 import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
-import ClusterModal from './Pickers/ClusterModal';
 import i18n from 'i18n-js';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 // Async Storage
 import {

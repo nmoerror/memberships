@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Dimensions } from 'react-native';
 import styled from 'styled-components';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
+import i18n from 'i18n-js';
 
 const Statistics = ({ route, memberships, curr }) => {
   const [total, setTotal] = useState(0);
@@ -24,7 +24,7 @@ const Statistics = ({ route, memberships, curr }) => {
         <Item key={membership.id}>
           <RowView>
             <Name>{membership.name}</Name>
-            <Type>{membership.type}</Type>
+            <Type>{i18n.t(membership.type)}</Type>
           </RowView>
           <Division />
           <RowAmount>

@@ -47,12 +47,12 @@ const MenuScreen = ({ route, navigation }) => {
             <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
           </Go>
         </MenuItem>
-        <MenuItem onPress={() => navigation.push('Settings')}>
-          <Icon style={{ marginLeft: 0.5 }}>
+        <MenuItem onPress={() => {}}>
+          <Icon style={{ marginLeft: 0.5, opacity: 0.2 }}>
             <Ionicons name='ios-settings' size={30} color={Colors.icons} />
           </Icon>
-          <ItemName>{i18n.t('Settings')}</ItemName>
-          <Go>
+          <ItemName style={{ opacity: 0.2 }}>{i18n.t('Settings')}</ItemName>
+          <Go style={{ opacity: 0.2 }}>
             <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
           </Go>
         </MenuItem>
