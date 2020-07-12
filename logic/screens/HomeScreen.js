@@ -72,7 +72,7 @@ const HomeScreen = ({ route, navigation }) => {
     } else if (time < 18) {
       return me ? `${i18n.t('Good Afternoon')}${me}` : i18n.t('Overview');
     } else {
-      return me ? `${i18n.t('good evening')}${me}` : i18n.t('Overview');
+      return me ? `${i18n.t('Good Evening')}${me}` : i18n.t('Overview');
     }
   };
 
