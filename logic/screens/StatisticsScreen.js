@@ -58,17 +58,17 @@ const StatisticsScreen = ({ route, navigation }) => {
         item.amount = fort.toFixed(2);
         weeklyItems.push(item);
       } else if (item.paymentInterval === 'Monthly') {
-        let month = parseFloat(item.amount / 4.3);
+        let month = parseFloat(item.amount / 4.34524);
         total += month;
         item.amount = month.toFixed(2);
         weeklyItems.push(item);
       } else if (item.paymentInterval === 'Quarterly') {
-        let month = parseFloat(item.amount / (4.3 * 3));
+        let month = parseFloat(item.amount / (4.34524 * 3));
         total += month;
         item.amount = month.toFixed(2);
         weeklyItems.push(item);
       } else if (item.paymentInterval === 'Yearly') {
-        let year = parseFloat(item.amount / 52.1);
+        let year = parseFloat(item.amount / 52.1428228589286);
         total += year;
         item.amount = year.toFixed(2);
         weeklyItems.push(item);
@@ -102,7 +102,7 @@ const StatisticsScreen = ({ route, navigation }) => {
         item.amount = month.toFixed(2);
         fortnightlyItems.push(item);
       } else if (item.paymentInterval === 'Yearly') {
-        let year = parseFloat(item.amount / 26.07);
+        let year = parseFloat(item.amount / 26.0714);
         total += year;
         item.amount = year.toFixed(2);
         fortnightlyItems.push(item);
@@ -116,12 +116,12 @@ const StatisticsScreen = ({ route, navigation }) => {
     let total = 0;
     memberships.forEach(({ ...item }) => {
       if (item.paymentInterval === 'Weekly') {
-        let week = parseFloat(item.amount * 4.3);
+        let week = parseFloat(item.amount * 4.34524);
         total += week;
         item.amount = week.toFixed(2);
         monthlyItems.push(item);
       } else if (item.paymentInterval === 'Fortnightly') {
-        let fort = parseFloat(item.amount * 2.2);
+        let fort = parseFloat(item.amount * 2.17262);
         total += fort;
         item.amount = fort.toFixed(2);
         monthlyItems.push(item);
@@ -150,12 +150,12 @@ const StatisticsScreen = ({ route, navigation }) => {
     let total = 0;
     memberships.forEach(({ ...item }) => {
       if (item.paymentInterval === 'Weekly') {
-        let week = parseFloat(item.amount * 4.3 * 3);
+        let week = parseFloat(item.amount * 4.34524 * 3);
         total += week;
         item.amount = week.toFixed(2);
         quarterlyItems.push(item);
       } else if (item.paymentInterval === 'Fortnightly') {
-        let fort = parseFloat(item.amount * 2.2 * 3);
+        let fort = parseFloat(item.amount * 2.17262 * 3);
         total += fort;
         item.amount = fort.toFixed(2);
         quarterlyItems.push(item);
@@ -184,7 +184,7 @@ const StatisticsScreen = ({ route, navigation }) => {
     let total = 0;
     memberships.forEach(({ ...item }) => {
       if (item.paymentInterval === 'Weekly') {
-        let week = parseFloat(item.amount * 52.1);
+        let week = parseFloat(item.amount * 52.1428228589286);
         total += week;
         item.amount = week.toFixed(2);
         yearlyItems.push(item);
@@ -245,6 +245,22 @@ const StatisticsScreen = ({ route, navigation }) => {
   useFocusEffect(() => {
     scrollAnim?.current?.flashScrollIndicators();
   });
+
+  useFocusEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', (e) => {
+      // Do something
+      if (navigation.isFocused() && route.name === 'Statistics') {
+        e.preventDefault();
+        scrollAnim?.current?.flashScrollIndicators();
+        scrollAnim?.current?.scrollTo({
+          x: 0,
+          animated: true,
+        });
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const universalPercentage = () => {
     let total = 0;

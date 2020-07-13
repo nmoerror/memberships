@@ -12,6 +12,7 @@ import Colors from '../constants/Colors';
 import { useFocusEffect } from '@react-navigation/native';
 import TypeModal from './Pickers/TypeModal';
 import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
+import WeekDaysModal from './Pickers/WeekDaysModal';
 import i18n from 'i18n-js';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
@@ -22,6 +23,8 @@ import {
   setItemAsync,
   deleteItemAsync,
 } from '../utils/secureStorage';
+import MonthDaysModal from './Pickers/MonthDaysModal';
+import MonthTimeModal from './Pickers/MonthTimeModal';
 
 const AddModal = ({ route, navigation }) => {
   const { memberships } = route.params;
@@ -47,6 +50,11 @@ const AddModal = ({ route, navigation }) => {
   //const [endDate, setEndDate] = useState('');
   //const [day, setDay] = useState('');
   const [paymentInterval, setPaymentInterval] = useState('Weekly');
+  const [weekDay, setWeekDay] = useState('');
+  const [monthDay, setMonthDay] = useState('');
+  const [monthTime, setMonthTime] = useState('');
+  const [yearDay, setYearDay] = useState('');
+  const [preferDay, setPreferDay] = useState(false);
   const [amount, setAmount] = useState('');
 
   useFocusEffect(
@@ -107,6 +115,83 @@ const AddModal = ({ route, navigation }) => {
             setPaymentInterval={(e) => setPaymentInterval(e)}
           />
         );
+      case 'interval-day':
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
+        if (paymentInterval === 'Weekly') {
+          return (
+            <WeekDaysModal
+              weekday={weekDay}
+              setWeekDay={(e) => setWeekDay(e)}
+            />
+          );
+        } else if (paymentInterval === 'Monthly') {
+          if (preferDay) {
+            return (
+              <MonthDaysModal
+                monthday={monthDay}
+                setMonthDay={(e) => setMonthDay(e)}
+              />
+            );
+          } else {
+            return (
+              <MonthTimeModal
+                monthTime={monthTime}
+                setMonthTime={(e) => setMonthTime(e)}
+              />
+            );
+          }
+        } else if (paymentInterval === 'Yearly') {
+          return (
+            <View
+              style={{
+                height: 230,
+                width: '100%',
+                backgroundColor: 'white',
+                position: 'absolute',
+                bottom: 50,
+                borderTopRightRadius: 40,
+                borderTopLeftRadius: 40,
+              }}
+            >
+              <ModalButtons>
+                <CancelModal
+                  onPress={() => {
+                    resetModal('');
+                    setAddPaymentDay(false);
+                  }}
+                >
+                  <CancelModalText>{i18n.t('Cancel')}</CancelModalText>
+                </CancelModal>
+                <AcceptModal
+                  onPress={() => {
+                    resetModal('');
+                  }}
+                >
+                  <SelectModalText>{i18n.t('Select')}</SelectModalText>
+                </AcceptModal>
+              </ModalButtons>
+              <DateTimePicker
+                testID='dateTimePicker'
+                value={paymentDate}
+                mode={'date'}
+                is24Hour={true}
+                display='default'
+                onChange={onChange}
+              />
+            </View>
+          );
+        } else {
+          return (
+            <MonthDaysModal
+              monthday={monthDay}
+              setMonthDay={(e) => setMonthDay(e)}
+            />
+          );
+        }
       case 'Date':
         Animated.timing(slideAnim, {
           toValue: -40,
@@ -156,6 +241,20 @@ const AddModal = ({ route, navigation }) => {
         return <></>;
     }
   };
+  const DayType = () => {
+    switch (paymentInterval) {
+      case 'Weekly':
+        return `${i18n.t(weekDay)}`;
+      case 'Fortnightly':
+        return `${i18n.t(monthDay)}`;
+      case 'Monthly':
+        return preferDay ? `${i18n.t(monthDay)}` : `${i18n.t(monthTime)}`;
+      case 'Quarterly':
+        return `${i18n.t(monthDay)}`;
+      case 'Yearly':
+        return `${i18n.t(yearDay)}`;
+    }
+  };
 
   const resetModal = () => {
     Animated.timing(slideAnim, {
@@ -184,6 +283,7 @@ const AddModal = ({ route, navigation }) => {
               <InputText>{i18n.t('Name')}:</InputText>
               <Input
                 placeholder={i18n.t('Youtube Premium')}
+                autoFocus={true}
                 name='name'
                 value={name}
                 onChangeText={(e) => {
@@ -218,6 +318,17 @@ const AddModal = ({ route, navigation }) => {
               <InputField>
                 <InputText>{i18n.t('Interval')}:</InputText>
                 <Placeholder>{i18n.t(paymentInterval)}</Placeholder>
+              </InputField>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setModal('interval-day');
+                SelectModal();
+              }}
+            >
+              <InputField>
+                <InputText>{i18n.t('Day')}:</InputText>
+                <Placeholder>{DayType()}</Placeholder>
               </InputField>
             </TouchableOpacity>
             <InputField err={errAmount}>

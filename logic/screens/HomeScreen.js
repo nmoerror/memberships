@@ -46,6 +46,7 @@ const HomeScreen = ({ route, navigation }) => {
       }
     } catch (err) {}
   };
+
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
