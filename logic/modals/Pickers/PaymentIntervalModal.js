@@ -1,11 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 import { PickerIOS } from '@react-native-community/picker';
 import Colors from '../../constants/Colors';
 import { Animated } from 'react-native';
 import styled from 'styled-components';
 import i18n from 'i18n-js';
 
-const PaymentInterval = ({ route, paymentInterval, setPaymentInterval }) => {
+const PaymentInterval = ({ paymentInterval, setPaymentInterval }) => {
   return (
     <A
       selectedValue={paymentInterval}

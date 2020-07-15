@@ -58,17 +58,17 @@ const StatisticsScreen = ({ route, navigation }) => {
         item.amount = fort.toFixed(2);
         weeklyItems.push(item);
       } else if (item.paymentInterval === 'Monthly') {
-        let month = parseFloat(item.amount / 4.3);
+        let month = parseFloat(item.amount / 4.34524);
         total += month;
         item.amount = month.toFixed(2);
         weeklyItems.push(item);
       } else if (item.paymentInterval === 'Quarterly') {
-        let month = parseFloat(item.amount / (4.3 * 3));
+        let month = parseFloat(item.amount / (4.34524 * 3));
         total += month;
         item.amount = month.toFixed(2);
         weeklyItems.push(item);
       } else if (item.paymentInterval === 'Yearly') {
-        let year = parseFloat(item.amount / 52.1);
+        let year = parseFloat(item.amount / 52.1428228589286);
         total += year;
         item.amount = year.toFixed(2);
         weeklyItems.push(item);
@@ -102,7 +102,7 @@ const StatisticsScreen = ({ route, navigation }) => {
         item.amount = month.toFixed(2);
         fortnightlyItems.push(item);
       } else if (item.paymentInterval === 'Yearly') {
-        let year = parseFloat(item.amount / 26.07);
+        let year = parseFloat(item.amount / 26.0714);
         total += year;
         item.amount = year.toFixed(2);
         fortnightlyItems.push(item);
@@ -116,12 +116,12 @@ const StatisticsScreen = ({ route, navigation }) => {
     let total = 0;
     memberships.forEach(({ ...item }) => {
       if (item.paymentInterval === 'Weekly') {
-        let week = parseFloat(item.amount * 4.3);
+        let week = parseFloat(item.amount * 4.34524);
         total += week;
         item.amount = week.toFixed(2);
         monthlyItems.push(item);
       } else if (item.paymentInterval === 'Fortnightly') {
-        let fort = parseFloat(item.amount * 2.2);
+        let fort = parseFloat(item.amount * 2.17262);
         total += fort;
         item.amount = fort.toFixed(2);
         monthlyItems.push(item);
@@ -150,12 +150,12 @@ const StatisticsScreen = ({ route, navigation }) => {
     let total = 0;
     memberships.forEach(({ ...item }) => {
       if (item.paymentInterval === 'Weekly') {
-        let week = parseFloat(item.amount * 4.3 * 3);
+        let week = parseFloat(item.amount * 4.34524 * 3);
         total += week;
         item.amount = week.toFixed(2);
         quarterlyItems.push(item);
       } else if (item.paymentInterval === 'Fortnightly') {
-        let fort = parseFloat(item.amount * 2.2 * 3);
+        let fort = parseFloat(item.amount * 2.17262 * 3);
         total += fort;
         item.amount = fort.toFixed(2);
         quarterlyItems.push(item);
@@ -184,7 +184,7 @@ const StatisticsScreen = ({ route, navigation }) => {
     let total = 0;
     memberships.forEach(({ ...item }) => {
       if (item.paymentInterval === 'Weekly') {
-        let week = parseFloat(item.amount * 52.1);
+        let week = parseFloat(item.amount * 52.1428228589286);
         total += week;
         item.amount = week.toFixed(2);
         yearlyItems.push(item);
@@ -217,16 +217,6 @@ const StatisticsScreen = ({ route, navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
-        setCurr(Currency);
-        setShowWeekly(Settings.get('showWeekly'));
-        setShowFortnightly(Settings.get('showFortnightly'));
-        setShowMonthly(Settings.get('showMonthly'));
-        setShowQuarterly(Settings.get('showQuarterly'));
-        setShowYearly(Settings.get('showYearly'));
-        try {
-          let val = await getItemAsync('memberships');
-          setMemberships(val ? JSON.parse(val) : []);
-        } catch (err) {}
         if (
           showWeekly === undefined &&
           showFortnightly === undefined &&
@@ -238,6 +228,16 @@ const StatisticsScreen = ({ route, navigation }) => {
           Settings.set({ showMonthly: true });
           Settings.set({ showYearly: true });
         }
+        setCurr(Currency);
+        setShowWeekly(Settings.get('showWeekly'));
+        setShowFortnightly(Settings.get('showFortnightly'));
+        setShowMonthly(Settings.get('showMonthly'));
+        setShowQuarterly(Settings.get('showQuarterly'));
+        setShowYearly(Settings.get('showYearly'));
+        try {
+          let val = await getItemAsync('memberships');
+          setMemberships(val ? JSON.parse(val) : []);
+        } catch (err) {}
       })();
     }, [route])
   );
@@ -245,6 +245,22 @@ const StatisticsScreen = ({ route, navigation }) => {
   useFocusEffect(() => {
     scrollAnim?.current?.flashScrollIndicators();
   });
+
+  useFocusEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', (e) => {
+      // Do something
+      if (navigation.isFocused() && route.name === 'Statistics') {
+        e.preventDefault();
+        scrollAnim?.current?.flashScrollIndicators();
+        scrollAnim?.current?.scrollTo({
+          x: 0,
+          animated: true,
+        });
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const universalPercentage = () => {
     let total = 0;
@@ -347,7 +363,7 @@ const StatisticsScreen = ({ route, navigation }) => {
         horizontal={true}
         pagingEnabled={true}
         persistentScrollbar={true}
-        style={{ height: wh - 175 }}
+        style={{ height: wh - wh * 0.195 }}
         ref={scrollAnim}
       >
         <TotalView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
@@ -575,7 +591,7 @@ const TotalItem = styled.TouchableOpacity`
   flex-direction: row;
   position: relative;
   width: 100%;
-  height: 100px;
+  height: 80px;
   padding-right: 30px;
   border-radius: 20px;
   background: white;
@@ -586,12 +602,12 @@ const TotalItem = styled.TouchableOpacity`
 const TotalItemNoPress = styled.View`
   position: relative;
   width: 100%;
-  height: 100px;
+  height: 80px;
   padding-right: 42.5px;
   border-radius: 20px;
   background: white;
   margin: 10px auto;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.05);
 `;
 
 const IntervalText = styled.Text`
@@ -614,7 +630,7 @@ const Bubble = styled.View`
 `;
 
 const Go = styled.View`
-  margin: auto 0 auto 0;
+  margin: auto -5px auto 5px;
   opacity: 0.7;
 `;
 

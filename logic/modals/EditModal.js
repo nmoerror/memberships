@@ -1,23 +1,25 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
-  Text,
   Alert,
   Animated,
   KeyboardAvoidingView,
+  SafeAreaView,
 } from 'react-native';
 import styled from 'styled-components';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import TypeModal from './Pickers/TypeModal';
 import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
+import WeekDaysModal from './Pickers/WeekDaysModal';
 import i18n from 'i18n-js';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import { Currency } from '../constants/Options';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
+// Async Storage
 import {
   getItemAsync,
   setItemAsync,
@@ -31,38 +33,37 @@ const EditModal = ({ route, navigation }) => {
   const slideAnim = useRef(new Animated.Value(200)).current;
   const [errName, setErrName] = useState(null);
   const [errAmount, setErrAmount] = useState(null);
-  const [addPaymentDay, setAddPaymentDay] = useState(false);
-  const [paymentDate, setPaymentDate] = useState(new Date());
-
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || paymentDate;
-    setPaymentDate(currentDate);
-  };
+  const [addExpiryDate, setAddExpiryDate] = useState(false);
+  const [curr, setCurr] = useState(Currency);
 
   // Form values
+  let now = new Date();
   const [itemID, setItemID] = useState('');
   const [name, setName] = useState('');
-  const [type, setType] = useState('Memberships');
-  //const [startDate, setStartDate] = useState('');
-  //const [endDate, setEndDate] = useState('');
-  //const [day, setDay] = useState('');
+  const [type, setType] = useState('');
   const [paymentInterval, setPaymentInterval] = useState('Weekly');
+  const [weekDay, setWeekDay] = useState(now);
+  const [monthDay, setMonthDay] = useState(now);
+  const [yearDay, setYearDay] = useState(now);
+  const [fortnightDay, setFortnightDay] = useState(now);
+  const [quarterDay, setQuarterDay] = useState(now);
   const [amount, setAmount] = useState('');
+  const [expiryDate, setExpiryDate] = useState(now);
 
   useFocusEffect(
     React.useCallback(() => {
       setItemID(item.id);
       setName(item.name);
       setType(item.type);
-      //setStartDate(item.startDate);
-      //setEndDate(item.startDate);
-      if (item.paymentDate) {
-        setPaymentDate(item.paymentDate);
-        setAddPaymentDay(true);
-      }
-
       setPaymentInterval(item.paymentInterval);
+      item.weekDay && setWeekDay(item.weekDay);
+      item.fortnightDay && setFortnightDay(item.fortnightDay);
+      item.monthDay && setMonthDay(item.monthDay);
+      item.quarterDay && setQuarterDay(item.quarterDay);
+      item.yearDay && setYearDay(item.yearDay);
       setAmount(item.amount);
+      item.expiryDate && setExpiryDate(item.expiryDate);
+      setCurr(Currency);
     }, [route])
   );
 
@@ -75,19 +76,49 @@ const EditModal = ({ route, navigation }) => {
       setErrAmount('rgba(255,0,0,0.1)');
       return;
     }
+    if (paymentInterval === 'Weekly' && !weekDay) {
+      alert('Day of the weekly expense is required!');
+      return;
+    }
+    if (paymentInterval === 'Fortnightly') {
+      if (!fortnightDay || !moment(fortnightDay).isValid()) {
+        alert('Date of upcoming firtnighly expense is required!');
+        return;
+      }
+    }
+    if (paymentInterval === 'Monthly') {
+      if (!monthDay || !moment(monthDay).isValid()) {
+        alert('Day of monthly expense is required!');
+        return;
+      }
+    }
+    if (paymentInterval === 'Quarterly') {
+      if (!quarterDay || !moment(quarterDay).isValid()) {
+        alert('Date of upcoming quarterly expense is required!');
+        return;
+      }
+    }
+    if (paymentInterval === 'Yearly') {
+      if (!yearDay || !moment(yearDay).isValid()) {
+        alert('Date of upcoming yearly expense is required!');
+        return;
+      }
+    }
 
     let data = {
       name: name,
       type: type,
-      // startDate: startDate,
-      //endDate: endDate,
       paymentInterval: paymentInterval,
+      weekDay: paymentInterval === 'Weekly' && weekDay ? weekDay : '',
+      fortnightDay:
+        paymentInterval === 'Fortnightly' && fortnightDay ? fortnightDay : '',
+      monthDay: paymentInterval === 'Monthly' && monthDay ? monthDay : '',
+      quarterDay:
+        paymentInterval === 'Quarterly' && quarterDay ? quarterDay : '',
+      yearDay: paymentInterval === 'Yearly' && yearDay ? yearDay : '',
       amount: amount,
+      expiryDate: addExpiryDate ? expiryDate : '',
     };
-
-    if (addPaymentDay) {
-      data.paymentDate = paymentDate;
-    }
 
     if (currentMemberships.length) {
       let indx = currentMemberships.findIndex((e) => e.id === itemID);
@@ -96,19 +127,41 @@ const EditModal = ({ route, navigation }) => {
         ...ghostMemberships[indx],
         ...data,
       };
-      if (!addPaymentDay) {
-        delete ghostMemberships[indx].paymentDate;
-      }
       pushNewMembership(ghostMemberships);
       return;
     }
-
     pushNewMembership([data]);
   };
 
   const pushNewMembership = (a) => {
     setItemAsync('memberships', JSON.stringify(a));
     navigation.goBack();
+  };
+
+  const setDateObject = (d) => {
+    paymentInterval === 'Weekly' && setWeekDay(d);
+    paymentInterval === 'Fortnightly' && setFortnightDay(d);
+    paymentInterval === 'Monthly' && setMonthDay(d);
+    paymentInterval === 'Quarterly' && setQuarterDay(d);
+    paymentInterval === 'Yearly' && setYearDay(d);
+  };
+
+  const dateValue = () => {
+    if (paymentInterval === 'Weekly') {
+      return weekDay;
+    }
+    if (paymentInterval === 'Fortnightly') {
+      return fortnightDay;
+    }
+    if (paymentInterval === 'Monthly') {
+      return monthDay;
+    }
+    if (paymentInterval === 'Quarterly') {
+      return quarterDay;
+    }
+    if (paymentInterval === 'Yearly') {
+      return yearDay;
+    }
   };
 
   const SelectModal = () => {
@@ -126,12 +179,55 @@ const EditModal = ({ route, navigation }) => {
           duration: 200,
           useNativeDriver: true,
         }).start();
-
         return (
           <PaymentIntervalModal
             paymentInterval={paymentInterval}
             setPaymentInterval={(e) => setPaymentInterval(e)}
           />
+        );
+      case 'interval-day':
+        Animated.timing(slideAnim, {
+          toValue: -40,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
+        return (
+          <View
+            style={{
+              height: 230,
+              width: '100%',
+              backgroundColor: 'white',
+              position: 'absolute',
+              bottom: 50,
+              borderTopRightRadius: 40,
+              borderTopLeftRadius: 40,
+            }}
+          >
+            <ModalButtons>
+              <CancelModal
+                onPress={() => {
+                  resetModal('');
+                }}
+              >
+                <CancelModalText>{i18n.t('Cancel')}</CancelModalText>
+              </CancelModal>
+              <AcceptModal
+                onPress={() => {
+                  resetModal('');
+                }}
+              >
+                <SelectModalText>{i18n.t('Select')}</SelectModalText>
+              </AcceptModal>
+            </ModalButtons>
+            <DateTimePicker
+              testID='dateTimePicker'
+              value={dateValue()}
+              mode={'date'}
+              display='default'
+              onChange={(e, d) => setDateObject(d)}
+              minimumDate={new Date()}
+            />
+          </View>
         );
       case 'Date':
         Animated.timing(slideAnim, {
@@ -154,8 +250,8 @@ const EditModal = ({ route, navigation }) => {
             <ModalButtons>
               <CancelModal
                 onPress={() => {
-                  setAddPaymentDay(false);
                   resetModal('');
+                  setAddExpiryDate(false);
                 }}
               >
                 <CancelModalText>{i18n.t('Cancel')}</CancelModalText>
@@ -170,16 +266,30 @@ const EditModal = ({ route, navigation }) => {
             </ModalButtons>
             <DateTimePicker
               testID='dateTimePicker'
-              value={paymentDate}
+              value={expiryDate}
               mode={'date'}
-              is24Hour={true}
               display='default'
-              onChange={onChange}
+              onChange={(e, d) => setExpiryDate(d)}
             />
           </View>
         );
       default:
         return <></>;
+    }
+  };
+
+  const DayType = () => {
+    switch (paymentInterval) {
+      case 'Weekly':
+        return moment(weekDay).format('LL');
+      case 'Fortnightly':
+        return moment(fortnightDay).format('LL');
+      case 'Monthly':
+        return moment(monthDay).format('LL');
+      case 'Quarterly':
+        return moment(quarterDay).format('LL');
+      case 'Yearly':
+        return moment(yearDay).format('LL');
     }
   };
 
@@ -189,7 +299,9 @@ const EditModal = ({ route, navigation }) => {
       duration: 200,
       useNativeDriver: true,
     }).start();
-    setModal('');
+    setTimeout(() => {
+      setModal('');
+    }, 200);
   };
 
   return (
@@ -208,14 +320,14 @@ const EditModal = ({ route, navigation }) => {
         </Bar>
         <ScrollView style={{ height: '100%' }}>
           <Form>
-            <InputField err={errName}>
-              <InputText>{i18n.t('Name')}:</InputText>
+            <InputField>
+              <InputText err={errName}>{i18n.t('Name')}:</InputText>
               <Input
                 name='name'
                 value={name}
                 onChangeText={(e) => {
                   setName(e);
-                  setErrName(null);
+                  errName && setErrName(null);
                 }}
                 onFocus={() => {
                   resetModal();
@@ -247,57 +359,80 @@ const EditModal = ({ route, navigation }) => {
                 <Placeholder>{i18n.t(`${paymentInterval}`)}</Placeholder>
               </InputField>
             </TouchableOpacity>
+            <Division />
+            <TouchableOpacity
+              onPress={() => {
+                setModal('interval-day');
+                SelectModal();
+              }}
+            >
+              <InputField>
+                <InputText>{i18n.t('Day')}</InputText>
+                <Placeholder>
+                  <DayType />
+                </Placeholder>
+              </InputField>
+            </TouchableOpacity>
+            <Division />
             <InputField err={errAmount}>
-              <InputText>{i18n.t('Amount')}:</InputText>
+              <InputText>
+                {i18n.t('Amount')} ({curr})
+              </InputText>
               <Input
                 name='amount'
                 value={amount}
                 onChangeText={(e) => {
                   if (!isNaN(e)) {
                     setAmount(e);
-                    setErrAmount(null);
+                    errAmount && setErrAmount(null);
                   }
                 }}
-                placeholder=''
                 onFocus={() => {
                   resetModal();
                 }}
                 keyboardType='numeric'
               />
             </InputField>
-          </Form>
-          {addPaymentDay ? (
-            <Form>
-              <TouchableOpacity
+            <Division />
+            {addExpiryDate ? (
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModal('Date');
+                    SelectModal();
+                  }}
+                >
+                  <InputField>
+                    <InputText>{i18n.t('Expense Expiry Date')}</InputText>
+                    <Placeholder>{moment(expiryDate).format('LL')}</Placeholder>
+                  </InputField>
+                </TouchableOpacity>
+                <Division />
+              </>
+            ) : (
+              <PaymentDayViewOption
                 onPress={() => {
-                  if (!moment(paymentDate).isValid()) {
-                    setPaymentDate(new Date());
-                  }
-                  setModal('Date');
-                  SelectModal();
+                  setAddExpiryDate(true);
                 }}
               >
-                <InputField>
-                  <InputText>{i18n.t('Payment Date')}:</InputText>
-                  <Placeholder>{moment(paymentDate).format('LL')}</Placeholder>
-                </InputField>
-              </TouchableOpacity>
-            </Form>
-          ) : (
-            <PaymentDayViewOption
-              onPress={() => {
-                setAddPaymentDay(true);
-              }}
-            >
-              <SetPaymentDayOptionTitle>
-                {i18n.t('Add payment due date')}
-              </SetPaymentDayOptionTitle>
-              <AddText>+</AddText>
-            </PaymentDayViewOption>
-          )}
+                <SetPaymentDayOptionTitle>
+                  {i18n.t('Set expense expiry date')}
+                </SetPaymentDayOptionTitle>
+                <AddText>+</AddText>
+              </PaymentDayViewOption>
+            )}
+          </Form>
         </ScrollView>
         <Delete
-          bot={modal ? (modal === 'Date' ? 100 : 280) : 100}
+          bot={
+            modal
+              ? modal === 'Date'
+                ? 100
+                : modal === 'interval-day'
+                ? 100
+                : 280
+              : 100
+          }
           onPress={() => {
             Alert.alert(
               i18n.t('Delete Membership'),
@@ -373,6 +508,12 @@ const Form = styled.View`
   padding: 0 10px;
 `;
 
+const Division = styled.View`
+  height: 1px;
+  background: rgba(30, 30, 30, 0.1);
+  margin: 0 20px;
+`;
+
 const FormTitle = styled.Text`
   font-size: 20px;
   padding: 0 20px;
@@ -383,21 +524,22 @@ const FormTitle = styled.Text`
 `;
 
 const InputField = styled.View`
-  padding: 5px 20px
-  flex-direction: row;
-  align-items: center;
-  min-height: 50px;
-  background: ${(props) => (props.err ? props.err : 'rgba(180,180,180,0.1)')};
-  margin: 5px;
-  border-radius: 5px;
+padding: 5px 20px
+flex-direction: row;
+align-items: center;
+min-height: 50px;
+margin: 5px 0;
+border-radius: 5px;
+text-align: right;
 `;
 
 const Placeholder = styled.Text`
-  margin-left: 10px;
   font-weight: bold;
   opacity: 0.9;
   color: ${Colors.icons};
   font-size: 16px;
+  text-align: right;
+  margin: auto 10px auto auto;
 `;
 
 const Input = styled.TextInput`
@@ -407,30 +549,13 @@ const Input = styled.TextInput`
   color: ${Colors.icons};
   opacity: 0.9;
   font-size: 16px;
+  text-align: right;
 `;
 
 const InputText = styled.Text`
   font-size: 15px;
   font-weight: 600;
-  color: rgba(40, 40, 40, 0.8);
-  font-size: 16px;
-`;
-
-const Delete = styled.TouchableOpacity`
-  position: absolute;
-  bottom: ${(props) => props.bot}px;
-  width: 95%;
-  height: 45px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 0, 0, 0.2);
-  background: rgba(255, 0, 0, 0.1);
-  left: 2.5%;
-`;
-
-const DelText = styled.Text`
-  color: rgba(225, 30, 30, 0.9);
-  font-weight: 700;
-  margin: auto;
+  color: ${(props) => (props.err ? props.err : 'rgba(40, 40, 40, 0.8)')};
   font-size: 16px;
 `;
 
@@ -456,6 +581,7 @@ const CancelModal = styled.TouchableOpacity`
 const PaymentDayViewOption = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
+  margin-top: 15px;
 `;
 
 const SetPaymentDayOptionTitle = styled.Text`
@@ -483,6 +609,24 @@ const CancelModalText = styled.Text`
 const SelectModalText = styled.Text`
   color: rgba(30, 150, 30, 0.9);
   font-weight: 700;
+  font-size: 16px;
+`;
+
+const Delete = styled.TouchableOpacity`
+  position: absolute;
+  bottom: ${(props) => props.bot}px;
+  width: 95%;
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  background: rgba(255, 0, 0, 0.1);
+  left: 2.5%;
+`;
+
+const DelText = styled.Text`
+  color: rgba(225, 30, 30, 0.9);
+  font-weight: 700;
+  margin: auto;
   font-size: 16px;
 `;
 
