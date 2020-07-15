@@ -217,16 +217,6 @@ const StatisticsScreen = ({ route, navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
-        setCurr(Currency);
-        setShowWeekly(Settings.get('showWeekly'));
-        setShowFortnightly(Settings.get('showFortnightly'));
-        setShowMonthly(Settings.get('showMonthly'));
-        setShowQuarterly(Settings.get('showQuarterly'));
-        setShowYearly(Settings.get('showYearly'));
-        try {
-          let val = await getItemAsync('memberships');
-          setMemberships(val ? JSON.parse(val) : []);
-        } catch (err) {}
         if (
           showWeekly === undefined &&
           showFortnightly === undefined &&
@@ -238,6 +228,16 @@ const StatisticsScreen = ({ route, navigation }) => {
           Settings.set({ showMonthly: true });
           Settings.set({ showYearly: true });
         }
+        setCurr(Currency);
+        setShowWeekly(Settings.get('showWeekly'));
+        setShowFortnightly(Settings.get('showFortnightly'));
+        setShowMonthly(Settings.get('showMonthly'));
+        setShowQuarterly(Settings.get('showQuarterly'));
+        setShowYearly(Settings.get('showYearly'));
+        try {
+          let val = await getItemAsync('memberships');
+          setMemberships(val ? JSON.parse(val) : []);
+        } catch (err) {}
       })();
     }, [route])
   );
@@ -363,7 +363,7 @@ const StatisticsScreen = ({ route, navigation }) => {
         horizontal={true}
         pagingEnabled={true}
         persistentScrollbar={true}
-        style={{ height: wh - 175 }}
+        style={{ height: wh - wh * 0.195 }}
         ref={scrollAnim}
       >
         <TotalView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
@@ -591,7 +591,7 @@ const TotalItem = styled.TouchableOpacity`
   flex-direction: row;
   position: relative;
   width: 100%;
-  height: 100px;
+  height: 80px;
   padding-right: 30px;
   border-radius: 20px;
   background: white;
@@ -602,12 +602,12 @@ const TotalItem = styled.TouchableOpacity`
 const TotalItemNoPress = styled.View`
   position: relative;
   width: 100%;
-  height: 100px;
+  height: 80px;
   padding-right: 42.5px;
   border-radius: 20px;
   background: white;
   margin: 10px auto;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.05);
 `;
 
 const IntervalText = styled.Text`
@@ -630,7 +630,7 @@ const Bubble = styled.View`
 `;
 
 const Go = styled.View`
-  margin: auto 0 auto 0;
+  margin: auto -5px auto 5px;
   opacity: 0.7;
 `;
 

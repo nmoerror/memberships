@@ -3,6 +3,8 @@ import i18n from 'i18n-js';
 export default i18n.translations = {
   en: {
     undefined: '',
+    '': '',
+    null: '',
     'Good Morning': 'Good Morning, ',
     'Good Afternoon': 'Good Afternoon, ',
     'Good Evening': 'Good Evening, ',
@@ -25,6 +27,9 @@ export default i18n.translations = {
     Payments: 'Payments',
     'Payment Date': 'Payment Date',
     'Add payment due date': 'Add payment due date',
+    'Set expense expiry date': 'Set expense expiry date',
+    'Expense Expiry Date': 'Expense Expiry Date',
+    'Next Payment Date': 'Next Payment Date',
     Add: 'Add',
     Edit: 'Edit',
     Delete: 'Delete',

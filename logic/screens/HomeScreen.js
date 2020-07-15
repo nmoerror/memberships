@@ -14,6 +14,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import { Currency } from '../constants/Options';
 import i18n from 'i18n-js';
+import moment from 'moment';
 
 // Async Storage
 import {
@@ -28,6 +29,15 @@ const HomeScreen = ({ route, navigation }) => {
   const [memberships, setMemberships] = useState([]);
   const [clusters, setClusters] = useState([]);
   const [me, setMe] = useState(Settings.get('name'));
+  const [today, setToday] = useState(moment());
+  const [timeDefaults, setTimeDefaults] = useState({
+    sameDay: '[Today]',
+    nextDay: '[Tomorrow]',
+    nextWeek: 'dddd',
+    lastDay: '[Yesterday]',
+    lastWeek: '[Last] dddd',
+    sameElse: 'LL',
+  });
 
   const createClusters = (parsedMembers) => {
     let clus = [];
@@ -58,6 +68,7 @@ const HomeScreen = ({ route, navigation }) => {
             setMemberships(parsedMembers);
             createClusters(parsedMembers);
           }
+          setToday(moment());
         } catch (err) {}
       })();
     }, [route])
@@ -71,6 +82,118 @@ const HomeScreen = ({ route, navigation }) => {
       return me ? `${i18n.t('Good Afternoon')}${me}` : i18n.t('Overview');
     } else {
       return me ? `${i18n.t('Good Evening')}${me}` : i18n.t('Overview');
+    }
+  };
+
+  const longPress = (item) => {
+    Platform.OS === 'ios' &&
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: [i18n.t('Cancel'), i18n.t('Edit'), i18n.t('Delete')],
+          destructiveButtonIndex: 2,
+          cancelButtonIndex: 0,
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 0) {
+            // cancel action
+          } else if (buttonIndex === 1) {
+            navigation.push('Edit', {
+              item,
+              memberships,
+            });
+          } else if (buttonIndex === 2) {
+            (async () => {
+              try {
+                let newMemberships = memberships.filter(
+                  (element) => element.id !== item.id
+                );
+                await setItemAsync(
+                  'memberships',
+                  JSON.stringify(newMemberships)
+                );
+                reset();
+              } catch (err) {}
+            })();
+          }
+        }
+      );
+  };
+
+  const refactorDate = (item, itemID) => {
+    if (memberships.length) {
+      let indx = memberships.findIndex((e) => e.id === itemID);
+      let ghostMemberships = [...memberships];
+      ghostMemberships[indx] = {
+        ...ghostMemberships[indx],
+        weekDay:
+          item === 'Weekly'
+            ? moment(ghostMemberships[indx].weekDay).add(7, 'd')
+            : '',
+        fortnightDay:
+          item === 'Fortnightly'
+            ? moment(ghostMemberships[indx].fortnightDay).add(2, 'w')
+            : '',
+        monthDay:
+          item === 'Monthly'
+            ? moment(ghostMemberships[indx].monthDay).add(1, 'M')
+            : '',
+        quarterDay:
+          item === 'Quarterly'
+            ? moment(ghostMemberships[indx].quarterDay).add(1, 'Q')
+            : '',
+        yearDay:
+          item === 'Yearly'
+            ? moment(ghostMemberships[indx].yearDay).add(1, 'y')
+            : '',
+      };
+      pushNewMembership(ghostMemberships);
+      reset();
+    }
+  };
+
+  const pushNewMembership = (a) => {
+    setItemAsync('memberships', JSON.stringify(a));
+  };
+
+  const NextPayment = (item) => {
+    switch (item.paymentInterval) {
+      case 'Weekly':
+        item.weekDay &&
+          moment(item.weekDay).isBefore(moment(), 'day') &&
+          refactorDate('Weekly', item.id);
+        return item.weekDay
+          ? moment(item.weekDay).calendar(null, timeDefaults)
+          : '';
+      case 'Fortnightly':
+        item.fortnightDay &&
+          moment(item.fortnightDay).isBefore(moment(), 'day') &&
+          refactorDate('Fortnightly', item.id);
+        return item.fortnightDay
+          ? moment(item.fortnightDay).calendar(null, timeDefaults)
+          : '';
+      case 'Monthly':
+        item.monthDay &&
+          moment(item.monthDay).isBefore(moment(), 'day') &&
+          refactorDate('Monthly', item.id);
+        return item.monthDay
+          ? moment(item.monthDay).calendar(null, timeDefaults)
+          : '';
+      case 'Quarterly':
+        item.quarterDay &&
+          moment(item.quarterDay).isBefore(moment(), 'day') &&
+          refactorDate('Quarterly', item.id);
+        return item.quarterDay
+          ? moment(item.quarterDay).calendar(null, timeDefaults)
+          : '';
+      case 'Yearly':
+        item.yearDay &&
+          moment(item.yearDay).isBefore(moment(), 'day') &&
+          refactorDate('Yearly', item.id);
+        return item.yearDay
+          ? moment(item.yearDay).calendar(null, timeDefaults)
+          : '';
+      default:
+        return '';
     }
   };
 
@@ -115,50 +238,14 @@ const HomeScreen = ({ route, navigation }) => {
                     return (
                       <Fragment key={item.id}>
                         <Item
-                          onLongPress={() =>
-                            Platform.OS === 'ios' &&
-                            ActionSheetIOS.showActionSheetWithOptions(
-                              {
-                                options: [
-                                  i18n.t('Cancel'),
-                                  i18n.t('Edit'),
-                                  i18n.t('Delete'),
-                                ],
-                                destructiveButtonIndex: 2,
-                                cancelButtonIndex: 0,
-                              },
-                              (buttonIndex) => {
-                                if (buttonIndex === 0) {
-                                  // cancel action
-                                } else if (buttonIndex === 1) {
-                                  navigation.push('Edit', {
-                                    item,
-                                    memberships,
-                                  });
-                                } else if (buttonIndex === 2) {
-                                  (async () => {
-                                    try {
-                                      let newMemberships = memberships.filter(
-                                        (element) => element.id !== item.id
-                                      );
-                                      await setItemAsync(
-                                        'memberships',
-                                        JSON.stringify(newMemberships)
-                                      );
-                                      reset();
-                                    } catch (err) {}
-                                  })();
-                                }
-                              }
-                            )
-                          }
+                          onLongPress={() => longPress(item)}
                           onPress={() =>
                             navigation.push('Edit', { item, memberships })
                           }
                         >
                           <View>
                             <ItemName>{item.name}</ItemName>
-                            <ItemType>{i18n.t(`${item.type}`)}</ItemType>
+                            <ItemType>{NextPayment(item)}</ItemType>
                           </View>
                           <More>
                             <Row>
