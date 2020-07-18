@@ -103,8 +103,8 @@ const RowAmount = styled.View`
 
 const FadedBrackets = styled.Text`
   color: rgba(0, 0, 0, 0.8);
-  margin-left: 5px;
-  font-size: 20px;
+  margin: auto 5px auto auto;
+  font-size: 18px;
   opacity: 0.8;
 `;
 

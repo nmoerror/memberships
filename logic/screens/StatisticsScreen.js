@@ -224,9 +224,9 @@ const StatisticsScreen = ({ route, navigation }) => {
           showQuarterly === undefined &&
           showYearly === undefined
         ) {
-          Settings.set({ showWeekly: true });
-          Settings.set({ showMonthly: true });
-          Settings.set({ showYearly: true });
+          Settings.set({ showWeekly: 1 });
+          Settings.set({ showMonthly: 1 });
+          Settings.set({ showYearly: 1 });
         }
         setCurr(Currency);
         setShowWeekly(Settings.get('showWeekly'));
@@ -389,7 +389,9 @@ const StatisticsScreen = ({ route, navigation }) => {
                 labels={({ datum }) =>
                   `${i18n.t(datum.xName)}\n ${curr}${parseInt(datum.amount)
                     .toFixed(0)
-                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}/y (${Math.round(
+                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}/${i18n.t(
+                    'pYear'
+                  )} (${Math.round(
                     parseFloat(datum.amount / datum.total) * 100
                   )}%)`
                 }

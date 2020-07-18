@@ -221,7 +221,7 @@ const HomeScreen = ({ route, navigation }) => {
       </Bar>
       <ScrollView
         style={{
-          height: wh - 190,
+          height: wh - wh * 0.195,
           paddingRight: 20,
           paddingLeft: 20,
           marginTop: -5,

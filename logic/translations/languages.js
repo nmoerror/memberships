@@ -119,6 +119,7 @@ export default i18n.translations = {
     Yesterday: 'Yesterday',
     Today: 'Today',
     Tomorrow: 'Tomorrow',
+    pYear: 'y',
   },
   ko: {
     undefined: '',
@@ -155,6 +156,7 @@ export default i18n.translations = {
     Fortnightly: '2주일',
     Quarterly: '분기별',
     Yearly: '년간',
+    pYear: '년',
     Summary: 'Summary',
     Me: '나',
     Preferences: 'Preferences',
@@ -354,6 +356,7 @@ export default i18n.translations = {
     Yesterday: 'Ayer',
     Today: 'Hoy',
     Tomorrow: 'Mañana',
+    pYear: 'a',
   },
   jp: {
     undefined: '',
@@ -462,6 +465,7 @@ export default i18n.translations = {
     Yesterday: '昨日',
     Today: '今日',
     Tomorrow: '明日',
+    pYear: 'y',
   },
   zh: {
     undefined: '',
@@ -576,5 +580,6 @@ export default i18n.translations = {
     Yesterday: '昨天',
     Today: '今天',
     Tomorrow: '今天',
+    pYear: '年',
   },
 };
