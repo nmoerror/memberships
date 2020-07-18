@@ -19,6 +19,9 @@
     "ios": {
       "bundleIdentifier": "com.nmoerror.Memberships"
     },
+    "android": {
+      "useNextNotificationsApi": true
+    },
     "web": {
       "favicon": "./assets/favicon.png"
     }

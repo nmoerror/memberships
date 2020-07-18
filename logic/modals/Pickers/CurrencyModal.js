@@ -22,17 +22,29 @@ const CurrencyModal = ({ currency, setCurrency }) => (
   >
     <PickerIOS.Item
       color={Colors.icons}
-      label={i18n.t('Dollar')}
+      label={`${i18n.t('Dollar')}  ($)`}
       value='Dollar'
     />
-    <PickerIOS.Item color={Colors.icons} label={i18n.t('Euro')} value='Euro' />
     <PickerIOS.Item
       color={Colors.icons}
-      label={i18n.t('Pound')}
+      label={`${i18n.t('Euro')}  (€)`}
+      value='Euro'
+    />
+    <PickerIOS.Item
+      color={Colors.icons}
+      label={`${i18n.t('Pound')}  (£)`}
       value='Pound'
     />
-    <PickerIOS.Item color={Colors.icons} label={i18n.t('Won')} value='Won' />
-    <PickerIOS.Item color={Colors.icons} label={i18n.t('Yen')} value='Yen' />
+    <PickerIOS.Item
+      color={Colors.icons}
+      label={`${i18n.t('Won')}  (₩)`}
+      value='Won'
+    />
+    <PickerIOS.Item
+      color={Colors.icons}
+      label={`${i18n.t('Yen')}  (¥)`}
+      value='Yen'
+    />
   </PickerIOS>
 );
 

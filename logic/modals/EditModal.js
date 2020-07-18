@@ -12,10 +12,9 @@ import TypeModal from './Pickers/TypeModal';
 import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
-import WeekDaysModal from './Pickers/WeekDaysModal';
 import i18n from 'i18n-js';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 import { Currency } from '../constants/Options';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -35,12 +34,11 @@ const EditModal = ({ route, navigation }) => {
   const [errAmount, setErrAmount] = useState(null);
   const [addExpiryDate, setAddExpiryDate] = useState(false);
   const [curr, setCurr] = useState(Currency);
-
   // Form values
   let now = new Date();
   const [itemID, setItemID] = useState('');
   const [name, setName] = useState('');
-  const [type, setType] = useState('');
+  const [type, setType] = useState('Home');
   const [paymentInterval, setPaymentInterval] = useState('Weekly');
   const [weekDay, setWeekDay] = useState(now);
   const [monthDay, setMonthDay] = useState(now);
@@ -226,6 +224,7 @@ const EditModal = ({ route, navigation }) => {
               display='default'
               onChange={(e, d) => setDateObject(d)}
               minimumDate={new Date()}
+              locale={i18n.locale}
             />
           </View>
         );
@@ -269,7 +268,9 @@ const EditModal = ({ route, navigation }) => {
               value={expiryDate}
               mode={'date'}
               display='default'
+              minimumDate={new Date()}
               onChange={(e, d) => setExpiryDate(d)}
+              locale={i18n.locale}
             />
           </View>
         );
@@ -321,7 +322,7 @@ const EditModal = ({ route, navigation }) => {
         <ScrollView style={{ height: '100%' }}>
           <Form>
             <InputField>
-              <InputText err={errName}>{i18n.t('Name')}:</InputText>
+              <InputText err={errName}>{i18n.t('Name')}</InputText>
               <Input
                 name='name'
                 value={name}
@@ -334,6 +335,7 @@ const EditModal = ({ route, navigation }) => {
                 }}
               />
             </InputField>
+            <Division />
             <TouchableOpacity
               onPress={() => {
                 setModal('type');
@@ -341,10 +343,11 @@ const EditModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Group')}:</InputText>
+                <InputText>{i18n.t('Group')}</InputText>
                 <Placeholder>{i18n.t(type)}</Placeholder>
               </InputField>
             </TouchableOpacity>
+            <Division />
           </Form>
           <Form>
             <FormTitle>{i18n.t('Payments')}</FormTitle>
@@ -355,7 +358,7 @@ const EditModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Interval')}:</InputText>
+                <InputText>{i18n.t('Interval')}</InputText>
                 <Placeholder>{i18n.t(`${paymentInterval}`)}</Placeholder>
               </InputField>
             </TouchableOpacity>
@@ -367,7 +370,7 @@ const EditModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Day')}</InputText>
+                <InputText>{i18n.t('Next Payment Date')}</InputText>
                 <Placeholder>
                   <DayType />
                 </Placeholder>
@@ -413,6 +416,8 @@ const EditModal = ({ route, navigation }) => {
               <PaymentDayViewOption
                 onPress={() => {
                   setAddExpiryDate(true);
+                  setModal('Date');
+                  SelectModal();
                 }}
               >
                 <SetPaymentDayOptionTitle>

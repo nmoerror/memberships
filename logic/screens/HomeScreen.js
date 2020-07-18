@@ -14,7 +14,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import { Currency } from '../constants/Options';
 import i18n from 'i18n-js';
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 
 // Async Storage
 import {
@@ -31,10 +31,10 @@ const HomeScreen = ({ route, navigation }) => {
   const [me, setMe] = useState(Settings.get('name'));
   const [today, setToday] = useState(moment());
   const [timeDefaults, setTimeDefaults] = useState({
-    sameDay: '[Today]',
-    nextDay: '[Tomorrow]',
+    sameDay: `[${i18n.t('Today')}]`,
+    nextDay: `[${i18n.t('Tomorrow')}]`,
     nextWeek: 'dddd',
-    lastDay: '[Yesterday]',
+    lastDay: `[${i18n.t('Yesterday')}]`,
     lastWeek: '[Last] dddd',
     sameElse: 'LL',
   });
@@ -159,35 +159,35 @@ const HomeScreen = ({ route, navigation }) => {
     switch (item.paymentInterval) {
       case 'Weekly':
         item.weekDay &&
-          moment(item.weekDay).isBefore(moment(), 'day') &&
+          moment(item.weekDay).isBefore(today, 'day') &&
           refactorDate('Weekly', item.id);
         return item.weekDay
           ? moment(item.weekDay).calendar(null, timeDefaults)
           : '';
       case 'Fortnightly':
         item.fortnightDay &&
-          moment(item.fortnightDay).isBefore(moment(), 'day') &&
+          moment(item.fortnightDay).isBefore(today, 'day') &&
           refactorDate('Fortnightly', item.id);
         return item.fortnightDay
           ? moment(item.fortnightDay).calendar(null, timeDefaults)
           : '';
       case 'Monthly':
         item.monthDay &&
-          moment(item.monthDay).isBefore(moment(), 'day') &&
+          moment(item.monthDay).isBefore(today, 'day') &&
           refactorDate('Monthly', item.id);
         return item.monthDay
           ? moment(item.monthDay).calendar(null, timeDefaults)
           : '';
       case 'Quarterly':
         item.quarterDay &&
-          moment(item.quarterDay).isBefore(moment(), 'day') &&
+          moment(item.quarterDay).isBefore(today, 'day') &&
           refactorDate('Quarterly', item.id);
         return item.quarterDay
           ? moment(item.quarterDay).calendar(null, timeDefaults)
           : '';
       case 'Yearly':
         item.yearDay &&
-          moment(item.yearDay).isBefore(moment(), 'day') &&
+          moment(item.yearDay).isBefore(today, 'day') &&
           refactorDate('Yearly', item.id);
         return item.yearDay
           ? moment(item.yearDay).calendar(null, timeDefaults)
@@ -221,7 +221,7 @@ const HomeScreen = ({ route, navigation }) => {
       </Bar>
       <ScrollView
         style={{
-          height: wh - 200,
+          height: wh - 190,
           paddingRight: 20,
           paddingLeft: 20,
           marginTop: -5,
@@ -303,7 +303,9 @@ const HomeScreen = ({ route, navigation }) => {
   );
 };
 
-const Section = styled.SafeAreaView``;
+const Section = styled.SafeAreaView`
+  background: white;
+`;
 
 const Bar = styled.View`
   height: 50px;

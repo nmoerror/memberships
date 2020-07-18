@@ -83,6 +83,7 @@ const PreferencesStack = ({ route, navigation }) => {
       duration: 200,
       useNativeDriver: true,
     }).start();
+
     setModal('');
   };
 

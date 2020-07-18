@@ -12,10 +12,9 @@ import Colors from '../constants/Colors';
 import { useFocusEffect } from '@react-navigation/native';
 import TypeModal from './Pickers/TypeModal';
 import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
-import WeekDaysModal from './Pickers/WeekDaysModal';
 import i18n from 'i18n-js';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 import { Currency } from '../constants/Options';
 
 // Async Storage
@@ -205,6 +204,8 @@ const AddModal = ({ route, navigation }) => {
               mode={'date'}
               display='default'
               onChange={(e, d) => setDateObject(d)}
+              locale={i18n.locale}
+              minimumDate={new Date()}
             />
           </View>
         );
@@ -249,6 +250,8 @@ const AddModal = ({ route, navigation }) => {
               mode={'date'}
               display='default'
               onChange={(e, d) => setExpiryDate(d)}
+              locale={i18n.locale}
+              minimumDate={new Date()}
             />
           </View>
         );
@@ -395,6 +398,8 @@ const AddModal = ({ route, navigation }) => {
               <PaymentDayViewOption
                 onPress={() => {
                   setAddExpiryDate(true);
+                  setModal('Date');
+                  SelectModal();
                 }}
               >
                 <SetPaymentDayOptionTitle>

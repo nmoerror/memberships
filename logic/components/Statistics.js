@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import i18n from 'i18n-js';
 
-const Statistics = ({ route, memberships, curr }) => {
+const Statistics = ({ memberships, curr }) => {
   const [total, setTotal] = useState(0);
 
   useFocusEffect(() => {
@@ -63,7 +63,7 @@ const Section = styled.View`
 `;
 const Item = styled.View`
   background: white;
-  min-height: 120px;
+  min-height: 90px;
   border-radius: 10px;
   padding: 10px 15px;
   margin: 5px 0 10px 0;
@@ -99,7 +99,6 @@ const Amount = styled.Text`
 const RowAmount = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-top: 5px;
 `;
 
 const FadedBrackets = styled.Text`

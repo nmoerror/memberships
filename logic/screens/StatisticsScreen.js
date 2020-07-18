@@ -363,10 +363,12 @@ const StatisticsScreen = ({ route, navigation }) => {
         horizontal={true}
         pagingEnabled={true}
         persistentScrollbar={true}
-        style={{ height: wh - wh * 0.195 }}
+        style={{
+          height: wh - wh * 0.195,
+        }}
         ref={scrollAnim}
       >
-        <TotalView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <TotalView showsVerticalScrollIndicator={false}>
           {memberships.length ? (
             <View
               style={{
@@ -546,12 +548,13 @@ const StatisticsScreen = ({ route, navigation }) => {
   );
 };
 
-const Section = styled.SafeAreaView``;
+const Section = styled.SafeAreaView`
+  background: white;
+`;
 
 const Bar = styled.View`
   height: 50px;
   color: white;
-  background: white;
 `;
 
 const SettingsButton = styled.TouchableOpacity`
