@@ -1,7 +1,6 @@
 import React from 'react';
 import { PickerIOS } from '@react-native-community/picker';
 import Colors from '../../constants/Colors';
-import i18n from 'i18n-js';
 
 const CurrencyModal = ({ currency, setCurrency }) => (
   <PickerIOS
@@ -20,31 +19,11 @@ const CurrencyModal = ({ currency, setCurrency }) => (
     }}
     onValueChange={(e) => setCurrency(e)}
   >
-    <PickerIOS.Item
-      color={Colors.icons}
-      label={`${i18n.t('Dollar')}  ($)`}
-      value='Dollar'
-    />
-    <PickerIOS.Item
-      color={Colors.icons}
-      label={`${i18n.t('Euro')}  (€)`}
-      value='Euro'
-    />
-    <PickerIOS.Item
-      color={Colors.icons}
-      label={`${i18n.t('Pound')}  (£)`}
-      value='Pound'
-    />
-    <PickerIOS.Item
-      color={Colors.icons}
-      label={`${i18n.t('Won')}  (₩)`}
-      value='Won'
-    />
-    <PickerIOS.Item
-      color={Colors.icons}
-      label={`${i18n.t('Yen')}  (¥)`}
-      value='Yen'
-    />
+    <PickerIOS.Item color={Colors.icons} label='Dollar  ($)' value='Dollar' />
+    <PickerIOS.Item color={Colors.icons} label='Euro  (€)' value='Euro' />
+    <PickerIOS.Item color={Colors.icons} label='Pound  (£)' value='Pound' />
+    <PickerIOS.Item color={Colors.icons} label='Won  (₩)' value='Won' />
+    <PickerIOS.Item color={Colors.icons} label='Yen  (¥)' value='Yen' />
   </PickerIOS>
 );
 

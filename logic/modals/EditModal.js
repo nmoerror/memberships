@@ -12,18 +12,13 @@ import TypeModal from './Pickers/TypeModal';
 import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
-import i18n from 'i18n-js';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment/min/moment-with-locales';
+import moment from 'moment';
 import { Currency } from '../constants/Options';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 // Async Storage
-import {
-  getItemAsync,
-  setItemAsync,
-  deleteItemAsync,
-} from '../utils/secureStorage';
+import { getItemAsync, setItemAsync } from '../utils/secureStorage';
 
 const EditModal = ({ route, navigation }) => {
   const { item, memberships } = route.params;
@@ -50,18 +45,24 @@ const EditModal = ({ route, navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      setItemID(item.id);
-      setName(item.name);
-      setType(item.type);
-      setPaymentInterval(item.paymentInterval);
-      item.weekDay && setWeekDay(item.weekDay);
-      item.fortnightDay && setFortnightDay(item.fortnightDay);
-      item.monthDay && setMonthDay(item.monthDay);
-      item.quarterDay && setQuarterDay(item.quarterDay);
-      item.yearDay && setYearDay(item.yearDay);
-      setAmount(item.amount);
-      item.expiryDate && setExpiryDate(item.expiryDate);
-      setCurr(Currency);
+      let mounted = true;
+      if (mounted) {
+        setItemID(item.id);
+        setName(item.name);
+        setType(item.type);
+        setPaymentInterval(item.paymentInterval);
+        item.weekDay && setWeekDay(item.weekDay);
+        item.fortnightDay && setFortnightDay(item.fortnightDay);
+        item.monthDay && setMonthDay(item.monthDay);
+        item.quarterDay && setQuarterDay(item.quarterDay);
+        item.yearDay && setYearDay(item.yearDay);
+        setAmount(item.amount);
+        item.expiryDate && setExpiryDate(item.expiryDate);
+        setCurr(Currency);
+      }
+      return () => {
+        mounted = false;
+      };
     }, [route])
   );
 
@@ -207,14 +208,14 @@ const EditModal = ({ route, navigation }) => {
                   resetModal('');
                 }}
               >
-                <CancelModalText>{i18n.t('Cancel')}</CancelModalText>
+                <CancelModalText>Cancel</CancelModalText>
               </CancelModal>
               <AcceptModal
                 onPress={() => {
                   resetModal('');
                 }}
               >
-                <SelectModalText>{i18n.t('Select')}</SelectModalText>
+                <SelectModalText>Select</SelectModalText>
               </AcceptModal>
             </ModalButtons>
             <DateTimePicker
@@ -224,7 +225,6 @@ const EditModal = ({ route, navigation }) => {
               display='default'
               onChange={(e, d) => setDateObject(d)}
               minimumDate={new Date()}
-              locale={i18n.locale}
             />
           </View>
         );
@@ -253,14 +253,14 @@ const EditModal = ({ route, navigation }) => {
                   setAddExpiryDate(false);
                 }}
               >
-                <CancelModalText>{i18n.t('Cancel')}</CancelModalText>
+                <CancelModalText>Cancel</CancelModalText>
               </CancelModal>
               <AcceptModal
                 onPress={() => {
                   resetModal('');
                 }}
               >
-                <SelectModalText>{i18n.t('Select')}</SelectModalText>
+                <SelectModalText>Select</SelectModalText>
               </AcceptModal>
             </ModalButtons>
             <DateTimePicker
@@ -270,7 +270,6 @@ const EditModal = ({ route, navigation }) => {
               display='default'
               minimumDate={new Date()}
               onChange={(e, d) => setExpiryDate(d)}
-              locale={i18n.locale}
             />
           </View>
         );
@@ -312,9 +311,7 @@ const EditModal = ({ route, navigation }) => {
           <CancelItem onPress={() => navigation.goBack()}>
             <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
           </CancelItem>
-          <Title style={{ color: Colors.title }}>
-            {i18n.t('Edit')} {name}
-          </Title>
+          <Title style={{ color: Colors.title }}>Edit {name}</Title>
           <AddItem onPress={() => validate()}>
             <Ionicons name='ios-checkmark' size={40} color={Colors.icons} />
           </AddItem>
@@ -322,7 +319,7 @@ const EditModal = ({ route, navigation }) => {
         <ScrollView style={{ height: '100%' }}>
           <Form>
             <InputField>
-              <InputText err={errName}>{i18n.t('Name')}</InputText>
+              <InputText err={errName}>Name</InputText>
               <Input
                 name='name'
                 value={name}
@@ -343,14 +340,14 @@ const EditModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Group')}</InputText>
-                <Placeholder>{i18n.t(type)}</Placeholder>
+                <InputText>Group</InputText>
+                <Placeholder>{type}</Placeholder>
               </InputField>
             </TouchableOpacity>
             <Division />
           </Form>
           <Form>
-            <FormTitle>{i18n.t('Payments')}</FormTitle>
+            <FormTitle>Payments</FormTitle>
             <TouchableOpacity
               onPress={() => {
                 setModal('payment-interval');
@@ -358,8 +355,8 @@ const EditModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Interval')}</InputText>
-                <Placeholder>{i18n.t(`${paymentInterval}`)}</Placeholder>
+                <InputText>Interval</InputText>
+                <Placeholder>{paymentInterval}</Placeholder>
               </InputField>
             </TouchableOpacity>
             <Division />
@@ -370,7 +367,7 @@ const EditModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Next Payment Date')}</InputText>
+                <InputText>Next Payment Date</InputText>
                 <Placeholder>
                   <DayType />
                 </Placeholder>
@@ -378,9 +375,7 @@ const EditModal = ({ route, navigation }) => {
             </TouchableOpacity>
             <Division />
             <InputField err={errAmount}>
-              <InputText>
-                {i18n.t('Amount')} ({curr})
-              </InputText>
+              <InputText>Amount ({curr})</InputText>
               <Input
                 name='amount'
                 value={amount}
@@ -406,7 +401,7 @@ const EditModal = ({ route, navigation }) => {
                   }}
                 >
                   <InputField>
-                    <InputText>{i18n.t('Expense Expiry Date')}</InputText>
+                    <InputText>Expense Expiry Date</InputText>
                     <Placeholder>{moment(expiryDate).format('LL')}</Placeholder>
                   </InputField>
                 </TouchableOpacity>
@@ -421,7 +416,7 @@ const EditModal = ({ route, navigation }) => {
                 }}
               >
                 <SetPaymentDayOptionTitle>
-                  {i18n.t('Set expense expiry date')}
+                  Set expense expiry date
                 </SetPaymentDayOptionTitle>
                 <AddText>+</AddText>
               </PaymentDayViewOption>
@@ -440,15 +435,15 @@ const EditModal = ({ route, navigation }) => {
           }
           onPress={() => {
             Alert.alert(
-              i18n.t('Delete Membership'),
-              i18n.t('Permanently delete this record?'),
+              'Delete Membership',
+              'Permanently delete this record?',
               [
                 {
-                  text: i18n.t('Cancel'),
+                  text: 'Cancel',
                   onPress: () => {},
                 },
                 {
-                  text: i18n.t('Delete'),
+                  text: 'Delete',
                   onPress: async () => {
                     try {
                       let memberships = await getItemAsync('memberships');
@@ -470,7 +465,7 @@ const EditModal = ({ route, navigation }) => {
             );
           }}
         >
-          <DelText>{i18n.t('Delete')}</DelText>
+          <DelText>Delete</DelText>
         </Delete>
         <AnimatedSlide style={{ transform: [{ translateY: slideAnim }] }}>
           <SelectModal />

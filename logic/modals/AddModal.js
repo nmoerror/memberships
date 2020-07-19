@@ -12,9 +12,8 @@ import Colors from '../constants/Colors';
 import { useFocusEffect } from '@react-navigation/native';
 import TypeModal from './Pickers/TypeModal';
 import PaymentIntervalModal from './Pickers/PaymentIntervalModal';
-import i18n from 'i18n-js';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment/min/moment-with-locales';
+import moment from 'moment';
 import { Currency } from '../constants/Options';
 
 // Async Storage
@@ -188,14 +187,14 @@ const AddModal = ({ route, navigation }) => {
                   resetModal('');
                 }}
               >
-                <CancelModalText>{i18n.t('Cancel')}</CancelModalText>
+                <CancelModalText>Cancel</CancelModalText>
               </CancelModal>
               <AcceptModal
                 onPress={() => {
                   resetModal('');
                 }}
               >
-                <SelectModalText>{i18n.t('Select')}</SelectModalText>
+                <SelectModalText>Select</SelectModalText>
               </AcceptModal>
             </ModalButtons>
             <DateTimePicker
@@ -204,7 +203,6 @@ const AddModal = ({ route, navigation }) => {
               mode={'date'}
               display='default'
               onChange={(e, d) => setDateObject(d)}
-              locale={i18n.locale}
               minimumDate={new Date()}
             />
           </View>
@@ -234,14 +232,14 @@ const AddModal = ({ route, navigation }) => {
                   setAddExpiryDate(false);
                 }}
               >
-                <CancelModalText>{i18n.t('Cancel')}</CancelModalText>
+                <CancelModalText>Cancel</CancelModalText>
               </CancelModal>
               <AcceptModal
                 onPress={() => {
                   resetModal('');
                 }}
               >
-                <SelectModalText>{i18n.t('Select')}</SelectModalText>
+                <SelectModalText>Select</SelectModalText>
               </AcceptModal>
             </ModalButtons>
             <DateTimePicker
@@ -250,7 +248,6 @@ const AddModal = ({ route, navigation }) => {
               mode={'date'}
               display='default'
               onChange={(e, d) => setExpiryDate(d)}
-              locale={i18n.locale}
               minimumDate={new Date()}
             />
           </View>
@@ -293,7 +290,7 @@ const AddModal = ({ route, navigation }) => {
           <CancelItem onPress={() => navigation.goBack()}>
             <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
           </CancelItem>
-          <Title style={{ color: Colors.title }}>{i18n.t('New Expense')}</Title>
+          <Title style={{ color: Colors.title }}>New Expense</Title>
           <AddItem onPress={() => validate()}>
             <Ionicons name='ios-checkmark' size={40} color={Colors.icons} />
           </AddItem>
@@ -301,9 +298,9 @@ const AddModal = ({ route, navigation }) => {
         <ScrollView style={{ height: '100%' }}>
           <Form>
             <InputField>
-              <InputText err={errName}>{i18n.t('Name')}</InputText>
+              <InputText err={errName}>Name</InputText>
               <Input
-                placeholder={i18n.t('Youtube Premium')}
+                placeholder='Youtube Premium'
                 autoFocus={true}
                 name='name'
                 value={name}
@@ -324,14 +321,14 @@ const AddModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Group')}</InputText>
-                <Placeholder>{i18n.t(type)}</Placeholder>
+                <InputText>Group</InputText>
+                <Placeholder>{type}</Placeholder>
               </InputField>
             </TouchableOpacity>
             <Division />
           </Form>
           <Form>
-            <FormTitle>{i18n.t('Payments')}</FormTitle>
+            <FormTitle>Payments</FormTitle>
             <TouchableOpacity
               onPress={() => {
                 setModal('payment-interval');
@@ -339,8 +336,8 @@ const AddModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Interval')}</InputText>
-                <Placeholder>{i18n.t(paymentInterval)}</Placeholder>
+                <InputText>Interval</InputText>
+                <Placeholder>{paymentInterval}</Placeholder>
               </InputField>
             </TouchableOpacity>
             <Division />
@@ -351,7 +348,7 @@ const AddModal = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Next Payment Date')}</InputText>
+                <InputText>Next Payment Date</InputText>
                 <Placeholder>
                   <DayType />
                 </Placeholder>
@@ -359,9 +356,7 @@ const AddModal = ({ route, navigation }) => {
             </TouchableOpacity>
             <Division />
             <InputField>
-              <InputText err={errAmount}>
-                {i18n.t('Amount')} ({curr})
-              </InputText>
+              <InputText err={errAmount}>Amount ({curr})</InputText>
               <Input
                 name='amount'
                 placeholder='9.99'
@@ -388,7 +383,7 @@ const AddModal = ({ route, navigation }) => {
                   }}
                 >
                   <InputField>
-                    <InputText>{i18n.t('Expense Expiry Date')}</InputText>
+                    <InputText>Expense Expiry Date</InputText>
                     <Placeholder>{moment(expiryDate).format('LL')}</Placeholder>
                   </InputField>
                 </TouchableOpacity>
@@ -403,7 +398,7 @@ const AddModal = ({ route, navigation }) => {
                 }}
               >
                 <SetPaymentDayOptionTitle>
-                  {i18n.t('Set expense expiry date')}
+                  Set expense expiry date
                 </SetPaymentDayOptionTitle>
                 <AddText>+</AddText>
               </PaymentDayViewOption>

@@ -1,34 +1,24 @@
 import React from 'react';
 import { SplashScreen } from 'expo';
-import { StyleSheet, View, StatusBar, I18nManager } from 'react-native';
-import * as Localization from 'expo-localization';
-import i18n from 'i18n-js';
-import translate from './logic/translations/languages';
+import { StyleSheet, View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import BottomTabNavigator from './navigation/BottomTabNavigation';
-
 import AddModal from './logic/modals/AddModal';
 import EditModal from './logic/modals/EditModal';
 import AboutStack from './logic/screens/Stacks/AboutStack';
 import MeStack from './logic/screens/Stacks/MeStack';
 import PreferencesStack from './logic/screens/Stacks/PreferencesStack';
 import SettingsStack from './logic/screens/Stacks/SettingsStack';
-import moment from 'moment/min/moment-with-locales';
 
 const App = ({ skipLoadingScreen }) => {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
 
   // Load resources prior app start
   React.useEffect(() => {
-    StatusBar.setBarStyle('dark-content');
-    // Set the locale once at the beginning of your app.
-    i18n.locale = Localization.locale;
-    moment.locale(i18n.locale);
-    // When a value is missing from a language it'll fallback to another language with the key present.
-    i18n.fallbacks = true;
     async function loadResourcesAndDataAsync() {
       try {
+        StatusBar.setBarStyle('dark-content');
         SplashScreen.preventAutoHide();
         // Load our initial navigation state
       } catch (e) {

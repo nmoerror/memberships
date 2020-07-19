@@ -11,7 +11,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
 import CurrencyModal from '../../modals/Pickers/CurrencyModal';
-import i18n from 'i18n-js';
 
 const PreferencesStack = ({ route, navigation }) => {
   const [modal, setModal] = useState('');
@@ -101,7 +100,7 @@ const PreferencesStack = ({ route, navigation }) => {
           <CancelItem onPress={() => navigation.goBack()}>
             <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
           </CancelItem>
-          <Title style={{ color: Colors.title }}>{i18n.t('Preferences')}</Title>
+          <Title style={{ color: Colors.title }}>Preferences</Title>
           <SaveItem onPress={() => save()}>
             <Ionicons name='ios-checkmark' size={45} color={Colors.icons} />
           </SaveItem>
@@ -115,13 +114,13 @@ const PreferencesStack = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>{i18n.t('Currency')}:</InputText>
-                <Placeholder>{i18n.t(`${currency}`)}</Placeholder>
+                <InputText>Currency:</InputText>
+                <Placeholder>{currency}</Placeholder>
               </InputField>
             </TouchableOpacity>
-            <SectionTitle>{i18n.t('Display')}</SectionTitle>
+            <SectionTitle>Display</SectionTitle>
             <MenuItem>
-              <ItemName>{i18n.t('Weekly Statistics')}</ItemName>
+              <ItemName>Weekly Statistics</ItemName>
               <Go>
                 <Switch
                   trackColor={showWeekly ? 'white' : '#f4f3f4'}
@@ -136,7 +135,7 @@ const PreferencesStack = ({ route, navigation }) => {
               </Go>
             </MenuItem>
             <MenuItem>
-              <ItemName>{i18n.t('Fortnightly Statistics')}</ItemName>
+              <ItemName>Fortnightly Statistics</ItemName>
               <Go>
                 <Switch
                   trackColor={showFortnightly ? 'white' : '#f4f3f4'}
@@ -151,7 +150,7 @@ const PreferencesStack = ({ route, navigation }) => {
               </Go>
             </MenuItem>
             <MenuItem>
-              <ItemName>{i18n.t('Monthly Statistics')}</ItemName>
+              <ItemName>Monthly Statistics</ItemName>
               <Go>
                 <Switch
                   trackColor={showMonthly ? 'white' : '#f4f3f4'}
@@ -166,7 +165,7 @@ const PreferencesStack = ({ route, navigation }) => {
               </Go>
             </MenuItem>
             <MenuItem>
-              <ItemName>{i18n.t('Quarterly Statistics')}</ItemName>
+              <ItemName>Quarterly Statistics</ItemName>
               <Go>
                 <Switch
                   trackColor={showQuarterly ? 'white' : '#f4f3f4'}
@@ -181,7 +180,7 @@ const PreferencesStack = ({ route, navigation }) => {
               </Go>
             </MenuItem>
             <MenuItem>
-              <ItemName>{i18n.t('Yearly Statistics')}</ItemName>
+              <ItemName>Yearly Statistics</ItemName>
               <Go>
                 <Switch
                   trackColor={showYearly ? 'white' : '#f4f3f4'}

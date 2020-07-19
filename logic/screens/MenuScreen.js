@@ -3,20 +3,19 @@ import { Text } from 'react-native';
 import styled from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
-import i18n from 'i18n-js';
 
 const MenuScreen = ({ route, navigation }) => {
   return (
     <Section>
       <Bar>
-        <Title style={{ color: Colors.title }}>{i18n.t('Menu')}</Title>
+        <Title style={{ color: Colors.title }}>Menu</Title>
       </Bar>
       <Main>
         <MenuItem onPress={() => navigation.push('Me')}>
           <Icon>
             <Ionicons name='ios-contact' size={30} color={Colors.icons} />
           </Icon>
-          <ItemName>{i18n.t('Me')}</ItemName>
+          <ItemName>Me</ItemName>
           <Go>
             <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
           </Go>
@@ -25,7 +24,7 @@ const MenuScreen = ({ route, navigation }) => {
           <Icon>
             <Ionicons name='ios-options' size={30} color={Colors.icons} />
           </Icon>
-          <ItemName>{i18n.t('Preferences')}</ItemName>
+          <ItemName>Preferences</ItemName>
           <Go>
             <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
           </Go>
@@ -34,7 +33,7 @@ const MenuScreen = ({ route, navigation }) => {
           <Icon style={{ marginLeft: 0.5, opacity: 0.2 }}>
             <Ionicons name='ios-settings' size={30} color={Colors.icons} />
           </Icon>
-          <ItemName style={{ opacity: 0.2 }}>{i18n.t('Settings')}</ItemName>
+          <ItemName style={{ opacity: 0.2 }}>Settings</ItemName>
           <Go style={{ opacity: 0.2 }}>
             <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
           </Go>
@@ -47,16 +46,14 @@ const MenuScreen = ({ route, navigation }) => {
               color={Colors.icons}
             />
           </Icon>
-          <ItemName>{i18n.t('About')}</ItemName>
+          <ItemName>About</ItemName>
           <Go>
             <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
           </Go>
         </MenuItem>
       </Main>
       <Signature>
-        <Text style={{ color: Colors.titleFaded, letterSpacing: 2 }}>
-          {i18n.t('from')}
-        </Text>
+        <Text style={{ color: Colors.titleFaded, letterSpacing: 2 }}>from</Text>
         <Brand>Nmoerror</Brand>
       </Signature>
     </Section>
