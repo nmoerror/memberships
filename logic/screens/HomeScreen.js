@@ -60,15 +60,23 @@ const HomeScreen = ({ route, navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
+        let isMounted = true;
         try {
-          setMe(Settings.get('name'));
-          let val = await getItemAsync('memberships');
-          if (val) {
-            let parsedMembers = JSON.parse(val);
-            setMemberships(parsedMembers);
-            createClusters(parsedMembers);
+          if (isMounted) {
+            setMe(Settings.get('name'));
+            let val = await getItemAsync('memberships');
+            if (val && isMounted) {
+              let parsedMembers = JSON.parse(val);
+              setMemberships(parsedMembers);
+              createClusters(parsedMembers);
+            }
+
+            setToday(moment());
           }
-          setToday(moment());
+          return () => {
+            // clean up
+            isMounted = false;
+          };
         } catch (err) {}
       })();
     }, [route])

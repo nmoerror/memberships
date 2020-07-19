@@ -39,12 +39,19 @@ const PreferencesStack = ({ route, navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      setCurrency(Settings.get('currency') || 'Dollar');
-      setShowWeekly(Settings.get('showWeekly') == 1 ? true : false);
-      setShowFortnightly(Settings.get('showFortnightly') == 1 ? true : false);
-      setShowMonthly(Settings.get('showMonthly') == 1 ? true : false);
-      setShowQuarterly(Settings.get('showQuarterly') == 1 ? true : false);
-      setShowYearly(Settings.get('showYearly') == 1 ? true : false);
+      let isMounted = true;
+      if (isMounted) {
+        setCurrency(Settings.get('currency') || 'Dollar');
+        setShowWeekly(Settings.get('showWeekly') == 1 ? true : false);
+        setShowFortnightly(Settings.get('showFortnightly') == 1 ? true : false);
+        setShowMonthly(Settings.get('showMonthly') == 1 ? true : false);
+        setShowQuarterly(Settings.get('showQuarterly') == 1 ? true : false);
+        setShowYearly(Settings.get('showYearly') == 1 ? true : false);
+      }
+      return () => {
+        // clean up
+        isMounted = false;
+      };
     }, [])
   );
 

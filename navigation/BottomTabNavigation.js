@@ -55,5 +55,7 @@ function getHeaderTitle(route) {
       return 'My List';
     case 'Statistics':
       return 'Totals';
+    default:
+      return '';
   }
 }

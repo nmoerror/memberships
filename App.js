@@ -7,7 +7,7 @@ import translate from './logic/translations/languages';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import BottomTabNavigator from './navigation/BottomTabNavigation';
-import useLinking from './navigation/Linking';
+
 import AddModal from './logic/modals/AddModal';
 import EditModal from './logic/modals/EditModal';
 import AboutStack from './logic/screens/Stacks/AboutStack';
@@ -18,10 +18,6 @@ import moment from 'moment/min/moment-with-locales';
 
 const App = ({ skipLoadingScreen }) => {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-
-  const [initialNavigationState, setInitialNavigationState] = React.useState();
-  const containerRef = React.useRef();
-  const { getInitialState } = useLinking(containerRef);
 
   // Load resources prior app start
   React.useEffect(() => {
@@ -35,7 +31,6 @@ const App = ({ skipLoadingScreen }) => {
       try {
         SplashScreen.preventAutoHide();
         // Load our initial navigation state
-        setInitialNavigationState(await getInitialState());
       } catch (e) {
         console.warn(e);
       } finally {
@@ -51,46 +46,47 @@ const App = ({ skipLoadingScreen }) => {
   }
   const MainStack = createStackNavigator();
   const ModalStack = createStackNavigator();
+  const SideStack = createStackNavigator();
 
   const MainStackScreen = () => {
     return (
-      <MainStack.Navigator>
+      <SideStack.Navigator>
         <MainStack.Screen
           options={{
             headerShown: false,
           }}
-          name='Root'
+          name='Main'
           component={BottomTabNavigator}
         />
-        <MainStack.Screen
+        <SideStack.Screen
           options={{
             headerShown: false,
           }}
           name='About'
           component={AboutStack}
         />
-        <MainStack.Screen
+        <SideStack.Screen
           options={{
             headerShown: false,
           }}
           name='Me'
           component={MeStack}
         />
-        <MainStack.Screen
+        <SideStack.Screen
           options={{
             headerShown: false,
           }}
           name='Preferences'
           component={PreferencesStack}
         />
-        <MainStack.Screen
+        <SideStack.Screen
           options={{
             headerShown: false,
           }}
           name='Settings'
           component={SettingsStack}
         />
-      </MainStack.Navigator>
+      </SideStack.Navigator>
     );
   };
 
@@ -98,7 +94,7 @@ const App = ({ skipLoadingScreen }) => {
     return (
       <ModalStack.Navigator mode='modal'>
         <ModalStack.Screen
-          name='Main'
+          name='Root'
           component={MainStackScreen}
           options={{ headerShown: false }}
         />
@@ -132,8 +128,6 @@ const App = ({ skipLoadingScreen }) => {
             border: 'white',
           },
         }}
-        ref={containerRef}
-        initialState={initialNavigationState}
       >
         <ModalStacks />
       </NavigationContainer>

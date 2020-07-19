@@ -217,27 +217,40 @@ const StatisticsScreen = ({ route, navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
-        if (
-          showWeekly === undefined &&
-          showFortnightly === undefined &&
-          showMonthly === undefined &&
-          showQuarterly === undefined &&
-          showYearly === undefined
-        ) {
-          Settings.set({ showWeekly: 1 });
-          Settings.set({ showMonthly: 1 });
-          Settings.set({ showYearly: 1 });
-        }
-        setCurr(Currency);
-        setShowWeekly(Settings.get('showWeekly'));
-        setShowFortnightly(Settings.get('showFortnightly'));
-        setShowMonthly(Settings.get('showMonthly'));
-        setShowQuarterly(Settings.get('showQuarterly'));
-        setShowYearly(Settings.get('showYearly'));
+        let isMounted = true;
         try {
-          let val = await getItemAsync('memberships');
-          setMemberships(val ? JSON.parse(val) : []);
+          if (isMounted) {
+            if (
+              showWeekly === undefined &&
+              showFortnightly === undefined &&
+              showMonthly === undefined &&
+              showQuarterly === undefined &&
+              showYearly === undefined
+            ) {
+              if (isMounted) {
+                Settings.set({ showWeekly: 1 });
+                Settings.set({ showMonthly: 1 });
+                Settings.set({ showYearly: 1 });
+              }
+            }
+            if (isMounted) {
+              setCurr(Currency);
+              setShowWeekly(Settings.get('showWeekly'));
+              setShowFortnightly(Settings.get('showFortnightly'));
+              setShowMonthly(Settings.get('showMonthly'));
+              setShowQuarterly(Settings.get('showQuarterly'));
+              setShowYearly(Settings.get('showYearly'));
+
+              let val = await getItemAsync('memberships');
+              setMemberships(val ? JSON.parse(val) : []);
+            }
+          }
         } catch (err) {}
+
+        return () => {
+          // clean up
+          isMounted = false;
+        };
       })();
     }, [route])
   );
@@ -266,7 +279,15 @@ const StatisticsScreen = ({ route, navigation }) => {
     let total = 0;
     let universalMeasures = [
       {
+        name: 'Bill',
+        amount: 0,
+      },
+      {
         name: 'Company',
+        amount: 0,
+      },
+      {
+        name: 'Credit',
         amount: 0,
       },
       {
@@ -302,6 +323,10 @@ const StatisticsScreen = ({ route, navigation }) => {
         amount: 0,
       },
       {
+        name: 'Subscription',
+        amount: 0,
+      },
+      {
         name: 'Subscriptions',
         amount: 0,
       },
@@ -314,33 +339,28 @@ const StatisticsScreen = ({ route, navigation }) => {
     memberships.forEach(({ ...item }) => {
       if (item.paymentInterval === 'Weekly') {
         let week = parseFloat(item.amount * 52.1);
-        universalMeasures.find(
-          (e) => e.name === item.type
-        ).amount += parseFloat(week.toFixed(2));
+        let a = universalMeasures.find((e) => e.name === item.type);
+        a ? (a.amount += parseFloat(week.toFixed(2))) : '';
         total += week;
       } else if (item.paymentInterval === 'Fortnightly') {
         let fort = parseFloat(item.amount * 26.0714);
-        universalMeasures.find(
-          (e) => e.name === item.type
-        ).amount += parseFloat(fort.toFixed(2));
+        let a = universalMeasures.find((e) => e.name === item.type);
+        a ? (a.amount += parseFloat(fort.toFixed(2))) : '';
         total += fort;
       } else if (item.paymentInterval === 'Monthly') {
         let month = parseFloat(item.amount * 12);
-        universalMeasures.find(
-          (e) => e.name === item.type
-        ).amount += parseFloat(month.toFixed(2));
+        let a = universalMeasures.find((e) => e.name === item.type);
+        a ? (a.amount += parseFloat(month.toFixed(2))) : '';
         total += month;
       } else if (item.paymentInterval === 'Quarterly') {
         let quarter = parseFloat(item.amount * 4);
-        universalMeasures.find(
-          (e) => e.name === item.type
-        ).amount += parseFloat(quarter.toFixed(2));
+        let a = universalMeasures.find((e) => e.name === item.type);
+        a ? (a.amount += parseFloat(quarter.toFixed(2))) : '';
         total += quarter;
       } else if (item.paymentInterval === 'Yearly') {
         let year = parseFloat(item.amount);
-        universalMeasures.find(
-          (e) => e.name === item.type
-        ).amount += parseFloat(year.toFixed(2));
+        let a = universalMeasures.find((e) => e.name === item.type);
+        a ? (a.amount += parseFloat(year.toFixed(2))) : '';
         total += year;
       }
     });
