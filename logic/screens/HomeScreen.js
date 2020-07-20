@@ -188,7 +188,7 @@ const HomeScreen = ({ route, navigation }) => {
           <Greet />
         </Title>
         {memberships.length && me ? (
-          <SubIntro>statistics for you</SubIntro>
+          <SubIntro>I have created statistics for you.</SubIntro>
         ) : null}
         <AddItem
           onPress={() =>

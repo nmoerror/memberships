@@ -57,7 +57,10 @@ const EditModal = ({ route, navigation }) => {
         item.quarterDay && setQuarterDay(item.quarterDay);
         item.yearDay && setYearDay(item.yearDay);
         setAmount(item.amount);
-        item.expiryDate && setExpiryDate(item.expiryDate);
+        if (item.expiryDate) {
+          setExpiryDate(item.expiryDate);
+          setAddExpiryDate(true);
+        }
         setCurr(Currency);
       }
       return () => {
