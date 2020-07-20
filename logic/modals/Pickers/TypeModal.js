@@ -1,7 +1,6 @@
 import React from 'react';
 import { PickerIOS } from '@react-native-community/picker';
 import Colors from '../../constants/Colors';
-import i18n from 'i18n-js';
 
 const TypeModal = ({ type, setType }) => (
   <PickerIOS
@@ -20,49 +19,29 @@ const TypeModal = ({ type, setType }) => (
     }}
     onValueChange={(e) => setType(e)}
   >
+    <PickerIOS.Item color={Colors.icons} label='Company' value='Company' />
+    <PickerIOS.Item color={Colors.icons} label='Debt' value='Debt' />
+    <PickerIOS.Item color={Colors.icons} label='Family' value='Family' />
+    <PickerIOS.Item color={Colors.icons} label='Home' value='Home' />
     <PickerIOS.Item
       color={Colors.icons}
-      label={i18n.t('Company')}
-      value='Company'
-    />
-    <PickerIOS.Item color={Colors.icons} label={i18n.t('Debt')} value='Debt' />
-    <PickerIOS.Item
-      color={Colors.icons}
-      label={i18n.t('Family')}
-      value='Family'
-    />
-    <PickerIOS.Item color={Colors.icons} label={i18n.t('Home')} value='Home' />
-    <PickerIOS.Item
-      color={Colors.icons}
-      label={i18n.t('Investments')}
+      label='Investments'
       value='Investments'
     />
+    <PickerIOS.Item color={Colors.icons} label='Leisure' value='Leisure' />
     <PickerIOS.Item
       color={Colors.icons}
-      label={i18n.t('Leisure')}
-      value='Leisure'
-    />
-    <PickerIOS.Item
-      color={Colors.icons}
-      label={i18n.t('Memberships')}
+      label='Memberships'
       value='Memberships'
     />
+    <PickerIOS.Item color={Colors.icons} label='Education' value='Education' />
+    <PickerIOS.Item color={Colors.icons} label='Services' value='Services' />
     <PickerIOS.Item
       color={Colors.icons}
-      label={i18n.t('Education')}
-      value='Education'
-    />
-    <PickerIOS.Item
-      color={Colors.icons}
-      label={i18n.t('Services')}
-      value='Services'
-    />
-    <PickerIOS.Item
-      color={Colors.icons}
-      label={i18n.t('Subscriptions')}
+      label='Subscriptions'
       value='Subscriptions'
     />
-    <PickerIOS.Item color={Colors.icons} label={i18n.t('Work')} value='Work' />
+    <PickerIOS.Item color={Colors.icons} label='Work' value='Work' />
   </PickerIOS>
 );
 

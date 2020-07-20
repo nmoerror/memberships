@@ -5,7 +5,6 @@ import Colors from '../constants/Colors';
 import { Dimensions, Settings, ScrollView, View } from 'react-native';
 import Statistics from '../components/Statistics';
 import { Currency } from '../constants/Options';
-import i18n from 'i18n-js';
 import { Ionicons } from '@expo/vector-icons';
 import { VictoryPie, VictoryLegend } from 'victory-native';
 
@@ -255,9 +254,11 @@ const StatisticsScreen = ({ route, navigation }) => {
     }, [route])
   );
 
-  useFocusEffect(() => {
-    scrollAnim?.current?.flashScrollIndicators();
-  });
+  useFocusEffect(
+    React.useCallback(() => {
+      scrollAnim?.current?.flashScrollIndicators();
+    })
+  );
 
   useFocusEffect(() => {
     const unsubscribe = navigation.addListener('tabPress', (e) => {
@@ -375,9 +376,7 @@ const StatisticsScreen = ({ route, navigation }) => {
   return (
     <Section>
       <Bar>
-        <Title style={{ color: Colors.title }}>
-          {i18n.t('Total Expenses')}
-        </Title>
+        <Title style={{ color: Colors.title }}>Total Expenses</Title>
       </Bar>
       <ScrollView
         horizontal={true}
@@ -407,18 +406,16 @@ const StatisticsScreen = ({ route, navigation }) => {
                 x='name'
                 y='amount'
                 labels={({ datum }) =>
-                  `${i18n.t(datum.xName)}\n ${curr}${parseInt(datum.amount)
+                  `${datum.xName}\n ${curr}${parseInt(datum.amount)
                     .toFixed(0)
-                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}/${i18n.t(
-                    'pYear'
-                  )} (${Math.round(
+                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}/y (${Math.round(
                     parseFloat(datum.amount / datum.total) * 100
                   )}%)`
                 }
               />
             </View>
           ) : null}
-          <SummaryTitle>{i18n.t('Summary')}</SummaryTitle>
+          <SummaryTitle>Summary</SummaryTitle>
           {showWeekly ? (
             <TotalItem
               onPress={() => {
@@ -426,7 +423,7 @@ const StatisticsScreen = ({ route, navigation }) => {
               }}
             >
               <Bubble>
-                <IntervalText>{i18n.t('Weekly')}</IntervalText>
+                <IntervalText>Weekly</IntervalText>
               </Bubble>
               <Total>
                 {curr} {weeklyTotal()}
@@ -443,7 +440,7 @@ const StatisticsScreen = ({ route, navigation }) => {
           {showFortnightly ? (
             <TotalItemNoPress>
               <Bubble>
-                <IntervalText>{i18n.t('Fortnightly')}</IntervalText>
+                <IntervalText>Fortnightly</IntervalText>
               </Bubble>
               <Total>
                 {curr} {fortnightlyTotal()}
@@ -460,7 +457,7 @@ const StatisticsScreen = ({ route, navigation }) => {
               }
             >
               <Bubble>
-                <IntervalText>{i18n.t('Monthly')}</IntervalText>
+                <IntervalText>Monthly</IntervalText>
               </Bubble>
               <Total>
                 {curr} {monthlyTotal()}
@@ -477,7 +474,7 @@ const StatisticsScreen = ({ route, navigation }) => {
           {showQuarterly ? (
             <TotalItemNoPress>
               <Bubble>
-                <IntervalText>{i18n.t('Quarterly')}</IntervalText>
+                <IntervalText>Quarterly</IntervalText>
               </Bubble>
               <Total>
                 {curr} {quarterlyTotal()}
@@ -492,7 +489,7 @@ const StatisticsScreen = ({ route, navigation }) => {
               }}
             >
               <Bubble>
-                <IntervalText>{i18n.t('Yearly')}</IntervalText>
+                <IntervalText>Yearly</IntervalText>
               </Bubble>
               <Total>
                 {curr} {yearlyTotal()}
@@ -512,7 +509,7 @@ const StatisticsScreen = ({ route, navigation }) => {
             {showWeekly ? (
               <View style={{ flexDirection: 'column' }}>
                 <EntireSectionTitleRow>
-                  <SectionTitle>{i18n.t('Weekly')}</SectionTitle>
+                  <SectionTitle>Weekly</SectionTitle>
                   <SectionTotal>
                     {curr} {wT}
                   </SectionTotal>
@@ -530,7 +527,7 @@ const StatisticsScreen = ({ route, navigation }) => {
             {showMonthly ? (
               <View style={{ flexDirection: 'column' }}>
                 <EntireSectionTitleRow>
-                  <SectionTitle>{i18n.t('Monthly')}</SectionTitle>
+                  <SectionTitle>Monthly</SectionTitle>
                   <SectionTotal>
                     {curr} {mT}
                   </SectionTotal>
@@ -548,7 +545,7 @@ const StatisticsScreen = ({ route, navigation }) => {
             {showYearly ? (
               <View style={{ flexDirection: 'column' }}>
                 <EntireSectionTitleRow>
-                  <SectionTitle>{i18n.t('Yearly')}</SectionTitle>
+                  <SectionTitle>Yearly</SectionTitle>
                   <SectionTotal>
                     {curr} {yT}
                   </SectionTotal>

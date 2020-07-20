@@ -3,16 +3,12 @@ import { Settings } from 'react-native';
 import styled from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
-import i18n from 'i18n-js';
 
 const MeStack = ({ route, navigation }) => {
   const [name, setName] = useState(Settings.get('name') || '');
-  const [email, setEmail] = useState(Settings.get('email') || '');
-  const [errName, setErrName] = useState();
 
   const saveMe = () => {
     Settings.set({ name: name });
-    Settings.set({ email: email });
     navigation.goBack();
   };
 
@@ -22,30 +18,20 @@ const MeStack = ({ route, navigation }) => {
         <CancelItem onPress={() => navigation.goBack()}>
           <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
         </CancelItem>
-        <Title style={{ color: Colors.title }}>{i18n.t('Me')}</Title>
+        <Title style={{ color: Colors.title }}>Me</Title>
         <SaveItem onPress={() => saveMe()}>
           <Ionicons name='ios-checkmark' size={45} color={Colors.icons} />
         </SaveItem>
       </Bar>
       <Main>
         <Form>
-          <InputField err={errName}>
-            <InputText>{i18n.t('Name')}:</InputText>
+          <InputField>
+            <InputText>Name:</InputText>
             <Input
               name='name'
               value={name}
               onChangeText={(e) => {
                 setName(e);
-              }}
-            />
-          </InputField>
-          <InputField>
-            <InputText>{i18n.t('Email')}:</InputText>
-            <Input
-              email='email'
-              value={email}
-              onChangeText={(e) => {
-                setEmail(e);
               }}
             />
           </InputField>
@@ -96,7 +82,7 @@ const InputField = styled.View`
   flex-direction: row;
   align-items: center;
   min-height: 50px;
-  background: ${(props) => (props.err ? props.err : 'rgba(180,180,180,0.1)')};
+  background: rgba(180,180,180,0.1);
   margin: 5px;
   border-radius: 5px;
 `;

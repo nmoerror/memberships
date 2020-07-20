@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
-import i18n from 'i18n-js';
 
 const SettingsStack = ({ route, navigation }) => {
   const [notifyOnDueDate, setNotifyOnDueDate] = useState(false);
@@ -21,12 +20,12 @@ const SettingsStack = ({ route, navigation }) => {
         <CancelItem onPress={() => navigation.goBack()}>
           <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
         </CancelItem>
-        <Title style={{ color: Colors.title }}>{i18n.t('Settings')}</Title>
+        <Title style={{ color: Colors.title }}>Settings</Title>
       </Bar>
       <Main>
-        <SectionTitle>{i18n.t('Notifications')}</SectionTitle>
+        <SectionTitle>Notifications</SectionTitle>
         <MenuItem>
-          <ItemName>{i18n.t('On expense due date')}</ItemName>
+          <ItemName>On expense due date</ItemName>
           <Go>
             <Switch
               trackColor={notifyOnDueDate ? 'white' : '#f4f3f4'}
@@ -38,7 +37,7 @@ const SettingsStack = ({ route, navigation }) => {
           </Go>
         </MenuItem>
         <MenuItem>
-          <ItemName>{i18n.t('Start of the week summary')}</ItemName>
+          <ItemName>Start of the week summary</ItemName>
           <Go>
             <Switch
               trackColor={notifyOnDueDate ? 'white' : '#f4f3f4'}
@@ -50,7 +49,7 @@ const SettingsStack = ({ route, navigation }) => {
           </Go>
         </MenuItem>
         <MenuItem>
-          <ItemName>{i18n.t('Start of the month summary')}</ItemName>
+          <ItemName>Start of the month summary</ItemName>
           <Go>
             <Switch
               trackColor={notifyOnDueDate ? 'white' : '#f4f3f4'}

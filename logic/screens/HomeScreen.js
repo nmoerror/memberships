@@ -13,8 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import { Currency } from '../constants/Options';
-import i18n from 'i18n-js';
-import moment from 'moment/min/moment-with-locales';
+import moment from 'moment';
 
 // Async Storage
 import {
@@ -28,13 +27,13 @@ const wh = Dimensions.get('window').height;
 const HomeScreen = ({ route, navigation }) => {
   const [memberships, setMemberships] = useState([]);
   const [clusters, setClusters] = useState([]);
-  const [me, setMe] = useState(Settings.get('name'));
+  const [me, setMe] = useState('');
   const [today, setToday] = useState(moment());
   const [timeDefaults, setTimeDefaults] = useState({
-    sameDay: `[${i18n.t('Today')}]`,
-    nextDay: `[${i18n.t('Tomorrow')}]`,
+    sameDay: '[Today]',
+    nextDay: '[Tomorrow]',
     nextWeek: 'dddd',
-    lastDay: `[${i18n.t('Yesterday')}]`,
+    lastDay: '[Yesterday]',
     lastWeek: '[Last] dddd',
     sameElse: 'LL',
   });
@@ -46,6 +45,7 @@ const HomeScreen = ({ route, navigation }) => {
     });
     setClusters([...new Set(clus)].sort());
   };
+
   const reset = async () => {
     try {
       let val = await getItemAsync('memberships');
@@ -59,8 +59,8 @@ const HomeScreen = ({ route, navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
+      let isMounted = true;
       (async () => {
-        let isMounted = true;
         try {
           if (isMounted) {
             setMe(Settings.get('name'));
@@ -70,14 +70,13 @@ const HomeScreen = ({ route, navigation }) => {
               setMemberships(parsedMembers);
               createClusters(parsedMembers);
             }
-
             setToday(moment());
           }
-          return () => {
-            // clean up
-            isMounted = false;
-          };
         } catch (err) {}
+        return () => {
+          // clean up
+          isMounted = false;
+        };
       })();
     }, [route])
   );
@@ -85,46 +84,12 @@ const HomeScreen = ({ route, navigation }) => {
   const Greet = () => {
     let time = new Date().getHours();
     if (time < 12) {
-      return me ? `${i18n.t('Good Morning')}${me}` : i18n.t('Overview');
+      return me ? `Good Morning ${me}` : 'Overview';
     } else if (time < 18) {
-      return me ? `${i18n.t('Good Afternoon')}${me}` : i18n.t('Overview');
+      return me ? `Good Afternoon ${me}` : 'Overview';
     } else {
-      return me ? `${i18n.t('Good Evening')}${me}` : i18n.t('Overview');
+      return me ? `Good Evening ${me}` : 'Overview';
     }
-  };
-
-  const longPress = (item) => {
-    Platform.OS === 'ios' &&
-      ActionSheetIOS.showActionSheetWithOptions(
-        {
-          options: [i18n.t('Cancel'), i18n.t('Edit'), i18n.t('Delete')],
-          destructiveButtonIndex: 2,
-          cancelButtonIndex: 0,
-        },
-        (buttonIndex) => {
-          if (buttonIndex === 0) {
-            // cancel action
-          } else if (buttonIndex === 1) {
-            navigation.push('Edit', {
-              item,
-              memberships,
-            });
-          } else if (buttonIndex === 2) {
-            (async () => {
-              try {
-                let newMemberships = memberships.filter(
-                  (element) => element.id !== item.id
-                );
-                await setItemAsync(
-                  'memberships',
-                  JSON.stringify(newMemberships)
-                );
-                reset();
-              } catch (err) {}
-            })();
-          }
-        }
-      );
   };
 
   const refactorDate = (item, itemID) => {
@@ -166,37 +131,45 @@ const HomeScreen = ({ route, navigation }) => {
   const NextPayment = (item) => {
     switch (item.paymentInterval) {
       case 'Weekly':
-        item.weekDay &&
-          moment(item.weekDay).isBefore(today, 'day') &&
+        if (item.weekDay && moment(item.weekDay).isBefore(today, 'day')) {
           refactorDate('Weekly', item.id);
+          return;
+        }
         return item.weekDay
           ? moment(item.weekDay).calendar(null, timeDefaults)
           : '';
       case 'Fortnightly':
-        item.fortnightDay &&
-          moment(item.fortnightDay).isBefore(today, 'day') &&
+        if (
+          item.fortnightDay &&
+          moment(item.fortnightDay).isBefore(today, 'day')
+        ) {
           refactorDate('Fortnightly', item.id);
+          return;
+        }
         return item.fortnightDay
           ? moment(item.fortnightDay).calendar(null, timeDefaults)
           : '';
       case 'Monthly':
-        item.monthDay &&
-          moment(item.monthDay).isBefore(today, 'day') &&
+        if (item.monthDay && moment(item.monthDay).isBefore(today, 'day')) {
           refactorDate('Monthly', item.id);
+          return;
+        }
         return item.monthDay
           ? moment(item.monthDay).calendar(null, timeDefaults)
           : '';
       case 'Quarterly':
-        item.quarterDay &&
-          moment(item.quarterDay).isBefore(today, 'day') &&
+        if (item.quarterDay && moment(item.quarterDay).isBefore(today, 'day')) {
           refactorDate('Quarterly', item.id);
+          return;
+        }
         return item.quarterDay
           ? moment(item.quarterDay).calendar(null, timeDefaults)
           : '';
       case 'Yearly':
-        item.yearDay &&
-          moment(item.yearDay).isBefore(today, 'day') &&
+        if (item.yearDay && moment(item.yearDay).isBefore(today, 'day')) {
           refactorDate('Yearly', item.id);
+          return;
+        }
         return item.yearDay
           ? moment(item.yearDay).calendar(null, timeDefaults)
           : '';
@@ -215,7 +188,7 @@ const HomeScreen = ({ route, navigation }) => {
           <Greet />
         </Title>
         {memberships.length && me ? (
-          <SubIntro>{i18n.t('statistics for you')}</SubIntro>
+          <SubIntro>I have created statistics for you.</SubIntro>
         ) : null}
         <AddItem
           onPress={() =>
@@ -239,14 +212,13 @@ const HomeScreen = ({ route, navigation }) => {
           <Items>
             {clusters.map((cluster) => (
               <Cluster key={cluster}>
-                <ClusterTitle>{i18n.t(cluster)}</ClusterTitle>
+                <ClusterTitle>{cluster}</ClusterTitle>
                 <Division />
                 {memberships.map((item) => {
                   if (item.type === cluster) {
                     return (
                       <Fragment key={item.id}>
                         <Item
-                          onLongPress={() => longPress(item)}
                           onPress={() =>
                             navigation.push('Edit', { item, memberships })
                           }
@@ -286,9 +258,7 @@ const HomeScreen = ({ route, navigation }) => {
                                 }
                               </SecondaryText>
                             </Row>
-                            <ItemInterval>
-                              {i18n.t(`${item.paymentInterval}`)}
-                            </ItemInterval>
+                            <ItemInterval>{item.paymentInterval}</ItemInterval>
                           </More>
                         </Item>
                       </Fragment>
@@ -301,9 +271,9 @@ const HomeScreen = ({ route, navigation }) => {
         ) : (
           <EmptyView>
             <SecondaryAddText>
-              {i18n.t('I am your new best expense tracker !')}
+              I am your new best expense tracker !
             </SecondaryAddText>
-            <AddText>{i18n.t('Click the icon to start tracking')}</AddText>
+            <AddText>Click the icon to start tracking</AddText>
           </EmptyView>
         )}
       </ScrollView>

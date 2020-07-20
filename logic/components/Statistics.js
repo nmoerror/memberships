@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
-import i18n from 'i18n-js';
 
 const Statistics = ({ memberships, curr }) => {
   const [total, setTotal] = useState(0);
 
-  useFocusEffect(() => {
-    let total = 0;
-    memberships.forEach((item) => (total += parseFloat(item.amount)));
-    setTotal(total);
-  });
+  useFocusEffect(
+    React.useCallback(() => {
+      let total = 0;
+      memberships.forEach((item) => (total += parseFloat(item.amount)));
+      setTotal(total);
+    }, [])
+  );
 
   const calculatePercentage = (amount) => {
     return Math.round((parseFloat(amount) / total) * 100);
@@ -26,7 +27,7 @@ const Statistics = ({ memberships, curr }) => {
             <Item key={membership.id}>
               <RowView>
                 <Name>{membership.name}</Name>
-                <Type>{i18n.t(membership.type)}</Type>
+                <Type>{membership.type}</Type>
               </RowView>
               <Division />
               <RowAmount>
