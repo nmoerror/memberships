@@ -10,6 +10,7 @@ import AboutStack from './logic/screens/Stacks/AboutStack';
 import MeStack from './logic/screens/Stacks/MeStack';
 import PreferencesStack from './logic/screens/Stacks/PreferencesStack';
 import SettingsStack from './logic/screens/Stacks/SettingsStack';
+import ClusterStack from './logic/screens/Stacks/ClusterStack/ClusterStack';
 
 const App = ({ skipLoadingScreen }) => {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -75,6 +76,13 @@ const App = ({ skipLoadingScreen }) => {
           }}
           name='Settings'
           component={SettingsStack}
+        />
+        <SideStack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name='Cluster'
+          component={ClusterStack}
         />
       </SideStack.Navigator>
     );

@@ -16,3 +16,12 @@ export const Currency = () => {
       return '$';
   }
 };
+
+export const TimeDefaults = {
+  sameDay: '[Today]',
+  nextDay: '[Tomorrow]',
+  nextWeek: 'dddd',
+  lastDay: '[Yesterday]',
+  lastWeek: '[Last] dddd',
+  sameElse: 'LL',
+};

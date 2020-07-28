@@ -17,7 +17,11 @@ const MenuScreen = ({ route, navigation }) => {
           </Icon>
           <ItemName>Me</ItemName>
           <Go>
-            <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
+            <Ionicons
+              name='ios-arrow-forward'
+              size={20}
+              color={Colors.goIcon}
+            />
           </Go>
         </MenuItem>
         <MenuItem onPress={() => navigation.push('Preferences')}>
@@ -26,7 +30,11 @@ const MenuScreen = ({ route, navigation }) => {
           </Icon>
           <ItemName>Preferences</ItemName>
           <Go>
-            <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
+            <Ionicons
+              name='ios-arrow-forward'
+              size={20}
+              color={Colors.goIcon}
+            />
           </Go>
         </MenuItem>
         <MenuItem onPress={() => {}}>
@@ -35,7 +43,11 @@ const MenuScreen = ({ route, navigation }) => {
           </Icon>
           <ItemName style={{ opacity: 0.2 }}>Settings</ItemName>
           <Go style={{ opacity: 0.2 }}>
-            <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
+            <Ionicons
+              name='ios-arrow-forward'
+              size={20}
+              color={Colors.goIcon}
+            />
           </Go>
         </MenuItem>
         <MenuItem onPress={() => navigation.push('About')}>
@@ -48,7 +60,11 @@ const MenuScreen = ({ route, navigation }) => {
           </Icon>
           <ItemName>About</ItemName>
           <Go>
-            <Ionicons name='ios-arrow-forward' size={20} color={Colors.icons} />
+            <Ionicons
+              name='ios-arrow-forward'
+              size={20}
+              color={Colors.goIcon}
+            />
           </Go>
         </MenuItem>
       </Main>
@@ -94,7 +110,6 @@ const ItemName = styled.Text`
 
 const Go = styled.View`
   margin: auto 0 auto auto;
-  opacity: 0.7;
 `;
 
 const Signature = styled.View`
