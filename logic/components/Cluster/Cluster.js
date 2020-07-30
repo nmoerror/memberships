@@ -168,6 +168,8 @@ const Cluster = ({
         onPress={() =>
           navigation.push('Cluster', {
             sectionName: cluster,
+            percentage: cluster.length > 5 ? 80 : 20,
+            income: 90000,
           })
         }
       >

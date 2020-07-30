@@ -50,11 +50,11 @@ const HomeScreen = ({ route, navigation }) => {
             setToday(moment());
           }
         } catch (err) {}
-        return () => {
-          // clean up
-          isMounted = false;
-        };
       })();
+      return () => {
+        // clean up
+        isMounted = false;
+      };
     }, [route])
   );
 
@@ -71,7 +71,12 @@ const HomeScreen = ({ route, navigation }) => {
 
   return (
     <Section>
-      <Bar me={me} memberships={memberships} navigation={navigation} />
+      <Bar
+        home={true}
+        me={me}
+        memberships={memberships}
+        navigation={navigation}
+      />
       <HomeScrollView>
         <Items>
           {clusters.map((cluster) => (
