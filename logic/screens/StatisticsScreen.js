@@ -644,7 +644,7 @@ const Bubble = styled.View`
   position: absolute;
   left: 0;
   top: 0;
-  background-color: ${Colors.tabIconSelectedFaded}
+  background-color: ${Colors.tabIconSelectedFaded};
   height: 100%;
   width: 100px;
   border-top-left-radius: 20px;

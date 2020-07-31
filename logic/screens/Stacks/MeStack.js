@@ -78,11 +78,11 @@ const Form = styled.View`
 `;
 
 const InputField = styled.View`
-  padding: 5px 20px
+  padding: 5px 20px;
   flex-direction: row;
   align-items: center;
   min-height: 50px;
-  background: rgba(180,180,180,0.1);
+  background: rgba(180, 180, 180, 0.1);
   margin: 5px;
   border-radius: 5px;
 `;

@@ -73,11 +73,11 @@ const HomeScreen = ({ route, navigation }) => {
             setToday(moment());
           }
         } catch (err) {}
-        return () => {
-          // clean up
-          isMounted = false;
-        };
       })();
+      return () => {
+        // clean up
+        isMounted = false;
+      };
     }, [route])
   );
 
@@ -351,7 +351,7 @@ const ItemInterval = styled.Text`
 const Division = styled.View`
   height: 1px;
   width: 100%;
-  background: ${Colors.tabIconSelectedFaded}
+  background: ${Colors.tabIconSelectedFaded};
   margin-bottom: 5px;
 `;
 

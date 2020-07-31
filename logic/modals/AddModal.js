@@ -463,7 +463,7 @@ const FormTitle = styled.Text`
 `;
 
 const InputField = styled.View`
-  padding: 5px 20px
+  padding: 5px 20px;
   flex-direction: row;
   align-items: center;
   min-height: 50px;
