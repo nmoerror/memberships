@@ -11,7 +11,6 @@ const ClusterStack = ({ route, navigation }) => {
   const [sectionTotal, setSectionTotal] = useState([]);
 
   const calculateTotal = () => {
-    console.log(memberships);
     let arr = 0;
 
     // Good but doesnt take into consideration the intervals !
@@ -20,7 +19,7 @@ const ClusterStack = ({ route, navigation }) => {
         arr += parseFloat(element.amount);
       }
     });
-    console.log(arr);
+
     setSectionTotal(arr);
   };
 
