@@ -7,7 +7,32 @@ import Colors from '../../../constants/Colors';
 import Svg, { Circle } from 'react-native-svg';
 
 const ClusterStack = ({ route, navigation }) => {
-  const { sectionName, percentage, income } = route.params;
+  const { sectionName, percentage, income, memberships } = route.params;
+  const [sectionTotal, setSectionTotal] = useState([]);
+
+  const calculateTotal = () => {
+    console.log(memberships);
+    let arr = 0;
+
+    // Good but doesnt take into consideration the intervals !
+    memberships.forEach((element) => {
+      if (element.type === sectionName) {
+        arr += parseFloat(element.amount);
+      }
+    });
+    console.log(arr);
+    setSectionTotal(arr);
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      let mounted = true;
+      mounted && calculateTotal();
+      return () => {
+        mounted = false;
+      };
+    }, [])
+  );
 
   const checkExpenseRatio = (exp) => {
     if (exp < 34) {

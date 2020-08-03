@@ -34,6 +34,7 @@ const Cluster = ({
   timeDefaults,
   navigation,
   setMemberships,
+  income,
 }) => {
   //TEST
   const reset = async () => {
@@ -169,7 +170,8 @@ const Cluster = ({
           navigation.push('Cluster', {
             sectionName: cluster,
             percentage: cluster.length > 5 ? 80 : 20,
-            income: 90000,
+            income: income,
+            memberships: memberships,
           })
         }
       >

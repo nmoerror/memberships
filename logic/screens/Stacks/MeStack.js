@@ -6,9 +6,11 @@ import Colors from '../../constants/Colors';
 
 const MeStack = ({ route, navigation }) => {
   const [name, setName] = useState(Settings.get('name') || '');
+  const [income, setIncome] = useState(Settings.get('income') || 0);
 
   const saveMe = () => {
     Settings.set({ name: name });
+    Settings.set({ income: income });
     navigation.goBack();
   };
 
@@ -33,6 +35,19 @@ const MeStack = ({ route, navigation }) => {
               onChangeText={(e) => {
                 setName(e);
               }}
+            />
+          </InputField>
+          <InputField>
+            <InputText>My income (Per Anum)</InputText>
+            <Input
+              name='income'
+              value={income}
+              onChangeText={(e) => {
+                if (!isNaN(e)) {
+                  setIncome(e);
+                }
+              }}
+              keyboardType='numeric'
             />
           </InputField>
         </Form>
@@ -78,11 +93,11 @@ const Form = styled.View`
 `;
 
 const InputField = styled.View`
-  padding: 5px 20px
+  padding: 5px 20px;
   flex-direction: row;
   align-items: center;
   min-height: 50px;
-  background: rgba(180,180,180,0.1);
+  background: rgba(180, 180, 180, 0.1);
   margin: 5px;
   border-radius: 5px;
 `;

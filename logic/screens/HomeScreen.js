@@ -25,6 +25,7 @@ const HomeScreen = ({ route, navigation }) => {
   const [clusters, setClusters] = useState([]);
   const [me, setMe] = useState('');
   const [today, setToday] = useState(moment());
+  const [income, setIncome] = useState(Settings.get('income') || 0);
 
   const createClusters = (parsedMembers) => {
     let clus = [];
@@ -47,7 +48,8 @@ const HomeScreen = ({ route, navigation }) => {
               setMemberships(parsedMembers);
               createClusters(parsedMembers);
             }
-            setToday(moment());
+            isMounted && setToday(moment());
+            isMounted && setIncome(Settings.get('income' || 0));
           }
         } catch (err) {}
       })();
@@ -89,6 +91,7 @@ const HomeScreen = ({ route, navigation }) => {
               timeDefaults={TimeDefaults}
               navigation={navigation}
               setMemberships={setMemberships}
+              income={income}
             />
           ))}
         </Items>
