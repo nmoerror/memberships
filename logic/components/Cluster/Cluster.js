@@ -36,14 +36,12 @@ const Cluster = ({
   setMemberships,
   income,
 }) => {
-  //TEST
   const reset = async () => {
     try {
       let val = await getItemAsync('memberships');
       if (val) {
         let parsedMembers = JSON.parse(val);
         setMemberships(parsedMembers);
-        // createClusters(parsedMembers);
       }
     } catch (err) {}
   };

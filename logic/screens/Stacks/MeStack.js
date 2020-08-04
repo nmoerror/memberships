@@ -28,7 +28,7 @@ const MeStack = ({ route, navigation }) => {
       <Main>
         <Form>
           <InputField>
-            <InputText>Name:</InputText>
+            <InputText>First Name</InputText>
             <Input
               name='name'
               value={name}
@@ -38,7 +38,7 @@ const MeStack = ({ route, navigation }) => {
             />
           </InputField>
           <InputField>
-            <InputText>My income (Per Anum)</InputText>
+            <InputText>My income (annual)</InputText>
             <Input
               name='income'
               value={income}
@@ -97,9 +97,9 @@ const InputField = styled.View`
   flex-direction: row;
   align-items: center;
   min-height: 50px;
-  background: rgba(180, 180, 180, 0.1);
-  margin: 5px;
+  margin: 5px 0;
   border-radius: 5px;
+  text-align: right;
 `;
 
 const InputText = styled.Text`
@@ -116,6 +116,7 @@ const Input = styled.TextInput`
   color: ${Colors.icons};
   opacity: 0.9;
   font-size: 16px;
+  text-align: right;
 `;
 
 export default MeStack;

@@ -5,22 +5,21 @@ import { useFocusEffect } from '@react-navigation/native';
 import Bar from '../../../components/Bar/Bar';
 import Colors from '../../../constants/Colors';
 import Svg, { Circle } from 'react-native-svg';
+import { universalPercentage } from '../../../constants/Helpers';
+import { Currency } from '../../../constants/Options';
 
 const ClusterStack = ({ route, navigation }) => {
-  const { sectionName, percentage, income, memberships } = route.params;
-  const [sectionTotal, setSectionTotal] = useState([]);
+  const { sectionName, memberships } = route.params;
+  const [curr, setCurr] = useState(Currency);
+  const [sectionTotal, setSectionTotal] = useState({});
+  const [income, setIncome] = useState(Settings.get('income') || 0);
 
   const calculateTotal = () => {
-    let arr = 0;
-
-    // Good but doesnt take into consideration the intervals !
-    memberships.forEach((element) => {
-      if (element.type === sectionName) {
-        arr += parseFloat(element.amount);
-      }
+    let a = universalPercentage(memberships);
+    a = a.find((a) => {
+      return a.name === sectionName;
     });
-
-    setSectionTotal(arr);
+    setSectionTotal(a);
   };
 
   useFocusEffect(
@@ -33,14 +32,8 @@ const ClusterStack = ({ route, navigation }) => {
     }, [])
   );
 
-  const checkExpenseRatio = (exp) => {
-    if (exp < 34) {
-      return 'green';
-    } else if (exp < 67) {
-      return 'yellow';
-    } else {
-      return 'red';
-    }
+  const percentage = () => {
+    return Math.round((sectionTotal.amount / sectionTotal.total) * 100);
   };
 
   return (
@@ -72,11 +65,11 @@ const ClusterStack = ({ route, navigation }) => {
                 stroke={Colors.tabIconSelected}
                 strokeLinecap='round'
                 strokeDasharray={502}
-                strokeDashoffset={502 - (502 * percentage) / 100}
+                strokeDashoffset={502 - (502 * percentage()) / 100}
               ></Circle>
             </Svg>
             <CircleInfo>
-              <Percentage>{percentage}</Percentage>
+              <Percentage>{percentage()}</Percentage>
               <PSpan>%</PSpan>
               <SubText>of total expenses</SubText>
             </CircleInfo>
@@ -84,22 +77,29 @@ const ClusterStack = ({ route, navigation }) => {
           <RightView>
             <TinyCluster>
               <Description>Per Week</Description>
-              <Amount>$ 201.00</Amount>
+              <Amount>
+                {curr}{' '}
+                {parseFloat(sectionTotal.amount / 52.1428228589286).toFixed(2)}
+              </Amount>
             </TinyCluster>
             <TinyCluster>
               <Description>Per Month</Description>
-              <Amount>$ 3,201.00</Amount>
+              <Amount>
+                {curr} {parseFloat(sectionTotal.amount / 26.0714).toFixed(2)}
+              </Amount>
             </TinyCluster>
             <TinyCluster>
               <Description>Per Anum</Description>
-              <Amount>$ 23,201.00</Amount>
+              <Amount>
+                {curr} {parseFloat(sectionTotal.amount).toFixed(2)}
+              </Amount>
             </TinyCluster>
           </RightView>
         </OccupancyView>
         {income ? (
           <UnderViewText>
-            {sectionName} consumes {Math.floor((23900 / income) * 100)}% of your
-            income.
+            {sectionName} consumes{' '}
+            {Math.floor((sectionTotal.amount / income) * 100)}% of your income.
           </UnderViewText>
         ) : null}
       </UnderView>
@@ -142,6 +142,8 @@ const LeftView = styled.View`
 const CircleInfo = styled.View`
   position: absolute;
   top: 48%;
+  width: 50%;
+  align-items: center;
 `;
 
 const Percentage = styled.Text`
@@ -153,15 +155,14 @@ const Percentage = styled.Text`
 const PSpan = styled.Text`
   position: absolute;
   top: 8px;
-  right: -15px;
+  right: 8px;
   font-size: 18px;
   color: ${Colors.tabIconSelectedFaded};
 `;
 
 const SubText = styled.Text`
   position: absolute;
-  width: 400%;
-  left: -50%;
+  left: 5px;
   bottom: -15px;
   color: ${Colors.titleFaded};
 `;
