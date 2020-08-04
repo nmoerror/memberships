@@ -17,6 +17,7 @@ import {
   setItemAsync,
   deleteItemAsync,
 } from '../utils/secureStorage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const wh = Dimensions.get('window').height;
 
@@ -62,12 +63,20 @@ const HomeScreen = ({ route, navigation }) => {
 
   if (!memberships.length) {
     return (
-      <EmptyView>
-        <SecondaryAddText>
-          I am your new best expense tracker !
-        </SecondaryAddText>
-        <AddText>Click the icon to start tracking</AddText>
-      </EmptyView>
+      <SafeAreaView>
+        <Bar
+          home={true}
+          me={me}
+          memberships={memberships}
+          navigation={navigation}
+        />
+        <EmptyView>
+          <SecondaryAddText>
+            I am your new best expense tracker !
+          </SecondaryAddText>
+          <AddText>Click the icon to start tracking</AddText>
+        </EmptyView>
+      </SafeAreaView>
     );
   }
 
@@ -122,7 +131,7 @@ const SecondaryAddText = styled.Text`
 `;
 
 const HomeScrollView = styled.ScrollView`
-  height: ${wh - wh * 0.195}px;
+  height: ${wh - wh * 0.21}px;
   padding-right: 10px;
   padding-left: 10px;
   margin-top: -5px;

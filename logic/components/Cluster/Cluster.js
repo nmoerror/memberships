@@ -137,21 +137,27 @@ const Cluster = ({
       case 'Company':
         return CompanyLogo;
       case 'Debt':
+      case 'Bills':
+      case 'Bill':
         return DebtLogo;
       case 'Family':
         return FamilyLogo;
       case 'Home':
         return HomeLogo;
+      case 'Investment':
       case 'Investments':
         return InvestmentsLogo;
       case 'Leisure':
         return LeisureLogo;
+      case 'Membership':
       case 'Memberships':
         return MembershipLogo;
       case 'Education':
         return EducationLogo;
+      case 'Service':
       case 'Services':
         return ServiceLogo;
+      case 'Subscription':
       case 'Subscriptions':
         return SubscriptionLogo;
       case 'Work':

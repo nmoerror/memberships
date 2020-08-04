@@ -251,7 +251,7 @@ const StatisticsScreen = ({ route, navigation }) => {
         // clean up
         isMounted = false;
       };
-    }, [route])
+    }, [])
   );
 
   useFocusEffect(

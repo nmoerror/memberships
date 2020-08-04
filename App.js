@@ -13,8 +13,6 @@ import SettingsStack from './logic/screens/Stacks/SettingsStack';
 import ClusterStack from './logic/screens/Stacks/ClusterStack/ClusterStack';
 
 // Redux
-import { Provider } from 'react-redux';
-import store from './logic/redux/store';
 
 const App = ({ skipLoadingScreen }) => {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -119,23 +117,21 @@ const App = ({ skipLoadingScreen }) => {
   };
 
   return (
-    <Provider store={store}>
-      <View style={styles.container}>
-        <NavigationContainer
-          theme={{
-            colors: {
-              primary: 'rgba(127,51,229,1)',
-              background: 'rgb(255, 253, 253)',
-              card: 'rgb(255, 255, 255)',
-              text: 'rgba(40,40,40,1)',
-              border: 'white',
-            },
-          }}
-        >
-          <ModalStacks />
-        </NavigationContainer>
-      </View>
-    </Provider>
+    <View style={styles.container}>
+      <NavigationContainer
+        theme={{
+          colors: {
+            primary: 'rgba(127,51,229,1)',
+            background: 'rgb(255, 253, 253)',
+            card: 'rgb(255, 255, 255)',
+            text: 'rgba(40,40,40,1)',
+            border: 'white',
+          },
+        }}
+      >
+        <ModalStacks />
+      </NavigationContainer>
+    </View>
   );
 };
 
