@@ -114,7 +114,7 @@ const PreferencesStack = ({ route, navigation }) => {
               }}
             >
               <InputField>
-                <InputText>Currency:</InputText>
+                <InputText>Currency</InputText>
                 <Placeholder>{currency}</Placeholder>
               </InputField>
             </TouchableOpacity>
@@ -260,9 +260,9 @@ const InputField = styled.View`
   flex-direction: row;
   align-items: center;
   min-height: 50px;
-  background: ${(props) => (props.err ? props.err : 'rgba(180,180,180,0.1)')};
-  margin: 5px;
+  margin: 5px 5px;
   border-radius: 5px;
+  text-align: right;
 `;
 
 const InputText = styled.Text`
@@ -274,11 +274,12 @@ const InputText = styled.Text`
 `;
 
 const Placeholder = styled.Text`
-  margin-left: 10px;
   font-weight: bold;
   opacity: 0.9;
   color: ${Colors.icons};
   font-size: 16px;
+  text-align: right;
+  margin: auto 0px auto auto;
 `;
 
 const MenuItem = styled.View`
@@ -289,6 +290,9 @@ const MenuItem = styled.View`
 
 const ItemName = styled.Text`
   margin-left: 5px;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(40, 40, 40, 0.8);
 `;
 
 const Go = styled.View`

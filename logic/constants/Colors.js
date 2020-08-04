@@ -22,4 +22,9 @@ export default {
     'rgba(127,51,229,0.2)',
     'rgba(127,51,229,0.1)',
   ],
+  divisionSilverFaded: 'rgba(45,50,84,0.15)',
+  appBg: 'rgba(238,240,254,0.8)',
+  fontColor: 'rgba(29,26,61,1)',
+  goIcon: 'rgba(45,50,84,0.7)',
+  mainColorAlmostInvisible: 'rgba(127,51,229,0.05)',
 };
