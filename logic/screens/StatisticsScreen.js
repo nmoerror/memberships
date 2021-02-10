@@ -1,4 +1,4 @@
-import React, { useState, createRef } from 'react';
+import React, { useState, createRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
@@ -8,6 +8,9 @@ import { Currency } from '../constants/Options';
 import { Ionicons } from '@expo/vector-icons';
 import { VictoryPie, VictoryLegend } from 'victory-native';
 import { universalPercentage } from '../constants/Helpers';
+
+import { useSelector, useDispatch } from "react-redux";
+import { loadExpenses } from "../store/actions/expense"
 
 // Async Storage
 import {
@@ -20,6 +23,8 @@ const ww = Dimensions.get('window').width;
 const wh = Dimensions.get('window').height;
 
 const StatisticsScreen = ({ route, navigation }) => {
+  const Expenses = useSelector(state => state.expense);
+  const dispatch = useDispatch();
   const [memberships, setMemberships] = useState([]);
   const [curr, setCurr] = useState(Currency);
 
@@ -43,6 +48,10 @@ const StatisticsScreen = ({ route, navigation }) => {
   let yT = 0;
 
   const scrollAnim = createRef();
+
+  useEffect(() => {
+    dispatch(loadExpenses());
+  }, [])
 
   const weeklyTotal = () => {
     let total = 0;
