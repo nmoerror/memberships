@@ -29,7 +29,9 @@ const AuthScreen = ({ setLoading, loading }) => {
       }}
     >
       <SafeAreaView style={{ height: '100%' }}>
-        <BrandText>OVERVIEW</BrandText>
+        <OverView>
+         <BrandText>OVERVIEW</BrandText>
+        </OverView>
         { toggle ? (
           <Signup setToggle={setToggle}  />
         ) : (
@@ -39,6 +41,11 @@ const AuthScreen = ({ setLoading, loading }) => {
     </TouchableWithoutFeedback>
   );
 };
+
+const OverView = styled.View ` 
+  padding: 20px 0;
+  margin-top: 10%;
+`
 
 const BrandText = styled.Text`
   font-size: 25px;

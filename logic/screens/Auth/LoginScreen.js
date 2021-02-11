@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import { Text, View } from 'react-native';
 import styled from 'styled-components';
 import Colors from '../../constants/Colors';
@@ -7,26 +7,26 @@ import { login } from '../../store/actions/auth';
 import { useSelector, useDispatch } from "react-redux";
 
 const LoginScreen = ({ setToggle}) => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   
   const dispatch = useDispatch();
 
   return (
     <SignInForm behavior='padding'>
       	<View style={{ margin: 'auto' }}>
-      <Input        
-        name="email"
+      <Input
         placeholder='Email'
         value={email}
         onChangeText={(e) => setEmail(e)}
-      ></Input>
+        textContentType="username"
+      />
       <Input
-        name="password"
         placeholder='Password'
         value={password}
         onChangeText={(e) => setPassword(e)}
-      ></Input>
+        textContentType="password"
+      />
       </View>
       <ForgotPassword><ForgotPasswordText>Forgot Password?</ForgotPasswordText></ForgotPassword>
       <GetStarted
@@ -43,6 +43,11 @@ const LoginScreen = ({ setToggle}) => {
     </SignInForm>
   );
 };
+
+const SignInForm = styled.KeyboardAvoidingView`
+  width: 90%;
+  margin: 5px auto auto;
+`;
 
 const Toggle = styled.TouchableOpacity`
   align-self: center;
@@ -74,11 +79,6 @@ const ForgotPasswordText = styled.Text `
   font-size: 12px;
   padding: 2px;
 `
-
-const SignInForm = styled.KeyboardAvoidingView`
-  width: 90%;
-  margin: 20% auto auto;
-`;
 
 const GetStarted = styled.TouchableOpacity`
   padding: 10px;
