@@ -13,7 +13,7 @@ const MenuScreen = ({ route, navigation }) => {
       <Main>
         <MenuItem onPress={() => navigation.push('Me')}>
           <Icon>
-            <Ionicons name='ios-contact' size={30} color={Colors.icons} />
+            <Ionicons name='ios-person-circle' size={30} color={Colors.icons} />
           </Icon>
           <ItemName>Me</ItemName>
           <Go>
@@ -43,6 +43,21 @@ const MenuScreen = ({ route, navigation }) => {
           </Icon>
           <ItemName>
             Settings
+          </ItemName>
+          <Go>
+            <Ionicons
+              name='ios-arrow-forward'
+              size={20}
+              color={Colors.goIcon}
+            />
+          </Go>
+        </MenuItem>
+        <MenuItem onPress={() => navigation.push('Account')}>
+          <Icon style={{ marginLeft: 0.5 }}>
+            <Ionicons name='people-circle' size={30} color={Colors.icons} />
+          </Icon>
+          <ItemName>
+            Account
           </ItemName>
           <Go>
             <Ionicons

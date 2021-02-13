@@ -94,114 +94,114 @@ const PreferencesStack = ({ route, navigation }) => {
   };
 
   return (
-    <Section>
-      <KeyboardAvoidingView>
-        <Bar>
-          <CancelItem onPress={() => navigation.goBack()}>
-            <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
-          </CancelItem>
-          <Title style={{ color: Colors.title }}>Preferences</Title>
-          <SaveItem onPress={() => save()}>
-            <Ionicons name='ios-checkmark' size={45} color={Colors.icons} />
-          </SaveItem>
-        </Bar>
-        <Main>
-          <Form>
-            <TouchableOpacity
-              onPress={() => {
-                setModal('currency');
-                SelectModal();
-              }}
-            >
-              <InputField>
-                <InputText>Currency</InputText>
-                <Placeholder>{currency}</Placeholder>
-              </InputField>
-            </TouchableOpacity>
-            <SectionTitle>Display</SectionTitle>
-            <MenuItem>
-              <ItemName>Weekly Statistics</ItemName>
-              <Go>
-                <Switch
-                  trackColor={showWeekly ? 'white' : '#f4f3f4'}
-                  thumbColor={'white'}
-                  ios_backgroundColor='white'
-                  onChange={() => {
-                    resetModal();
-                    setShowWeekly((previousState) => !previousState);
-                  }}
-                  value={showWeekly}
-                />
-              </Go>
-            </MenuItem>
-            <MenuItem>
-              <ItemName>Fortnightly Statistics</ItemName>
-              <Go>
-                <Switch
-                  trackColor={showFortnightly ? 'white' : '#f4f3f4'}
-                  thumbColor={'white'}
-                  ios_backgroundColor='white'
-                  onValueChange={() => {
-                    resetModal();
-                    setShowFortnightly((previousState) => !previousState);
-                  }}
-                  value={showFortnightly}
-                />
-              </Go>
-            </MenuItem>
-            <MenuItem>
-              <ItemName>Monthly Statistics</ItemName>
-              <Go>
-                <Switch
-                  trackColor={showMonthly ? 'white' : '#f4f3f4'}
-                  thumbColor={'white'}
-                  ios_backgroundColor='white'
-                  onValueChange={() => {
-                    resetModal();
-                    setShowMonthly((previousState) => !previousState);
-                  }}
-                  value={showMonthly}
-                />
-              </Go>
-            </MenuItem>
-            <MenuItem>
-              <ItemName>Quarterly Statistics</ItemName>
-              <Go>
-                <Switch
-                  trackColor={showQuarterly ? 'white' : '#f4f3f4'}
-                  thumbColor={'white'}
-                  ios_backgroundColor='white'
-                  onValueChange={() => {
-                    resetModal();
-                    setShowQuarterly((previousState) => !previousState);
-                  }}
-                  value={showQuarterly}
-                />
-              </Go>
-            </MenuItem>
-            <MenuItem>
-              <ItemName>Yearly Statistics</ItemName>
-              <Go>
-                <Switch
-                  trackColor={showYearly ? 'white' : '#f4f3f4'}
-                  thumbColor={'white'}
-                  ios_backgroundColor='white'
-                  onValueChange={() => {
-                    resetModal();
-                    setShowYearly((previousState) => !previousState);
-                  }}
-                  value={showYearly}
-                />
-              </Go>
-            </MenuItem>
-          </Form>
-        </Main>
-        <AnimatedSlide style={{ transform: [{ translateY: slideAnim }] }}>
-          <SelectModal />
-        </AnimatedSlide>
-      </KeyboardAvoidingView>
-    </Section>
-  );
+		<Section>
+			<KeyboardAvoidingView>
+				<Bar>
+					<CancelItem onPress={() => navigation.goBack()}>
+						<Ionicons name="ios-arrow-back" size={30} color={Colors.icons} />
+					</CancelItem>
+					<Title style={{ color: Colors.title }}>Preferences</Title>
+					<SaveItem onPress={() => save()}>
+						<Ionicons name="checkmark-sharp" size={30} color={Colors.icons} />
+					</SaveItem>
+				</Bar>
+				<Main>
+					<Form>
+						<TouchableOpacity
+							onPress={() => {
+								setModal("currency");
+								SelectModal();
+							}}
+						>
+							<InputField>
+								<InputText>Currency</InputText>
+								<Placeholder>{currency}</Placeholder>
+							</InputField>
+						</TouchableOpacity>
+						<SectionTitle>Display</SectionTitle>
+						<MenuItem>
+							<ItemName>Weekly Statistics</ItemName>
+							<Go>
+								<Switch
+									trackColor={showWeekly ? "white" : "#f4f3f4"}
+									thumbColor={"white"}
+									ios_backgroundColor="white"
+									onChange={() => {
+										resetModal();
+										setShowWeekly((previousState) => !previousState);
+									}}
+									value={showWeekly}
+								/>
+							</Go>
+						</MenuItem>
+						<MenuItem>
+							<ItemName>Fortnightly Statistics</ItemName>
+							<Go>
+								<Switch
+									trackColor={showFortnightly ? "white" : "#f4f3f4"}
+									thumbColor={"white"}
+									ios_backgroundColor="white"
+									onValueChange={() => {
+										resetModal();
+										setShowFortnightly((previousState) => !previousState);
+									}}
+									value={showFortnightly}
+								/>
+							</Go>
+						</MenuItem>
+						<MenuItem>
+							<ItemName>Monthly Statistics</ItemName>
+							<Go>
+								<Switch
+									trackColor={showMonthly ? "white" : "#f4f3f4"}
+									thumbColor={"white"}
+									ios_backgroundColor="white"
+									onValueChange={() => {
+										resetModal();
+										setShowMonthly((previousState) => !previousState);
+									}}
+									value={showMonthly}
+								/>
+							</Go>
+						</MenuItem>
+						<MenuItem>
+							<ItemName>Quarterly Statistics</ItemName>
+							<Go>
+								<Switch
+									trackColor={showQuarterly ? "white" : "#f4f3f4"}
+									thumbColor={"white"}
+									ios_backgroundColor="white"
+									onValueChange={() => {
+										resetModal();
+										setShowQuarterly((previousState) => !previousState);
+									}}
+									value={showQuarterly}
+								/>
+							</Go>
+						</MenuItem>
+						<MenuItem>
+							<ItemName>Yearly Statistics</ItemName>
+							<Go>
+								<Switch
+									trackColor={showYearly ? "white" : "#f4f3f4"}
+									thumbColor={"white"}
+									ios_backgroundColor="white"
+									onValueChange={() => {
+										resetModal();
+										setShowYearly((previousState) => !previousState);
+									}}
+									value={showYearly}
+								/>
+							</Go>
+						</MenuItem>
+					</Form>
+				</Main>
+				<AnimatedSlide style={{ transform: [{ translateY: slideAnim }] }}>
+					<SelectModal />
+				</AnimatedSlide>
+			</KeyboardAvoidingView>
+		</Section>
+	);
 };
 
 const Anim = styled.View``;

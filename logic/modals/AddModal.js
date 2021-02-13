@@ -284,133 +284,133 @@ const AddModal = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView>
-      <KeyboardAvoidingView>
-        <Bar>
-          <CancelItem onPress={() => navigation.goBack()}>
-            <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
-          </CancelItem>
-          <Title style={{ color: Colors.title }}>New Expense</Title>
-          <AddItem onPress={() => validate()}>
-            <Ionicons name='ios-checkmark' size={40} color={Colors.icons} />
-          </AddItem>
-        </Bar>
-        <ScrollView style={{ height: '100%' }}>
-          <Form>
-            <InputField>
-              <InputText err={errName}>Name</InputText>
-              <Input
-                placeholder='Youtube Premium'
-                autoFocus={true}
-                name='name'
-                value={name}
-                onChangeText={(e) => {
-                  setName(e);
-                  errName && setErrName(null);
-                }}
-                onFocus={() => {
-                  resetModal();
-                }}
-              />
-            </InputField>
-            <Division />
-            <TouchableOpacity
-              onPress={() => {
-                setModal('type');
-                SelectModal();
-              }}
-            >
-              <InputField>
-                <InputText>Group</InputText>
-                <Placeholder>{type}</Placeholder>
-              </InputField>
-            </TouchableOpacity>
-            <Division />
-          </Form>
-          <Form>
-            <FormTitle>Payments</FormTitle>
-            <TouchableOpacity
-              onPress={() => {
-                setModal('payment-interval');
-                SelectModal();
-              }}
-            >
-              <InputField>
-                <InputText>Interval</InputText>
-                <Placeholder>{paymentInterval}</Placeholder>
-              </InputField>
-            </TouchableOpacity>
-            <Division />
-            <TouchableOpacity
-              onPress={() => {
-                setModal('interval-day');
-                SelectModal();
-              }}
-            >
-              <InputField>
-                <InputText>Next Payment Date</InputText>
-                <Placeholder>
-                  <DayType />
-                </Placeholder>
-              </InputField>
-            </TouchableOpacity>
-            <Division />
-            <InputField>
-              <InputText err={errAmount}>Amount ({curr})</InputText>
-              <Input
-                name='amount'
-                placeholder='9.99'
-                value={amount}
-                onChangeText={(e) => {
-                  if (!isNaN(e)) {
-                    setAmount(e);
-                    errAmount && setErrAmount(null);
-                  }
-                }}
-                onFocus={() => {
-                  resetModal();
-                }}
-                keyboardType='numeric'
-              />
-            </InputField>
-            <Division />
-            {addExpiryDate ? (
-              <>
-                <TouchableOpacity
-                  onPress={() => {
-                    setModal('Date');
-                    SelectModal();
-                  }}
-                >
-                  <InputField>
-                    <InputText>Expense Expiry Date</InputText>
-                    <Placeholder>{moment(expiryDate).format('LL')}</Placeholder>
-                  </InputField>
-                </TouchableOpacity>
-                <Division />
-              </>
-            ) : (
-              <PaymentDayViewOption
-                onPress={() => {
-                  setAddExpiryDate(true);
-                  setModal('Date');
-                  SelectModal();
-                }}
-              >
-                <SetPaymentDayOptionTitle>
-                  Set expense expiry date
-                </SetPaymentDayOptionTitle>
-                <AddText>+</AddText>
-              </PaymentDayViewOption>
-            )}
-          </Form>
-        </ScrollView>
-        <AnimatedSlide style={{ transform: [{ translateY: slideAnim }] }}>
-          <SelectModal />
-        </AnimatedSlide>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-  );
+		<SafeAreaView>
+			<KeyboardAvoidingView>
+				<Bar>
+					<CancelItem onPress={() => navigation.goBack()}>
+						<Ionicons name="ios-arrow-back" size={30} color={Colors.icons} />
+					</CancelItem>
+					<Title style={{ color: Colors.title }}>New Expense</Title>
+					<AddItem onPress={() => validate()}>
+						<Ionicons name="checkmark-sharp" size={30} color={Colors.icons} />
+					</AddItem>
+				</Bar>
+				<ScrollView style={{ height: "100%" }}>
+					<Form>
+						<InputField>
+							<InputText err={errName}>Name</InputText>
+							<Input
+								placeholder="Youtube Premium"
+								autoFocus={true}
+								name="name"
+								value={name}
+								onChangeText={(e) => {
+									setName(e);
+									errName && setErrName(null);
+								}}
+								onFocus={() => {
+									resetModal();
+								}}
+							/>
+						</InputField>
+						<Division />
+						<TouchableOpacity
+							onPress={() => {
+								setModal("type");
+								SelectModal();
+							}}
+						>
+							<InputField>
+								<InputText>Group</InputText>
+								<Placeholder>{type}</Placeholder>
+							</InputField>
+						</TouchableOpacity>
+						<Division />
+					</Form>
+					<Form>
+						<FormTitle>Payments</FormTitle>
+						<TouchableOpacity
+							onPress={() => {
+								setModal("payment-interval");
+								SelectModal();
+							}}
+						>
+							<InputField>
+								<InputText>Interval</InputText>
+								<Placeholder>{paymentInterval}</Placeholder>
+							</InputField>
+						</TouchableOpacity>
+						<Division />
+						<TouchableOpacity
+							onPress={() => {
+								setModal("interval-day");
+								SelectModal();
+							}}
+						>
+							<InputField>
+								<InputText>Next Payment Date</InputText>
+								<Placeholder>
+									<DayType />
+								</Placeholder>
+							</InputField>
+						</TouchableOpacity>
+						<Division />
+						<InputField>
+							<InputText err={errAmount}>Amount ({curr})</InputText>
+							<Input
+								name="amount"
+								placeholder="9.99"
+								value={amount}
+								onChangeText={(e) => {
+									if (!isNaN(e)) {
+										setAmount(e);
+										errAmount && setErrAmount(null);
+									}
+								}}
+								onFocus={() => {
+									resetModal();
+								}}
+								keyboardType="numeric"
+							/>
+						</InputField>
+						<Division />
+						{addExpiryDate ? (
+							<>
+								<TouchableOpacity
+									onPress={() => {
+										setModal("Date");
+										SelectModal();
+									}}
+								>
+									<InputField>
+										<InputText>Expense Expiry Date</InputText>
+										<Placeholder>{moment(expiryDate).format("LL")}</Placeholder>
+									</InputField>
+								</TouchableOpacity>
+								<Division />
+							</>
+						) : (
+							<PaymentDayViewOption
+								onPress={() => {
+									setAddExpiryDate(true);
+									setModal("Date");
+									SelectModal();
+								}}
+							>
+								<SetPaymentDayOptionTitle>
+									Set expense expiry date
+								</SetPaymentDayOptionTitle>
+								<AddText>+</AddText>
+							</PaymentDayViewOption>
+						)}
+					</Form>
+				</ScrollView>
+				<AnimatedSlide style={{ transform: [{ translateY: slideAnim }] }}>
+					<SelectModal />
+				</AnimatedSlide>
+			</KeyboardAvoidingView>
+		</SafeAreaView>
+	);
 };
 
 const Anim = styled.View``;

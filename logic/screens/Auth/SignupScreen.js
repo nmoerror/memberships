@@ -27,63 +27,63 @@ const SignupScreen = ({setToggle }) => {
 	}
 
 	return (
-		<SignUpForm behavior='padding'>
-			<View style={{ margin: 'auto' }}>
+		<SignUpForm behavior="padding">
+			<View style={{ margin: "auto" }}>
+				<Text style={{ color: Colors.tabIconSelected, marginBottom: 10 }}>
+					Let's create an account
+				</Text>
 				{!continues ? (
-				<>
-					<Input
-						placeholder='Name'
-						value={name}
-						onChangeText={(e) => setName(e)}
-					/>
-					<Input
-						placeholder='Last Name'
-						value={surname}
-						onChangeText={(e) => setSurname(e)}
-					/>
-					<Input
-						placeholder='Email'
-						value={email}
-						onChangeText={(e) => setEmail(e)}
-					/>
-				</>
-				): (
-				<>
-					<Input
-						placeholder='Password'
-						value={password}
-						onChangeText={(e) => setPassword(e)}
-					/>
-					<Input
-						placeholder='Confirm Password'
-						value={confirmPassword}
-						onChangeText={(e) => setConfirmPassword(e)}
-					/>
-				</>					
+					<>
+						<Input
+							placeholder="Name"
+							value={name}
+							onChangeText={(e) => setName(e)}
+						/>
+						<Input
+							placeholder="Last Name"
+							value={surname}
+							onChangeText={(e) => setSurname(e)}
+						/>
+						<Input
+							placeholder="Email"
+							value={email}
+							onChangeText={(e) => setEmail(e)}
+						/>
+					</>
+				) : (
+					<>
+						<Input
+							placeholder="Password"
+							value={password}
+							onChangeText={(e) => setPassword(e)}
+						/>
+						<Input
+							placeholder="Confirm Password"
+							value={confirmPassword}
+							onChangeText={(e) => setConfirmPassword(e)}
+						/>
+					</>
 				)}
-
 			</View>
 
 			<GetStarted
-			  onPress={() => {continues ? attemptToRegister() : setContinues(true)}}
+				onPress={() => {
+					continues ? attemptToRegister() : setContinues(true);
+				}}
 			>
-				<GetStartedText>{continues ? 'Sign up' : 'Continue'}</GetStartedText>
+				<GetStartedText>{continues ? "Sign up" : "Continue"}</GetStartedText>
 			</GetStarted>
 
 			{continues ? (
-				<GoBack
-					onPress={() => setContinues(false)}
-				>
+				<GoBack onPress={() => setContinues(false)}>
 					<GoBackText>Go back</GoBackText>
 				</GoBack>
-			): (
-				null
-			)}
-			
+			) : null}
+
 			<Toggle onPress={() => setToggle(false)}>
-				<Text
-                    style={{color: Colors.tabIconSelected}}
-                >I already have an account</Text>
+				<Text style={{ color: Colors.tabIconSelected }}>
+					I already have an account
+				</Text>
 			</Toggle>
 		</SignUpForm>
 	);

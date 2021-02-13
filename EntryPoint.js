@@ -13,6 +13,7 @@ import MeStack from './logic/screens/Stacks/MeStack';
 import PreferencesStack from './logic/screens/Stacks/PreferencesStack';
 import SettingsStack from './logic/screens/Stacks/SettingsStack';
 import ClusterStack from './logic/screens/Stacks/ClusterStack/ClusterStack';
+import AccountStack from './logic/screens/Stacks/AccountStack';
 
 // Modals
 import AddModal from './logic/modals/AddModal';
@@ -95,6 +96,13 @@ const EntryPoint = ({ skipLoadingScreen }) => {
           }}
           name='Cluster'
           component={ClusterStack}
+        />
+        <SideStack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name='Account'
+          component={AccountStack}
         />
       </SideStack.Navigator>
     );

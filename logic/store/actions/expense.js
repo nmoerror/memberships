@@ -14,16 +14,15 @@ export const loadExpenses = () => async (dispatch) => {
   //setAuthToken(AsyncStorage.getItem('token'));
   //}
   try {
-    const res = await axios.get('http://172.20.10.6:5366/api/v1/expenses/');
-    
-    console.log(res);
-    dispatch({
-      type: LOAD_EXPENSES,
-      payload: res.data,
-    });
+		const res = await axios.get("http://172.20.10.6:5366/api/v1/expenses/");
 
-    // MUST GET PROFILE HERE
-  } catch (err) {
+		dispatch({
+			type: LOAD_EXPENSES,
+			payload: res.data,
+		});
+
+		// MUST GET PROFILE HERE
+	} catch (err) {
     dispatch({
       type: LOAD_EXPENSES_ERROR,
     });

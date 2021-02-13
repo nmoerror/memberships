@@ -15,45 +15,45 @@ const MeStack = ({ route, navigation }) => {
   };
 
   return (
-    <Section>
-      <Bar>
-        <CancelItem onPress={() => navigation.goBack()}>
-          <Ionicons name='ios-arrow-back' size={30} color={Colors.icons} />
-        </CancelItem>
-        <Title style={{ color: Colors.title }}>Me</Title>
-        <SaveItem onPress={() => saveMe()}>
-          <Ionicons name='ios-checkmark' size={45} color={Colors.icons} />
-        </SaveItem>
-      </Bar>
-      <Main>
-        <Form>
-          <InputField>
-            <InputText>First Name</InputText>
-            <Input
-              name='name'
-              value={name}
-              onChangeText={(e) => {
-                setName(e);
-              }}
-            />
-          </InputField>
-          <InputField>
-            <InputText>My income (annual)</InputText>
-            <Input
-              name='income'
-              value={income}
-              onChangeText={(e) => {
-                if (!isNaN(e)) {
-                  setIncome(e);
-                }
-              }}
-              keyboardType='numeric'
-            />
-          </InputField>
-        </Form>
-      </Main>
-    </Section>
-  );
+		<Section>
+			<Bar>
+				<CancelItem onPress={() => navigation.goBack()}>
+					<Ionicons name="ios-arrow-back" size={30} color={Colors.icons} />
+				</CancelItem>
+				<Title style={{ color: Colors.title }}>Me</Title>
+				<SaveItem onPress={() => saveMe()}>
+					<Ionicons name="checkmark-sharp" size={30} color={Colors.icons} />
+				</SaveItem>
+			</Bar>
+			<Main>
+				<Form>
+					<InputField>
+						<InputText>First Name</InputText>
+						<Input
+							name="name"
+							value={name}
+							onChangeText={(e) => {
+								setName(e);
+							}}
+						/>
+					</InputField>
+					<InputField>
+						<InputText>My income (annual)</InputText>
+						<Input
+							name="income"
+							value={income}
+							onChangeText={(e) => {
+								if (!isNaN(e)) {
+									setIncome(e);
+								}
+							}}
+							keyboardType="numeric"
+						/>
+					</InputField>
+				</Form>
+			</Main>
+		</Section>
+	);
 };
 
 const Section = styled.SafeAreaView`
