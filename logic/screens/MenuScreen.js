@@ -95,6 +95,7 @@ const MenuScreen = ({ route, navigation }) => {
 
 const Section = styled.SafeAreaView`
   height: 100%;
+  background: ${Colors.appBg};
 `;
 
 const Bar = styled.View`

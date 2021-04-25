@@ -33,7 +33,7 @@ const EntryPoint = ({ skipLoadingScreen }) => {
     async function loadResourcesAndDataAsync() {
       try {
         StatusBar.setBarStyle('dark-content');
-        
+
         // Load our initial navigation state
         dispatch(login("aleeeeeehs@iclosud.com", "asddf1234"));
       } catch (e) {
@@ -136,7 +136,7 @@ const EntryPoint = ({ skipLoadingScreen }) => {
 
   return (
       <View style={styles.container}>
-        {auth.isAuthenticated ? ( <NavigationContainer
+        {!auth.isAuthenticated ? ( <NavigationContainer
           theme={{
             colors: {
               primary: 'rgba(127,51,229,1)',
