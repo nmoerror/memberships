@@ -136,7 +136,7 @@ const EntryPoint = ({ skipLoadingScreen }) => {
 
   return (
       <View style={styles.container}>
-        {!auth.isAuthenticated ? ( <NavigationContainer
+        {auth.isAuthenticated ? ( <NavigationContainer
           theme={{
             colors: {
               primary: 'rgba(127,51,229,1)',

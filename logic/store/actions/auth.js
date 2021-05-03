@@ -1,118 +1,119 @@
-import axios from "axios";
+import axios from 'axios';
 import {
-	REGISTER_SUCCESS,
-	REGISTER_FAIL,
-	USER_LOADED,
-	AUTH_ERROR,
-	LOGIN_SUCCESS,
-	LOGIN_FAIL,
-	LOGOUT,
-	LOADING,
-} from "./types";
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  USER_LOADED,
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+  LOADING,
+} from './types';
 
-import setAuthToken from "../../utils/setAuthToken";
+import setAuthToken from '../../utils/setAuthToken';
+const host = 'http://172.20.10.6:5366'
 
 //import { setAlert } from './alert';
 
 // Load User
 export const loadUser = () => async (dispatch) => {
-	//if (AsyncStorage.getItem('token')) {
-	//setAuthToken(AsyncStorage.getItem('token'));
-	//}
-	try {
-		const res = await axios.get("/api/v1/auth/me");
+  //if (AsyncStorage.getItem('token')) {
+  //setAuthToken(AsyncStorage.getItem('token'));
+  //}
+  try {
+    const res = await axios.get('/api/v1/auth/me');
 
-		dispatch({
-			type: USER_LOADED,
-			payload: res.data,
-		});
-		// MUST GET PROFILE HERE
-	} catch (err) {
-		console.log(err);
-		dispatch({
-			type: AUTH_ERROR,
-		});
-	}
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data,
+    });
+    // MUST GET PROFILE HERE
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: AUTH_ERROR,
+    });
+  }
 };
 
 // Register User
 export const register = ({ name, surname, email, password }) => async (
-	dispatch
+  dispatch,
 ) => {
-	const config = {
-		headers: {
-			"Content-Type": "application/json",
-		},
-	};
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
 
-	const body = JSON.stringify({ name, surname, email, password });
+  const body = JSON.stringify({ name, surname, email, password });
 
-	try {
-		const res = await axios.post(
-			"http://172.20.10.6:5366/api/v1/auth/register",
-			body,
-			config
-		);
+  try {
+    const res = await axios.post(
+      `${host}/api/v1/auth/register`,
+      body,
+      config,
+    );
 
-		dispatch({
-			type: REGISTER_SUCCESS,
-			payload: res.data,
-		});
-	} catch (err) {
-		const errors = err.response.data.errors;
+    dispatch({
+      type: REGISTER_SUCCESS,
+      payload: res.data,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
 
-		if (errors) {
-			errors.forEach((error) => "");
-		}
+    if (errors) {
+      errors.forEach((error) => console.log(error));
+    }
 
-		dispatch({
-			type: REGISTER_FAIL,
-		});
-	}
+    dispatch({
+      type: REGISTER_FAIL,
+    });
+  }
 };
 
 // Login User
 export const login = (email, password) => async (dispatch) => {
-	dispatch(setLoading());
+  dispatch(setLoading());
 
-	const config = {
-		headers: {
-			"Content-Type": "application/json",
-		},
-	};
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
 
-	email = email.toLowerCase();
-	const body = JSON.stringify({ email, password });
+  email = email.toLowerCase();
+  const body = JSON.stringify({ email, password });
 
-	try {
-		const res = await axios.post(
-			`http://172.20.10.6:5366/api/v1/auth/login`,
-			body,
-			config
-		);
+  try {
+    const res = await axios.post(
+      `${host}/api/v1/auth/login`,
+      body,
+      config,
+    );
 
-		dispatch({
-			type: LOGIN_SUCCESS,
-			payload: res.data,
-		});
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
 
-		// Load the user
-	} catch (err) {
+    // Load the user
+  } catch (err) {
     console.log(err.response.data);
-		//dispatch(setAlert(err.message));
-		dispatch({
-			type: LOGIN_FAIL,
-		});
-	}
+    //dispatch(setAlert(err.message));
+    dispatch({
+      type: LOGIN_FAIL,
+    });
+  }
 };
 
 // Logout / Clear Profile
 export const logout = () => async (dispatch) => {
-	setAuthToken(null);
-	dispatch({ type: LOGOUT });
+  setAuthToken(null);
+  dispatch({ type: LOGOUT });
 };
 
 // Set Loading
 export const setLoading = () => async (dispatch) => {
-	dispatch({ type: LOADING });
+  dispatch({ type: LOADING });
 };
